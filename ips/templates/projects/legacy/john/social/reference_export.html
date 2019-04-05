@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<title>Legacy prototype</title>
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<link rel="apple-touch-icon" sizes="180x180" href="../../../../../../static/img/favicons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="../../../../../static/img/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="../../../../../static/img/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="../../../../../static/img/favicons/manifest.json">
+  	<link rel="mask-icon" href="../../../../../static/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="theme-color" content="#ffffff">
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>
+	<link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/322aece/css/styles.css">
+	<link rel="stylesheet" href="../../../../../static/css/legacy-main.css" media="all">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../../../static/js/industry-range.js"></script>
+</head>
+
+<body>
+
+<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>
+
+<header class="page__header">
+
+	<div class="logo_container">
+		<div class="wrapper">
+			<div class="group">
+				<div class="col-7">
+					<div class="logo_header">
+						<a href="../hub.html"><img src="../../../../../static/img/logo.svg" alt="Office for National Statistics" class="logo__img"/></a>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="header_links">
+						<ul class="menubar" role="menubar" id="appmenu">
+							<li role="menuitem"><a href="" class="username">John Smith</a></li>
+							<li class="menubar" role="menuitem"><a href="../../login.html" class="username">Sign out</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_title">
+		<div class="wrapper">
+			<div class="group">
+				<div class="col-12">
+					<div><h1 class="jupiter main_heading">Social</h1></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_title">
+		<div class="wrapper">
+			<div class="bar bar__sitenavigation not-mvpx top_15_extra_space" role="banner">
+		        <div class="bar__inner container">
+		            <div class="sitenavigation">
+		              	<div class="sitenavigation">
+		                	<ul class="sitenavigation__list">
+			                    <li class="sitenavigation__listitem">
+			                    	<a href="/dashboard">Dashboard</a>
+			                    </li>
+			                    <li class="sitenavigation__listitem">
+			                    	<a href="/new_run/new_run_1">New run</a>
+			                    </li>
+			                    <li class="sitenavigation__listitem">
+			                    	<a href="/system_info">System info</a>
+			                    </li>
+			                    <li class="sitenavigation__listitem sitenavigation__listitem--active">
+			                    	<a href="#">Other</a>
+			                    </li>
+			                </ul>
+		              	</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</header>
+
+<section>
+
+	<div>
+		{% if new_export == "1"%}
+			</div>
+				<div class="collator-item">
+    				<h2 class="collator-title">Success</h2>
+
+					<!-- Start: @panel--success -->
+					<div class="panel panel--success">
+						<div class="panel__header">
+							<div class="venus">Success</div>
+						</div>
+						<div class="panel__body">
+							<div>{{msg}}</div>
+						</div>
+					</div>
+		{% endif %}
+
+		{% if new_export == "2"%}
+			<div class="collator-item">
+				<h2 class="collator-title">Error</h2>
+
+				<!-- Start: @panel--error -->
+				<div class="panel panel--error">
+					<div class="panel__header">
+						<div class="venus">Error</div>
+					</div>
+					<div class="panel__body">
+						<p class="mars">{{msg}}</p>
+						<!--<ul class="list list&#45;&#45;bare">-->
+							<!--<li class="list__item mars">-->
+								<!--1) <a class="js-inpagelink" href="#1">Select an answer to continue.</a>-->
+							<!--</li>-->
+						<!--</ul>-->
+					</div>
+				</div>
+			</div>
+    <!-- End: @panel--error -->
+		{% endif %}
+			<div>
+		<div class="wrapper">
+			<div class="group top_50_extra_space">
+				<div class="col-8">
+					<h2 class="jupiter sml-margin">{{current_run['name']}} </h2>
+					<h3 class="venus sml-margin buttom_10_extra_space">({{current_run['id']}}) &nbsp;</h3>
+                    <div>
+						<spam><strong>Description: </strong>&nbsp; {{current_run['desc']}}</spam>
+						<br>
+						<spam><strong>Field Work dates: </strong>&nbsp; {{current_run['start_date']}} - {{current_run['end_date']}}</spam>
+						<br>
+						<spam><strong>User: </strong>&nbsp; INSERT USER NAME HERE</spam>
+						<br>
+						<spam><strong>Execution date & time: </strong>&nbsp; 19-10-2017 | 12:05pm</spam>
+						<br>
+						<spam><strong>Run Status: </strong>&nbsp;</spam>
+						{% if current_run['status'] == 'Ready' %}
+						    <em class="badge-status badge--no-started">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'In Progress' %}
+						    <em class="badge-status badge--pending">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'Completed' %}
+						    <em class="badge-status badge--completed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'Failed' %}
+						    <em class="badge-status badge--pending">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+					    {% endif %}
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+</section>
+
+<section>
+
+	<form id="run" action="/reference_export/{{current_run['id']}}" class="form" method="POST">
+
+		<div class="wrapper">
+			<div class="group">
+				<div class="col-7 top_40_extra_space">
+
+				<ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
+				  	<li class="nav-tabs__tab"><a class="tab-label" href="/manage_run/{{current_run['id']}}">Manage Run</a></li>
+              		<li class="nav-tabs__tab--active"><a class="tab-label" href="/reference_export/{{current_run['id']}}">Export</a></li>
+				</ul>
+					<table class="table table__dense">
+						<thead class="table--head">
+							<th width="30%" class="table--header--cell">&nbsp;&nbsp;Filename</th>
+							<th width="30%" class="table--header--cell">&nbsp;&nbsp;Source Data</th>
+						</thead>
+					<tbody>
+						{% for value in data[0] %}
+						<tr class="table--row">
+							<td width="30%" class="table--cell">&nbsp; <a href="/download_data/{{current_run['id']}}/{{value['FILENAME']}}/{{value['SOURCE_TABLE']}}">{{ value['FILENAME'] }}.csv</a></td>
+							<td width="30%" class="table--cell">  {{ value['SOURCE_TABLE'] }}</td>
+					    </tr>
+						{% endfor %}
+					</tbody>
+
+
+
+					</table>
+				</div>
+			</div>
+
+			<div class="wrapper">
+				<div class="col-8 top_10_extra_space">
+
+						<div class="field">
+					        <!--<label class="label" for="text-input">No data has been exported</label>-->
+					    </div>
+
+					    <div class="top_30_extra_space">
+						    <button class="btn btn--primary" type="submit">Generate New Export</button>
+						</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</form>
+
+</section>
+
+<section>
+	<div class="buttom_70_extra_space buttom_70_extra_space">
+		<table></table>
+	</div>
+	<div class="buttom_70_extra_space buttom_70_extra_space">
+		<table></table>
+	</div>
+</section>
+
+<footer class="page__footer">
+
+	<div class="wrapper">
+		<div class="group">
+			<div class="col-12">
+				<span class="new">This release is in development. Your <a href="mailto:ramon.delgado@ext.ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>
+			</div>
+		</div>
+	</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
+
+
+</footer>
+
+</body>
+</html>

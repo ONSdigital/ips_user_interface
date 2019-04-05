@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+    <head>
+        <!--Styles are imported from the parent template.-->
+        {% block styles %}
+            {{ super() }}
+
+	        <script type="text/javascript" src="../../../../../static/js/edit-run.js"></script>
+        {% endblock %}
+    </head>
+
+    <body>
+
+        <!--<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>-->
+
+		<!--Header content is imported from the parent template.-->
+        <header class="page__header">
+            <!--Header content is imported from the parent template.-->
+            {% block header %}
+                {{ super() }}
+
+				<div class="header__nav">
+					<div class="container">
+						<nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu" id="main-nav">
+							<ul class="nav__list" aria-label="Navigation menu" role="menubar">
+								<li class="nav__item " role="menuitem" aria-current="page">
+									<a href="/dashboard" class="nav__link">Dashboard</a>
+								</li>
+								<li class="nav__item " role="menuitem">
+									<a href="/new_run/new_run_1" class="nav__link">New Run</a>
+								</li>
+								<li class="nav__item nav__item--active" role="menuitem">
+									<a href="/system_info" class="nav__link">System Info</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+            {% endblock %}
+        </header>
+
+        <section id="content">
+            {% block content %}
+                <!--System Info Content-->
+                <section>
+
+                    <div class="wrapper">
+                        <div class="col-8">
+
+
+
+                            <div class="top_50_extra_space">
+                                <div class="panel panel--simple panel--info">
+                                    <div class="panel__body">
+                                        <!--
+                                        <strong class="u-mb-s u-d-b">Simple info panel - separate</strong>
+                                        -->
+                                        <p class="mars">The information contained on this page is placeholder only. </p>
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="group top_40_extra_space">
+                                <div>
+                                    <h2 class="saturn">International Passenger Survey</h2>
+                                </div>
+                                <div class="group top_10_extra_space">
+                                    <h2 class="pluto grey_text saturn sml-margin buttom_10_extra_space">Build Number - x.x.x </h2>
+                                    <h2 class="pluto grey_text saturn sml-margin buttom_10_extra_space">Release Number - 3.6 </h2>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section>
+                        <div>
+                            <div class="wrapper">
+                                <div class="group">
+                                    <div class="col-8">
+                                        <h2 class="saturn sml-margin buttom_10_extra_space top_5_extra_space">Technologies</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="wrapper">
+                                <div class="group">
+                                    <div class="col-12">
+
+                                        <table class="table table__dense">
+                                            <thead class="table--head">
+                                            <!--Render each column name -->
+                                            {% for column in header %}
+                                                <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
+                                            {% endfor %}
+                                            </thead>
+                                            <tbody>
+                                                <!-- for each record, render each data value -->
+                                                {% for record in records %}
+                                                <tr class="table--row">
+                                                    {% for element in record %}
+                                                    <td class="table--cell"> {{ element }} </td>
+                                                    {% endfor %}
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                <section>
+                    <div class="buttom_70_extra_space buttom_70_extra_space">
+                        <table></table>
+                    </div>
+                    <div class="buttom_70_extra_space buttom_70_extra_space">
+                        <table></table>
+                    </div>
+                </section>
+
+            {% endblock %}
+        </section>
+
+        <!--Generic footer is imported from the parent template.-->
+        <footer class="page__footer">
+            {% block footer %}
+                {{ super() }}
+            {% endblock %}
+        </footer>
+
+    </body>
+</html>

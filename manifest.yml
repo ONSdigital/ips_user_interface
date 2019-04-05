@@ -1,0 +1,8 @@
+---
+applications:
+- name: ips
+  memory: 512M
+  instances: 1
+  command: flask run --host 0.0.0.0 --port $PORT --with-threads
+  env:
+    UI_FLASK_APP: webapp

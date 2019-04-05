@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js"> 
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<title>Legacy prototype</title>
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<link rel="apple-touch-icon" sizes="180x180" href="../../../../../../static/img/favicons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="../../../../../static/img/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="../../../../../static/img/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="../../../../../static/img/favicons/manifest.json">
+  	<link rel="mask-icon" href="../../../../../static/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="theme-color" content="#ffffff">
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>
+	<link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/322aece/css/styles.css">
+	<link rel="stylesheet" href="../../../../../static/css/legacy-main.css" media="all">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../../../static/js/industry-range.js"></script>
+
+
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>-->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>
+
+<header class="page__header">
+
+	<div class="logo_container">
+		<div class="wrapper">
+			<div class="group">
+				<div class="col-7">
+					<div class="logo_header">
+						<a href="../hub.html"><img src="../../../../../static/img/logo.svg" alt="Office for National Statistics" class="logo__img"/></a>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="header_links">
+						<ul class="menubar" role="menubar" id="appmenu">
+							<li role="menuitem"><a href="" class="username">John Smith</a></li>
+							<li class="menubar" role="menuitem"><a href="../../login.html" class="username">Sign out</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_title">
+		<div class="wrapper">
+			<div class="group">
+				<div class="col-12">
+					<div><h1 class="jupiter main_heading">Social</h1></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_title">
+		<div class="wrapper">
+			<div class="bar bar__sitenavigation not-mvpx top_15_extra_space" role="banner">
+		        <div class="bar__inner container">
+		            <div class="sitenavigation">
+		              	<div class="sitenavigation">
+		                	<ul class="sitenavigation__list">
+			                    <li class="sitenavigation__listitem">
+			                    	<a href="/dashboard">Dashboard</a>
+			                    </li>
+                                 <li class="sitenavigation__listitem">
+			                    	<a href="/new_run/new_run_1">New run</a>
+			                    </li>
+			                    <li class="sitenavigation__listitem">
+			                    	<a href="/system_info">System info</a>
+			                    </li>
+								<li class="sitenavigation__listitem sitenavigation__listitem--active">
+			                    	<a href="#">Other</a>
+			                    </li>
+			                </ul>
+		              	</div>
+				  	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</header>
+
+<section>
+
+	<div>
+		<div class="wrapper">
+			<div class="group top_50_extra_space">
+				<div class="col-8">
+					<h2 class="jupiter sml-margin">{{current_run['name']}} </h2>
+					<h3 class="venus sml-margin buttom_10_extra_space">({{current_run['id']}}) &nbsp;</h3>
+                    <div>
+						<spam><strong>Description: </strong>&nbsp; {{current_run['desc']}}</spam>
+						<br>
+						<spam><strong>Field Work dates: </strong>&nbsp; {{current_run['start_date']}} - {{current_run['end_date']}}</spam>
+						<br>
+						<spam><strong>User: </strong>&nbsp; INSERT USER NAME HERE</spam>
+						<br>
+						<spam><strong>Execution date & time: </strong>&nbsp; 19-10-2017 | 12:05pm</spam>
+						<br>
+						<spam><strong>Run Status: </strong>&nbsp;</spam>
+						{% if current_run['status'] == 'Ready' %}
+						    <em class="badge-status badge--no-started">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'In Progress' %}
+						    <em class="badge-status badge--pending">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'Completed' %}
+						    <em class="badge-status badge--completed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+                    	{% elif current_run['status'] == 'Failed' %}
+						    <em class="badge-status badge--pending">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{current_run['status']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>
+					    {% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<section>
+
+	<form id="tabs" class="form", method="POST">
+		<div class="wrapper">
+			<div class="group">
+				{{ form.csrf_token }}
+				<div class="grid__col col-7 top_40_extra_space">
+					<ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
+						<li class="nav-tabs__tab--active">{{ form.manage_run_button(class="tab-label", type="submit") }}</li>
+						<li class="nav-tabs__tab">{{ form.export_button(class="tab-label", type="submit") }}</li>
+				  	    <!--<li class="nav-tabs__tab&#45;&#45;active"><a class="tab-label" href="/manage_run/{{current_run['id']}}">Manage Run</a></li>-->
+						<!--<li class="nav-tabs__tab"><a class="tab-label" href="/reference_export/{{current_run['id']}}">Export </a></li>-->
+					</ul>
+					<table class="table table__dense">
+						<thead class="table--head">
+							<th width="5%" class="table--header--cell">&nbsp;&nbsp;&nbsp; <input type="checkbox" onClick="toggle(this)" />&nbsp;&nbsp;</th>
+							<th width="70%" class="table--header--cell">&nbsp;&nbsp; Steps</th>
+							<th width="20%" class="table--header--cell">Status</th>
+						</thead>
+						<tbody>
+							{% for step in run_status %}
+								<tr class="table--row">
+									<td width="5%" class="table--cell field__item2">
+										&nbsp;&nbsp;&nbsp;<input class="input--checkbox1" name="step_checkbox" type="checkbox">&nbsp;&nbsp;&nbsp;
+									</td>
+									<td width="70%" class="table--cell">&nbsp; {{step['STEP_NUMBER']}}. {{ step['NAME'] }}</td>
+
+									<td width="20%" class="table--cell">
+										<!--If the step has an associated report render the status with a button-->
+										{% if step['STEP_NUMBER'] in (report_index) and step['STATUS'] in ('Success', 'Failed') %}
+											<button type="button" data-toggle="modal" data-target="#myModal{{step['STEP_NUMBER']}}">
+												{% if step['STATUS'] == 'Ready' %}
+													<em class="badge-status badge--no-started">
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												{% elif step['STATUS'] == 'Success' %}
+													<em class="badge-status badge--pending">
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												{% elif step['STATUS'] == 'Failed' %}
+													<em class="badge-status badge--red">
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												{% endif %}
+												</em></em></em>
+											</button>
+										<!--If there is no report just show the status label with on button-->
+										{% else %}
+											{% if step['STATUS'] == 'Ready' %}
+												<em class="badge-status badge--no-started">
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											{% elif step['STATUS'] == 'Success' %}
+												<em class="badge-status badge--completed">
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											{% elif step['STATUS'] == 'Failed' %}
+												<em class="badge-status" b>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ step['STATUS'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											{% endif %}
+											</em></em></em>
+										{% endif %}
+									</td>
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+
+		<div class="wrapper">
+			<div class="group">
+
+				<div class="grid__col">
+
+					<form id="run" class="form", method="POST">
+
+						<div class="top_50_extra_space">
+							{{ form.csrf_token }}
+							{% if current_run['status'] == '2'%}
+								{{ form.display_button(class="btn btn--primary", type="submit") }}
+							{% else %}
+								{{ form.run_button(class="btn btn--primary", type="submit") }}
+							{% endif %}
+							&nbsp;&nbsp;&nbsp;
+							{{ form.edit_button(class="btn btn--secondary btn--border", type="submit") }}
+						</div>
+
+					</form>
+
+				</div>
+
+			</div>
+		</div>
+
+
+</section>
+
+
+{% for step in run_status %}
+	<!-- The Modal Object defined by the step number-->
+	<div id="myModal{{step['STEP_NUMBER']}}" class="modal">
+		<!-- Modal content -->
+		<div class="modal-content">
+			<span class="close" data-dismiss="modal">&times;</span>
+
+			<u><label>Run Status Report</label></u>
+			<br><br>
+			<label>Step:</label>
+			<input type="text" class="modal-input" id="id_input" VALUE="{{step['NAME']}}" readonly="readonly">
+			<br>
+			<label>Run Status:</label>
+			<input type="text" class="modal-input" id="reason_input" value="{{step['STATUS']}}" readonly="readonly">
+			<br>
+			<label>Report History:</label>
+			<br>
+			<br>
+			{% if step['STEP_NUMBER'] in (report_index) %}
+				{% for rec in reports %}
+					{% if rec['STEP_NUMBER']|int == step['STEP_NUMBER']|int %}
+						{% if rec['RESPONSE_CODE']|int == 1 %}
+							<label>Success</label>
+							<textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['ERROR_MSG']}}</textarea>
+						{% elif rec['RESPONSE_CODE']|int == 2 %}
+							<label>Warning</label>
+							<textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['WARNINGS']}}</textarea>
+						{% elif rec['RESPONSE_CODE']|int == 3 %}
+							<label>Error</label>
+							<textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['ERROR_MSG']}}</textarea>
+						{% endif %}
+						<!--<label>Report:</label>-->
+						<!--<textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec}}</textarea>-->
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+
+			<br><br>
+			<button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close</button>
+		</div>
+
+	</div>
+{% endfor %}
+
+<section>
+	<div class="buttom_70_extra_space buttom_70_extra_space">
+		<table></table>
+	</div>
+	<div class="buttom_70_extra_space buttom_70_extra_space">
+		<table></table>
+	</div>
+</section>
+
+<footer class="page__footer">
+
+	<div class="wrapper">
+		<div class="group">
+			<div class="col-12">
+				<span class="new">This release is in development. Your <a href="mailto:ramon.delgado@ext.ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>
+			</div>
+		</div>
+	</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
+
+<script language="JavaScript">
+function toggle(source) {
+  checkboxes = document.getElementsByName('step_checkbox');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+
+
+</footer>
+
+</body>
+</html>
