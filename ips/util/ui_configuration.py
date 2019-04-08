@@ -28,9 +28,11 @@ class UIConfiguration(Configuration):
         portSetting = ""
 
         if port is not None:
-            portSetting = ":" + port
+            port_setting = ":" + port
+        else:
+            port_setting = ""
 
-        return protocol + "://" + host + portSetting
+        return protocol + "://" + host + port_setting
 
     def get_hostname(self):
         return self.cfg['app']['hostname'] or "0.0.0.0"

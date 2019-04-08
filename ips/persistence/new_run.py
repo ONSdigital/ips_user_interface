@@ -1,6 +1,6 @@
 import os
 import uuid
-import pwd
+import getpass
 from flask import request, render_template, Blueprint, session, redirect, current_app
 from flask_login import login_required
 
@@ -98,7 +98,7 @@ def new_run_2(run_id=None):
                     session['id'] = str(unique_id)
                     current_app.logger.debug("Generated new unique_id.")
                     app_methods.create_run(session['id'], session['run_name'], session['run_description'],
-                                           pwd.getpwuid(os.getuid()).pw_name,
+                                           getpass.getuser(),
                                            session['period'], session['year'])
                     current_app.logger.info("New run created from session variables. Redirecting to new_run_3...")
 
