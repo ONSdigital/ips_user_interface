@@ -1,13 +1,13 @@
-from base64 import b64encode
-
 import requests
+
+from base64 import b64encode
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user
 
-from ips.auth.forms import LoginForm
-from ips.auth.models import User
+from .forms import LoginForm
+from .models import User
+from .extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration
-from ips.persistence.extensions import login_manager
 
 bp = Blueprint('auth', __name__, template_folder='templates')
 
@@ -23,7 +23,6 @@ def login():
         password = request.form['password']
 
         pwd = b64encode(password.encode('ascii')).decode('ascii')
-        print(API_TARGET)
         validation = requests.get(API_TARGET + username + '/' + pwd)
 
         if validation.status_code == 404:

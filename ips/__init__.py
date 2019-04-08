@@ -3,8 +3,7 @@ import logging
 from flask import Flask, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 
-from ips.persistence import dashboard, export, new_run, manage_run, system_info
-from ips.auth import auth
+from ips.persistence import dashboard, export, new_run, manage_run, system_info, auth
 from ips.persistence.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
 
