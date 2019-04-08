@@ -3,9 +3,9 @@ import logging
 from flask import Flask, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 
-from ips import dashboard, system_info, new_run, manage_run, export
+from ips.persistence import dashboard, export, new_run, manage_run, system_info
 from ips.auth import auth
-from ips.extensions import login_manager
+from ips.persistence.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
 
 host = Config().get_hostname()

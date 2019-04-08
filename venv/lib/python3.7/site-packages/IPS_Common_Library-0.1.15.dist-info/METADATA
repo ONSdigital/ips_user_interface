@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: IPS-Common-Library
+Version: 0.1.15
+Summary: Common functions for the ONS IPS Project
+Home-page: https://github.com/ONSdigital/ips_common
+Author: "The Office for National Statistics, U.K.",
+Author-email: "social.surveys@ons.gsi.gov.uk",
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.6
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Requires-Dist: pbr (==5.1.3)
+Requires-Dist: PyYAML (==5.1)
+
+# IPS Common Library
+
+Consists of the following modules:
+
+* config - common configuration using yaml configuration files
+
+
+
