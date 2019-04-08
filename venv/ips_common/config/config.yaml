@@ -1,0 +1,6 @@
+database:
+  server: ${DB_SERVER}
+  user: ${DB_USER_NAME}
+  password: ${DB_PASSWORD}
+  database: ${DB_NAME}
+

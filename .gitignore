@@ -5,3 +5,4 @@ flask_logger*
 venv
 .vscode
 .env
+.idea/workspace.xml
