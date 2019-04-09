@@ -174,6 +174,10 @@ def new_run_3(run_id=None):
         survey_data = form.survey_file.data
         survey_error = app_methods.survey_data_import('SURVEY_SUBSAMPLE', session['id'], survey_data, start_date, end_date)
 
+        serial_error = survey_error[0]
+        column_error = survey_error[1]
+        date_error = survey_error[2]
+
         # # Import shift data
         # shift_data = form.shift_file.data
         # app_methods.survey_data_import('SHIFT_DATA', session['id'], shift_data)
@@ -198,7 +202,7 @@ def new_run_3(run_id=None):
         # air_data = form.air_file.data
         # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], air_data)
 
-        if survey_error[0] is False and survey_error[1] is False and survey_error[2] is False:
+        if serial_error is False and column_error is False and date_error is False:
             if run_id:
                 current_app.logger.debug("Run_id given...")
                 return redirect('/new_run/new_run_4/' + run_id, code=302)
@@ -206,21 +210,18 @@ def new_run_3(run_id=None):
                 current_app.logger.debug("No run_id given...")
                 return redirect('/new_run/new_run_4', code=302)
         else:
-            if survey_error[0]:
+            if serial_error:
                 current_app.logger.warning('Survey Data - Serial column does not exist or is invalid.')
-                serial_error = True
                 print("Serial column does not exist or is invalid")
-            elif survey_error[2]:
+            elif column_error:
+                current_app.logger.warning('Survey Data - Incorrect number of columns.')
+                serial_error = False
+                print("Survey Data file should contain 212 columns.")
+            elif date_error:
                 current_app.logger.warning('Survey Data - Dating error - Start date in '
                                            'input does not match start dates in file.')
-                serial_error = False
-                date_error = True
-                print("Start dates in survey data should reflect start dates in th uploaded file.")
-            elif survey_error[1]:
-                current_app.logger.warning('Survey Data - Incorrect number of columns.')
-                date_error = False
-                column_error = True
-                print("Survey Data file should contain 212 columns.")
+                column_error = False
+                print("Start dates in survey data should reflect start dates in the uploaded file.")
 
     elif request.method == 'GET':
         current_app.logger.info("Fulfilling GET request...")
@@ -335,7 +336,7 @@ def new_run_5():
                     }
             data_dictionary_array.append(data)
 
-        user = os.getlogin()
+        user = pwd.getpwuid(os.getuid()).pw_name
 
         current_app.logger.info("Getting session values...")
 
