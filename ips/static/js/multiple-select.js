@@ -1,3 +1,0 @@
-$('.ui.fluid.dropdown')
-    .dropdown({
-});
