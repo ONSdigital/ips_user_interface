@@ -341,65 +341,65 @@ def create_export_data_download(run_id, sql_table, target_filename):
 
     # Get the export data by SQL table and run id
     try:
-        response = requests.get(API_TARGET + r'/' + sql_table + r'/' + run_id)
+        response = requests.get(API_TARGET + r'/export/' + run_id + r'/' + sql_table)
         # Convert to JSON
         table_data_json = json.loads(response.content)
     except Exception as err:
         return False
 
-    # TODO: THERE WILL BE A MUCH CLEANER WAY TO DO THIS
+    # # TODO: THERE WILL BE A MUCH CLEANER WAY TO DO THIS
 
-    # Lists to append data to and then combine
-    columns = []
-    values = []
-
-    # Add all the columns to column list
-    for x in table_data_json:
-        for key in x:
-            columns.append(key)
-        break
-
-    # Add all the values to a list
-    for x in table_data_json:
-        for key in x:
-            values.append(x[key])
-
-    # Length of columns list so we know how far to slice values
-    column_length = len(columns)
-
-    # Create string of all columns split with comma and new line
-    columns_csv_data = ','.join(columns) + '\n'
-    values_csv_data = ''
-
-    # All we do here is move through values in chunks to add to the right columns
-    # Slice values by column length and append to values string
-    column_counter = 0
-    while column_counter <= len(values):
-        data_slice = values[:column_length]
-        values_csv_data += ','.join(map(str, data_slice)) + '\n'
-        # Delete slice so we can get the next
-        del values[:column_length]
-        column_counter += 1
-
-    # Combine columns and rows to make one long csv string
-    data = columns_csv_data + values_csv_data
-
-    # Create dict with data to post
-    json_data = {
-        'DATE_CREATED': datetime.now().strftime('%Y-%d-%m %H:%M:%S'),
-        'DOWNLOADABLE_DATA': data,
-        'FILENAME': target_filename,
-        'RUN_ID': run_id,
-        'SOURCE_TABLE': sql_table
-    }
-
-    # Convert to json
-    data = json.dumps(json_data)
-
-    # Post data to API gateway
-    requests.post(API_TARGET + r'/EXPORT_DATA_DOWNLOAD', data=data)
-
-    return True
+    # # Lists to append data to and then combine
+    # columns = []
+    # values = []
+    #
+    # # Add all the columns to column list
+    # for x in table_data_json:
+    #     for key in x:
+    #         columns.append(key)
+    #     break
+    #
+    # # Add all the values to a list
+    # for x in table_data_json:
+    #     for key in x:
+    #         values.append(x[key])
+    #
+    # # Length of columns list so we know how far to slice values
+    # column_length = len(columns)
+    #
+    # # Create string of all columns split with comma and new line
+    # columns_csv_data = ','.join(columns) + '\n'
+    # values_csv_data = ''
+    #
+    # # All we do here is move through values in chunks to add to the right columns
+    # # Slice values by column length and append to values string
+    # column_counter = 0
+    # while column_counter <= len(values):
+    #     data_slice = values[:column_length]
+    #     values_csv_data += ','.join(map(str, data_slice)) + '\n'
+    #     # Delete slice so we can get the next
+    #     del values[:column_length]
+    #     column_counter += 1
+    #
+    # # Combine columns and rows to make one long csv string
+    # data = columns_csv_data + values_csv_data
+    #
+    # # Create dict with data to post
+    # json_data = {
+    #     'DATE_CREATED': datetime.now().strftime('%Y-%d-%m %H:%M:%S'),
+    #     'DOWNLOADABLE_DATA': data,
+    #     'FILENAME': target_filename,
+    #     'RUN_ID': run_id,
+    #     'SOURCE_TABLE': sql_table
+    # }
+    #
+    # # Convert to json
+    # data = json.dumps(json_data)
+    #
+    # # Post data to API gateway
+    # requests.post(API_TARGET + r'/EXPORT_DATA_DOWNLOAD', data=data)
+    #
+    # return True
 
 
 def edit_process_variables(run_id, json_dictionary):

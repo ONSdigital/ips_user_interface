@@ -53,10 +53,8 @@ def reference_export(run_id, new_export="0", msg="", data=""):
 @bp.route('/export_data/<run_id>/<file_name>/<source_table>', methods=['DELETE', 'GET', 'POST'])
 @bp.route('/export_data/<run_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
-def export_data(run_id, file_name=None, source_table=None):
+def export_data(run_id):
     if run_id:
-        print(source_table)
-        print(file_name)
         form = ExportSelectionForm()
         run = get_run(run_id)
 
