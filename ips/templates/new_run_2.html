@@ -3,15 +3,12 @@
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
 <head>
-    <!--Styles are imported from the parent template.-->
     {% block styles %}
         {{ super() }}
     {% endblock %}
 </head>
 
 <body>
-
-<!--<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>-->
 
 <!--Header content is imported from the parent template.-->
 <header class="page__header">
@@ -63,7 +60,6 @@
                     {% if form.s_month.errors or form.s_year.errors %}
                         <div class="collator-item">
                             <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
                             <div class="panel panel--error">
                                 <div class="panel__header">
                                     <div class="venus">Error</div>
@@ -72,7 +68,6 @@
                                     <p class="mars">Please enter valid fieldwork start and end dates.</p>
                                 </div>
                             </div>
-                            <!-- End: @panel--error -->
                         </div>
                     {% endif %}
 
