@@ -3,9 +3,9 @@ import uuid
 import pwd
 from flask import request, render_template, Blueprint, session, redirect, current_app
 from flask_login import login_required
-
 from ips.persistence import app_methods
 from .forms import CreateRunForm, DateSelectionForm, LoadDataForm
+
 
 bp = Blueprint('new_run', __name__, url_prefix='/new_run', static_folder='static')
 
@@ -369,7 +369,6 @@ def new_run_5():
     template_id = session['template_id']
 
     run_id = session['id']
-    print(run_id)
 
     header = ['PV_NAME', 'PV_REASON', 'PV_CONTENT']
 

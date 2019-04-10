@@ -1,8 +1,8 @@
 from flask_login import login_required
 from flask import request, render_template, Blueprint, current_app, redirect
+from datetime import datetime
 from .forms import SearchActivityForm
 from ips.persistence import app_methods
-from datetime import datetime
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 

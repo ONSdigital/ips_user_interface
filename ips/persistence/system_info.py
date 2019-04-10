@@ -1,6 +1,5 @@
 from flask import request, render_template, Blueprint
 from flask_login import login_required
-
 from ips.persistence import app_methods
 
 bp = Blueprint('system_info', __name__, url_prefix='/system_info', static_folder='static')

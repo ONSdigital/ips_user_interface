@@ -1,9 +1,7 @@
 import requests
-
 from base64 import b64encode
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user
-
 from .forms import LoginForm
 from .models import User
 from .extensions import login_manager

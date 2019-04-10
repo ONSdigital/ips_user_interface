@@ -1,5 +1,5 @@
-from flask_login import UserMixin
 import hashlib
+from flask_login import UserMixin
 
 
 class User(UserMixin):

@@ -1,10 +1,8 @@
 import io
 import os
 import zipfile
-
 from flask import request, render_template, Blueprint, session, redirect, send_file, abort
 from flask_login import login_required
-
 from ips.persistence.app_methods import create_export_data_download
 from ips.persistence.app_methods import export_clob
 from ips.persistence.app_methods import get_export_data_table

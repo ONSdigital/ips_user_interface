@@ -1,8 +1,6 @@
 from datetime import datetime
-
 from flask import request, render_template, Blueprint, session, redirect, url_for, abort
 from flask_login import login_required
-
 from ips.persistence import app_methods
 from .forms import ManageRunForm, DataSelectionForm
 
@@ -154,8 +152,6 @@ def weights(run_id=None):
 @bp.route('/weights_2/<id>/<table>/<table_title>/<source>', methods=['GET', 'POST'])
 @login_required
 def weights_2(id, table=None, table_title=None, source=None):
-    print(request)
-
     if id:
         if table:
             dataframe = app_methods.get_display_data_json(table, id, source)
