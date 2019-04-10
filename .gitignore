@@ -1,0 +1,7 @@
+.idea
+flask_logger*
+*.pyc
+.cache
+venv
+.vscode
+.env
