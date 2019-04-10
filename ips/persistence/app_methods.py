@@ -2,13 +2,11 @@ import csv
 import io
 import json
 import os
-from datetime import datetime
-
 import requests
-
-from ips.util.ui_configuration import UIConfiguration
+from datetime import datetime
 from flask import Flask, request, url_for, redirect, current_app
 from werkzeug.utils import secure_filename
+from ips.util.ui_configuration import UIConfiguration
 
 
 APP_DIR = os.path.dirname(__file__)
@@ -21,8 +19,6 @@ def create_run(unique_id, run_name, run_description, user_id, period, year, run_
 
     :return: NA
     """
-    # response = requests.get(API_TARGET + r"/runs")
-
     new_run = {
         'RUN_ID': unique_id,
         'RUN_NAME': run_name,
@@ -83,9 +79,9 @@ def get_system_info():
 
 def get_runs():
     """
-        Purpose: Gets all of the runs to put in the list
+    Purpose: Gets all of the runs to put in the list
 
-        :return: List of JSON object runs
+    :return: List of JSON object runs
     """
 
     response = requests.get(API_TARGET + r'/runs')
@@ -94,9 +90,9 @@ def get_runs():
 
 def get_run(run_id):
     """
-        Purpose: Gets a single run by ID
+    Purpose: Gets a single run by ID
 
-        :return: A specific JSON run object
+    :return: A specific JSON run object
     """
     response = requests.get(API_TARGET + r'/runs')
     runs = json.loads(response.content)
@@ -156,28 +152,6 @@ def get_display_data_json(table_name, run_id=None, data_source=None):
             'UNSAMP_TRAFFIC_WT', 'IMBAL_WT', 'FINAL_WT'
         ]
     }
-
-    # address = API_TARGET + r'/' + table_name
-    #
-    # if run_id:
-    #     address = address + "/" + run_id
-    #
-    # if data_source:
-    #     if table_name == 'TRAFFIC_DATA':
-    #         address = address + "/" + data_source
-    #
-    # response = requests.get(address)
-    # if response.status_code == 200:
-    #     data = json.loads(response.content)
-    #     df = pandas.DataFrame.from_dict(data)
-    #     df = df[column_sets[table_name]]
-    # else:
-    #     if table_name in column_sets:
-    #         df = pandas.DataFrame(columns=column_sets[table_name])
-    #     else:
-    #         df = pandas.DataFrame()
-    #
-    # return df
 
 
 def get_process_variables(run_id):

@@ -80,12 +80,6 @@ class ExportSelectionForm(FlaskForm):
         ("PS_UNSAMPLED_OOH", "Unsampled Traffic Weight Summary"),
         ("PS_IMBALANCE", "Imbalance Weight Summary")
     ]
-    # ("ALL_DATA", "All Data"),
-    # ("SAS_AIR_MILES", "Air Miles"),
-    # ("ALCOHOL", "Alcohol"),
-    # ("REGIONAL", "Regional"),
-    # ("CONTACT", "Contact"),
-    # ("MIGRATION", "Migration")]
 
     # filename = StringField(label='Save file as',
     #                        validators=[InputRequired(), Regexp(r'^[\w+-]+$'), NoneOf([" ", ".", ",", "'"])])
