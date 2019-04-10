@@ -107,7 +107,6 @@
                                         <td width="18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
                                         <td width="7%" class="table--cell">{{ record['PERIOD'] }}</td>
                                         <td width="5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                        <!--<td width="6%" class="table&#45;&#45;cell"><em class="badge-status badge&#45;&#45;no-started">&nbsp;&nbsp;&nbsp;{{record['RUN_TYPE_ID']}}&nbsp;&nbsp;&nbsp;</em>&nbsp;</td>-->
                                         <td width="15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
                                         <td width="5%" class="table--cell">{{ record['USER_ID'] }}</td>
                                         {% if record['RUN_STATUS'] == 'Ready' %}
@@ -126,7 +125,6 @@
                                             <td width="10%" class="table--cell"><em
                                                     class="status status--error status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
                                             </td>
-                                            <!--<td width="9%" class="table&#45;&#45;cell"><em class="badge-status badge&#45;&#45;pending">&nbsp;&nbsp;&nbsp;{{record['RUN_STATUS']}}&nbsp;&nbsp;&nbsp;</em>&nbsp;</td>-->
                                         {% endif %}
                                     </tr>
                                 {% endfor %}
