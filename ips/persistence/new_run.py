@@ -172,35 +172,35 @@ def new_run_3(run_id=None):
 
         # Import survey data
         survey_data = form.survey_file.data
-        survey_error = app_methods.survey_data_import('SURVEY_SUBSAMPLE', session['id'], survey_data, start_date, end_date)
+        survey_error = app_methods.survey_data_import('survey', session['id'], survey_data, start_date, end_date)
 
         serial_error = survey_error[0]
         column_error = survey_error[1]
         date_error = survey_error[2]
 
-        # # Import shift data
-        # shift_data = form.shift_file.data
-        # app_methods.survey_data_import('SHIFT_DATA', session['id'], shift_data)
-        #
-        # # Import non_response data
-        # non_response_data = form.non_response_file.data
-        # app_methods.survey_data_import('NON_RESPONSE_DATA', session['id'], non_response_data)
-        #
-        # # Import unsampled data
-        # unsampled_data = form.unsampled_file.data
-        # app_methods.survey_data_import('UNSAMPLED_OOH_DATA', session['id'], unsampled_data)
-        #
-        # # Import tunnel data
-        # tunnel_data = form.tunnel_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], tunnel_data)
-        #
-        # # Import sea data
-        # sea_data = form.sea_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], sea_data)
-        #
-        # # Import air data
-        # air_data = form.air_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], air_data)
+        # Import shift data
+        shift_data = form.shift_file.data
+        app_methods.external_survey_data_import('shift', session['id'], shift_data)
+
+        # Import non_response data
+        non_response_data = form.non_response_file.data
+        app_methods.external_survey_data_import('nonresponse', session['id'], non_response_data)
+
+        # Import unsampled data
+        unsampled_data = form.unsampled_file.data
+        app_methods.external_survey_data_import('unsampled', session['id'], unsampled_data)
+
+        # Import tunnel data
+        tunnel_data = form.tunnel_file.data
+        app_methods.external_survey_data_import('tunnel', session['id'], tunnel_data)
+
+        # Import sea data
+        sea_data = form.sea_file.data
+        app_methods.external_survey_data_import('sea', session['id'], sea_data)
+
+        # Import air data
+        air_data = form.air_file.data
+        app_methods.external_survey_data_import('air', session['id'], air_data)
 
         if serial_error is False and column_error is False and date_error is False:
             if run_id:

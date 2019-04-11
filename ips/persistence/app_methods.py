@@ -402,7 +402,7 @@ def get_all_run_ids():
 
 
 def import_data(table_name, run_id, json_data):
-    url = API_TARGET + r'/' + table_name + r'/' + run_id
+    url = API_TARGET + r'/import/' + table_name + r'/' + run_id
     api = Flask(__name__)
 
     @api.route('/upload', methods=['POST', 'GET'])
@@ -481,6 +481,19 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
     import_data(table_name, import_run_id, import_json)
 
     return serial_error, column_error, date_error
+
+
+def external_survey_data_import(table_name, import_run_id, import_data_file):
+    # Import  data
+    stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
+    import_csv = csv.DictReader(stream)
+    import_csv.fieldnames = [name.upper() for name in import_csv.fieldnames]
+
+    print("Field Names:")
+    print(import_csv.fieldnames)
+
+    import_json = list(import_csv)
+    import_data(table_name, import_run_id, import_json)
 
 
 def get_run_step_requests(run_id, step_number=None):
