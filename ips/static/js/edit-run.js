@@ -21,7 +21,8 @@ $(document).ready(function(e){
         $.ajax({
             type: "POST",
             url: 'http://127.0.0.1:5000/builder/'+$("#rid").text()+'/'+pvid,
-            data: {json: myJsonString, pv: contentInput},
+            contentType: 'application/x-www-form-urlencoded',
+            data: {json: myJsonString, pv: contentInput}
         });
 
         // Get the data from data array

@@ -155,7 +155,7 @@ def get_display_data_json(table_name, run_id=None, data_source=None):
 
 
 def get_process_variables(run_id):
-    response = requests.get(API_TARGET + r'/process_variables/' + run_id)
+    response = requests.get(API_TARGET + r'/process_variables/TEMPLATE')
 
     return json.loads(response.content)
 
