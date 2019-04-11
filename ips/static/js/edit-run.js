@@ -40,6 +40,19 @@ $(document).ready(function(e){
     // Fade out 500ms
     modal.fadeOut(500);
     });
+
+    function saveBuild(pv,pv_id){
+        $("tr #"+pv_id).children(".pv_build").remove();
+        blocks = Object.keys(pv);
+        for (block of blocks) {
+            expressions = Object.keys(pv[block]);
+            for (expression of expressions) {
+                elements = Object.keys(pv[block][expression]);
+                $("tr #"+pv_id).append('<td style="display:none;" class="pv_build" block="'+block+'" ' +
+                    'expression="'+expression+'" const')
+            }
+        }
+    }
     // create the builder
     $.fn.pv_builder = function(title, exprFields, stmntFields, loadData){
         var block_id = 1;
