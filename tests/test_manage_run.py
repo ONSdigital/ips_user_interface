@@ -2,7 +2,7 @@ from ips.forms import ManageRunForm
 import pytest
 import ips as web
 
-app = web.create_app()
+app = web.app
 
 @pytest.fixture()
 def client():

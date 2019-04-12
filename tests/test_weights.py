@@ -1,8 +1,10 @@
-from ips.forms import DataSelectionForm
 import pytest
-import ips as web
 
-app = web.create_app()
+import ips as web
+from ips.forms import DataSelectionForm
+
+app = web.app
+
 
 @pytest.fixture()
 def client():
@@ -15,7 +17,6 @@ def client():
     app.config["WTF_CSRF_ENABLED"] = False
     client = app.test_client()
 
-
     return client
 
 
@@ -23,18 +24,15 @@ class TestDisplayWeights1:
 
     # GETS
     def test_get_webpage_with_no_run_id(self, client):
-
         res = client.get('/manage_run/weights')
         assert res.status_code == 404
 
     def test_get_webpage_using_valid_run_id(self, client):
-
         res = client.get('/manage_run/weights/9e5c1872-3f8e-4ae5-85dc-c67a602d011e')
         assert res.status_code == 200
         assert b'9e5c1872-3f8e-4ae5-85dc-c67a602d011e' in res.data
 
     def test_get_webpage_using_invalid_run_id(self, client):
-
         res = client.get('/manage_run/weights/0000')
         assert res.status_code == 404
         assert b'Not Found' in res.data
@@ -44,7 +42,6 @@ class TestDisplayWeights1:
     # Shift Data Selection
 
     def test_selecting_shift_data_triggers_redirect(self, client):
-
         with app.test_request_context():
             # Setup form submission information
             form = DataSelectionForm(data_selection='SHIFT_DATA|Shift Data|0')
@@ -57,7 +54,6 @@ class TestDisplayWeights1:
         assert b'Redirecting' in res.data
 
     def test_selecting_shift_data_gets_correct_target_page(self, client):
-
         with app.test_request_context():
             # Setup form submission information
             form = DataSelectionForm(data_selection='SHIFT_DATA|Shift Data|0')
@@ -68,7 +64,6 @@ class TestDisplayWeights1:
         assert b'/weights_2' in res.data
 
     def test_selecting_shift_data_triggers_no_validation_errors(self, client):
-
         with app.test_request_context():
             # Setup form submission information
             form = DataSelectionForm(data_selection='SHIFT_DATA|Shift Data|0')
@@ -81,7 +76,6 @@ class TestDisplayWeights1:
     # No Selection
 
     def test_selecting_nothing_triggers_validation_errors(self, client):
-
         with app.test_request_context():
             # Setup form submission information
             form = DataSelectionForm(data_selection='')
@@ -100,18 +94,15 @@ class TestDisplayWeights2:
 
     # GETS
     def test_get_webpage_with_no_run_id(self, client):
-
         res = client.get('/manage_run/weights_2')
         assert res.status_code == 404
 
     def test_get_webpage_with_valid_data_selection_renders_portroute_column(self, client):
-
         res = client.get('/manage_run/weights_2/9e5c1872-3f8e-4ae5-85dc-c67a602d011e/SHIFT_DATA/Shift Data/0')
         assert b'Portroute' in res.data
         assert res.status_code == 200
 
     def test_get_webpage_with_valid_data_selection_renders_weekday_column(self, client):
-
         res = client.get('/manage_run/weights_2/9e5c1872-3f8e-4ae5-85dc-c67a602d011e/SHIFT_DATA/Shift Data/0')
         assert b'Weekday' in res.data
         assert res.status_code == 200
@@ -159,8 +150,7 @@ class TestDisplayWeights2:
         assert b'No Records to show...' in res.data
         assert res.status_code == 200
 
-
-    #POST
+    # POST
 
     # Export Button
     @pytest.mark.skip(reason="Functionality Not Implemented.")

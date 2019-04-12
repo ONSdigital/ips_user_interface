@@ -1,8 +1,9 @@
-from ips.forms import ExportSelectionForm
 import pytest
-import ips as web
 
-app = web.create_app()
+import ips as web
+from ips.forms import ExportSelectionForm
+
+app = web.app
 
 
 @pytest.fixture()
@@ -45,7 +46,6 @@ class TestExports:
     def test_export_data_posts_gets_deletes_data(self, client):
         # Test data to delete, post and get
         with app.test_request_context():
-
             # Setup form submission information
             data = {'data_selection': 'PS_IMBALANCE', 'filename': 'this-is-a-testing-file'}
             # Post with valid form data

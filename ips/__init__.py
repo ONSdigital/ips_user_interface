@@ -3,43 +3,36 @@ import logging
 from flask import Flask, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 
-from ips import dashboard, system_info, new_run, manage_run, export
-from ips.auth import auth
-from ips.extensions import login_manager
+from ips.persistence import dashboard, export, new_run, manage_run, system_info, auth
+from ips.persistence.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
 
 host = Config().get_hostname()
 port = Config().get_port()
 
+app = Flask(__name__)
 
-def create_app():
-    app = Flask(__name__)
+login_manager.init_app(app)
 
-    login_manager.init_app(app)
+Bootstrap(app)
 
-    Bootstrap(app)
+app.config.from_object(Config)
 
-    app.config.from_object(Config)
+app.logger = logging.getLogger('werkzeug')
 
-    # ma = Marshmallow()
-    # ma.init_app(app)
+app.logger.setLevel(logging.INFO)
 
-    app.logger = logging.getLogger('werkzeug')
+app.logger.disabled = True
 
-    app.logger.setLevel(logging.INFO)
+app.register_blueprint(auth.bp)
+app.register_blueprint(dashboard.bp)
+app.register_blueprint(system_info.bp)
+app.register_blueprint(new_run.bp)
+app.register_blueprint(manage_run.bp)
+app.register_blueprint(export.bp)
 
-    app.logger.disabled = True
 
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(dashboard.bp)
-    app.register_blueprint(system_info.bp)
-    app.register_blueprint(new_run.bp)
-    app.register_blueprint(manage_run.bp)
-    app.register_blueprint(export.bp)
-
-    @app.route('/')
-    def index():
-        session.clear()
-        return redirect(url_for('dashboard.dashboard_view'))
-
-    return app
+@app.route('/')
+def index():
+    session.clear()
+    return redirect(url_for('dashboard.dashboard_view'))

@@ -23,13 +23,16 @@ class UIConfiguration(Configuration):
 
     def get_api_uri(self):
         protocol = self.cfg['app']['api-server']['protocol'] or "http"
-        host = self.cfg['app']['api-server']['host'] or "localhost"
-        port = self.cfg['app']['api-server']['port']
+        host = self.cfg['app']['api-server']['host'] or "127.0.0.1"
+        port = self.cfg['app']['api-server']['port'] or "5000"
+        portSetting = ""
 
         if port is not None:
-            portSetting = ":" + port
+            port_setting = ":" + port
+        else:
+            port_setting = ""
 
-        return protocol + "://" + host + portSetting
+        return protocol + "://" + host + port_setting
 
     def get_hostname(self):
         return self.cfg['app']['hostname'] or "0.0.0.0"

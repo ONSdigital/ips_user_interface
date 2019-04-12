@@ -1,8 +1,9 @@
-from ips.forms import SearchActivityForm
 import pytest
-import ips as web
 
-app = web.create_app()
+import ips as web
+from ips.forms import SearchActivityForm
+
+app = web.app
 
 
 @pytest.fixture()

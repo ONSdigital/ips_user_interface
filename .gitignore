@@ -1,7 +1,8 @@
 flask_logger*
-.idea
+.idea/*
 *.pyc
 .cache
 venv
 .vscode
 .env
+.idea/workspace.xml
