@@ -1,5 +1,5 @@
 flask_logger*
-.idea
+.idea/*
 *.pyc
 .cache
 venv
