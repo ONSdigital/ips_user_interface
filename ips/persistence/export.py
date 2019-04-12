@@ -65,10 +65,8 @@ def export_data(run_id):
         if request.method == 'POST' and form.validate():
             # Get values from front end
             sql_table = request.values['data_selection']
-            target_filename = request.values['filename']
 
-            # Try to insert data to clob
-            if not create_export_data_download(run_id, sql_table, target_filename):
+            if not create_export_data_download(run_id, sql_table):
                 return render_template('export_data.html', form=form,
                                        current_run=current_run,
                                        data="0")

@@ -307,7 +307,7 @@ def get_export_file(run_id, target_filename, sql_table):
     return response
 
 
-def create_export_data_download(run_id, sql_table, target_filename):
+def create_export_data_download(run_id, sql_table):
     """
             Purpose: Gets the export data and puts into a single long string
             :return: Boolean - posts the data to the database
