@@ -114,7 +114,7 @@
                                                                 <td style="display:none; "class="pv_build" block="{{expression['block']}}" expression="{{expression['expression']}}" const="{{expression['const']}}" var='{{expression["var"]}}' opp="{{expression['opp']}}" val="{{expression['val']}}" command="{{expression['command']}}"></td>
                                                             {% endif %}
                                                         {% endfor %}
-                                                        <td style="display:none; "class="table--cell">{{record['PV_DEF']}}</td>
+                                                        <td style="display:none; "class="table--cell pv_def">{{record['PV_DEF']}}</td>
                                                         <!--<td name="{{record['PV_CONTENT']}}" value="{{record['PV_CONTENT']}}" class="table&#45;&#45;cell">{{record['PV_CONTENT']}}</td>-->
 
                                                         <!--Give the button a class so that we can call it via javascript, attach ID attribute-->
@@ -159,7 +159,8 @@
 
                                 <div class="top_50_extra_space">
                                     <button class="btn btn--primary" type="submit">Save and continue</button>
-                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn--primary" id="savec">Save and Apply</button>
+
                                     <a class="btn btn--secondary btn--border" href="/new_run/new_run_4">Back</a>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label><a href="/dashboard">Cancel</a></label>
@@ -183,9 +184,6 @@
                       <!--Three inputs with different ID's-->
                       <label>Name:</label>
                       <input type="text" class="modal-input" id="id_input" disabled="true" placeholder="">
-                      <br>
-                      <label>Reason for change:</label>
-                      <input type="text" class="modal-input" id="reason_input" placeholder="">
                       <br>
                       <label>Content:</label>
                       <textarea data-maxlength="50000" class="modal-input" disabled="true" id="content_input"></textarea>

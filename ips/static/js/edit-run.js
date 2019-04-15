@@ -18,12 +18,7 @@ $(document).ready(function(e){
 
         reasonInput = $('#reason_input').val();
         contentInput = $('#content_input').val();
-        $.ajax({
-            type: "POST",
-            url: 'http://127.0.0.1:5000/builder/'+$("#rid").text()+'/'+pvid,
-            contentType: 'application/x-www-form-urlencoded',
-            data: {json: myJsonString, pv: contentInput}
-        });
+
 
         // Get the data from data array
         reason = data[1];
@@ -35,21 +30,60 @@ $(document).ready(function(e){
 
         // Take the contents of the table and put it into the hidden field
         fillInputFieldForPosting(rowsLength);
-
-
+        saveBuildToUI(pv,$("#id_input").attr("pv"))
+        console.log(pv)
     // Fade out 500ms
     modal.fadeOut(500);
     });
 
-    function saveBuild(pv,pv_id){
-        $("tr #"+pv_id).children(".pv_build").remove();
+    $("#savec").click(function(){
+        storeAllPVs()
+    })
+    function storeAllPVs() {
+        $("#form_table").children("tbody").children("tr").each(function () {
+            pvid = $(this).attr("index");
+            if(pvid == 1) {
+                var builds = {}
+                $(this).children(".pv_build").each(function () {
+                    block = $(this).attr("block");
+                    expression = $(this).attr("expression");
+                    consta = $(this).attr("const");
+                    va = $(this).attr("var");
+                    opp = $(this).attr("opp");
+                    val = $(this).attr("val");
+                    command = $(this).attr("command");
+                    if (!builds.hasOwnProperty(block)) {
+                        builds[block] = {}
+                    }
+                    builds[block][expression] = {const: consta, var: va, opp: opp, val: val, command: command};
+                });
+
+
+                pv_desc = $(this).children(".pv_def").text();
+                myJsonString = JSON.stringify(builds);
+                $.ajax({
+                    type: "POST",
+                    url: 'http://127.0.0.1:5000/builder/' + $("#rid").text() + '/' + pvid,
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {json: myJsonString, pv: pv_desc}
+                });
+            }
+        })
+    }
+
+    function saveBuildToUI(pv,pv_id){
+        $("tr[index="+pv_id+"]").children(".pv_build").remove();
         blocks = Object.keys(pv);
         for (block of blocks) {
+            block_id = block[block.length - 1]
             expressions = Object.keys(pv[block]);
             for (expression of expressions) {
+                expression_id = expression[expression.length - 1]
                 elements = Object.keys(pv[block][expression]);
-                $("tr #"+pv_id).append('<td style="display:none;" class="pv_build" block="'+block+'" ' +
-                    'expression="'+expression+'" const')
+                $("tr[index="+pv_id+"]").append("<td style='display:none;' class='pv_build' block='"+block_id+"' " +
+                    "expression='"+expression_id+"' const='"+pv[block][expression]['const']+"'" +
+                    "var='"+pv[block][expression]['var']+"' opp='"+pv[block][expression]['opp']+"'" +
+                    " val='"+pv[block][expression]['val']+"' command='"+pv[block][expression]['command']+"'></td>")
             }
         }
     }
@@ -106,6 +140,7 @@ $(document).ready(function(e){
     }
     // loads data in to builder
     function loadBuild(builder, block_id, loadData, exprFields, stmntFields){
+        console.log(loadData)
         blocks = Object.keys(loadData);
         for (blk of blocks) {
             div = createBlockStart(builder, block_id);
@@ -216,6 +251,7 @@ $(document).ready(function(e){
         }
 
         // Set the inputs values to that in the data array
+        $("#id_input").attr("pv", pvid)
         $("#id_input").val(data[0].innerHTML);
         $("#reason_input").val(data[1].innerHTML);
         $("#content_input").val(data[2].innerText);
