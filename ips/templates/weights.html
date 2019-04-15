@@ -12,9 +12,6 @@
     </head>
 
     <body>
-
-        <!--<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>-->
-
 		<!--Header content is imported from the parent template.-->
         <header class="page__header">
             <!--Header content is imported from the parent template.-->
@@ -98,33 +95,10 @@
                                             {% endfor %}
                                         </ul>
                                     {% endif %}
-
-                                    <!--<label class="label venus " for="text-input">Select weight </label>-->
-                                    <!--<select class="input input&#45;&#45;select" id="input-weight_selection" name="weight_selection">-->
-                                        <!--<option disabled="disabled" value="" selected="selected">Select</option>-->
-                                        <!--<option value="SHIFT_DATA">Shift data</option>-->
-                                        <!--<option value="Traffic data">Traffic data</option>-->
-                                        <!--<option value="Non response data">Non response data</option>-->
-                                        <!--<option value="Tunnel data">Tunnel data</option>-->
-                                        <!--<option value="Air data">Air data</option>-->
-                                        <!--<option value="Sea data">Sea data</option>-->
-                                        <!--<option value="UNSAMPLED_OOH_DATA">Unsampled data</option>-->
-                                        <!--<option value="Shift weight summary">Shift weight summary</option>-->
-                                        <!--<option value="Non response weight summary">Non response weight summary</option>-->
-                                        <!--<option value="Minimums weight summary">Minimums weight summary</option>-->
-                                        <!--<option value="Sampled traffic weight summary">Sampled traffic weight summary</option>-->
-                                        <!--<option value="Unsampled traffic weight summary">Unsampled traffic weight summary</option>-->
-                                        <!--<option value="Imbalance weight summary">Imbalance weight summary</option>-->
-                                        <!--<option value="Final weight summary">Final weight summary</option>-->
-                                    <!--</select>-->
                                 </div>
 
                                 <div class="top_50_extra_space">
                                     {{ form.display_data(class="btn btn--primary", type="submit") }}
-                                    <!--<button class="btn btn&#45;&#45;primary" type="submit">Display data</button>-->
-                                    <!--
-                                    <button class="btn btn--neutral">Cancel</button>
-                                    -->
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/manage_run/{{current_run['RUN_ID']}}">Cancel</a></label>
                                 </div>
 

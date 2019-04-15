@@ -13,9 +13,6 @@
     </head>
 
     <body>
-
-        <!--<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>-->
-
 		<!--Header content is imported from the parent template.-->
         <header class="page__header">
             <!--Header content is imported from the parent template.-->
@@ -69,18 +66,6 @@
 
                     <div class="wrapper">
                         <div class="group">
-                            <!--
-                            <form id="new_test" name="just_form_test" action="/new_run/new_run_5" class="form" method="post">
-                                 {% for record in table %}
-                                <li>{{record['PV_NAME']}}
-                                {{record['PV_REASON']}}
-                                {{record['PV_CONTENT']}}
-                                    <button name="button" class="pv-edit-button" id={{record['PV_NAME']}}>Edit</button>
-                                </li>
-                                {% endfor %}
-                                <input type="submit" value="Submit here!">
-                            </form>-->
-
                             <form id="run" name="pv_form" action="/new_run/new_run_5" class="form" method="post">
 
                                 <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">

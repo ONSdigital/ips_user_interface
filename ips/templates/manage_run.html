@@ -10,8 +10,6 @@
 
     <body>
 
-        <!--<script src="https://cdn.ons.gov.uk/sdc/322aece/scripts/bundle.min.js" ></script>-->
-
 		<!--Header content is imported from the parent template.-->
         <header class="page__header">
             <!--Header content is imported from the parent template.-->
@@ -90,8 +88,6 @@
                                 {{ form.csrf_token }}
                                 <div class="col-7 top_40_extra_space">
                                     <ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
-                                        <!--<li class="nav-tabs__tab&#45;&#45;active">{{ form.manage_run_button(class="tab-label", type="submit") }}</li>-->
-                                        <!--<li class="nav-tabs__tab">{{ form.export_button(class="tab-label", type="submit") }}</li>-->
                                         <li class="nav-tabs__tab--active"><a class="tab-label" href="/manage_run/{{current_run['RUN_ID']}}">Manage Run</a></li>
                                         <li class="nav-tabs__tab"><a class="tab-label" href="/reference_export/{{current_run['RUN_ID']}}">Export </a></li>
                                     </ul>
@@ -266,8 +262,6 @@
                                             <textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['MESSAGE']}}
 {{rec['OUTPUT']}}</textarea>
                                         {% endif %}
-                                        <!--<label>Report:</label>-->
-                                        <!--<textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec}}</textarea>-->
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
