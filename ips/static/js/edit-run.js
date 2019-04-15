@@ -42,7 +42,7 @@ $(document).ready(function(e){
     function storeAllPVs() {
         $("#form_table").children("tbody").children("tr").each(function () {
             pvid = $(this).attr("index");
-            if(pvid == 1) {
+            //if(pvid == 2) {
                 var builds = {}
                 $(this).children(".pv_build").each(function () {
                     block = $(this).attr("block");
@@ -58,16 +58,15 @@ $(document).ready(function(e){
                     builds[block][expression] = {const: consta, var: va, opp: opp, val: val, command: command};
                 });
 
-
-                pv_desc = $(this).children(".pv_def").text();
                 myJsonString = JSON.stringify(builds);
                 $.ajax({
                     type: "POST",
                     url: 'http://127.0.0.1:5000/builder/' + $("#rid").text() + '/' + pvid,
                     contentType: 'application/x-www-form-urlencoded',
-                    data: {json: myJsonString, pv: pv_desc}
+                    data: {json: myJsonString},
+                    async:false
                 });
-            }
+            //}
         })
     }
 
