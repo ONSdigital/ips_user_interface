@@ -467,20 +467,20 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
     print(import_csv.fieldnames)
 
     serial_error = False
-    column_error = False
+    # column_error = False
 
     if import_csv.fieldnames[0] != "SERIAL":
         # if the serial column is invalid
         serial_error = True
 
-    if len(import_csv.fieldnames) != 212:
-        # if there is an incorrect number of columns
-        column_error = True
+    # if len(import_csv.fieldnames) != 212:
+    #     # if there is an incorrect number of columns
+    #     column_error = True
 
     import_json = list(import_csv)
     import_data(table_name, import_run_id, import_json)
 
-    return serial_error, column_error, date_error
+    return serial_error, date_error # , column_error
 
 
 def external_survey_data_import(table_name, import_run_id, import_data_file):
