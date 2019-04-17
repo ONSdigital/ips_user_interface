@@ -6,5 +6,3 @@ venv
 .vscode
 .env
 .idea/workspace.xml
-
-ips/__pycache__/__init__.cpython-37.pyc
