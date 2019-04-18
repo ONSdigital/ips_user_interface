@@ -69,7 +69,6 @@ class DateSelectionForm(FlaskForm):
 
 class ExportSelectionForm(FlaskForm):
     data_list = [
-        ('', ''),
         ("SURVEY_SUBSAMPLE", "Survey Subsample"),
         ("PS_FINAL", "Final Weight Summary"),
         ("SHIFT_DATA", "Shift"),
@@ -82,10 +81,10 @@ class ExportSelectionForm(FlaskForm):
         ("PS_IMBALANCE", "Imbalance Weight Summary")
     ]
 
-    filename = StringField(label='Save file as',
-                           validators=[InputRequired(), Regexp(r'^[\w+-]+$'), NoneOf([" ", ".", ",", "'"])])
-    data_selection = SelectField(label='Select Data', choices=data_list, validators=[InputRequired()])
-    display_data = SubmitField(label='Export Data')
+    # filename = StringField(label='Save file as',
+    #                        validators=[InputRequired(), Regexp(r'^[\w+-]+$'), NoneOf([" ", ".", ",", "'"])])
+    data_selection = SelectField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
+    display_data = SubmitField(label='Export')
     cancel_button = SubmitField(label='Cancel')
 
 

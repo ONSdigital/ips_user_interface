@@ -1,5 +1,6 @@
 import os
 import uuid
+import getpass
 import pwd
 from flask import request, render_template, Blueprint, session, redirect, current_app
 from flask_login import login_required
@@ -98,7 +99,7 @@ def new_run_2(run_id=None):
                     session['id'] = str(unique_id)
                     current_app.logger.debug("Generated new unique_id.")
                     app_methods.create_run(session['id'], session['run_name'], session['run_description'],
-                                           pwd.getpwuid(os.getuid()).pw_name,
+                                           getpass.getuser(),
                                            session['period'], session['year'])
                     current_app.logger.info("New run created from session variables. Redirecting to new_run_3...")
 
@@ -172,33 +173,37 @@ def new_run_3(run_id=None):
 
         # Import survey data
         survey_data = form.survey_file.data
-        survey_error = app_methods.survey_data_import('SURVEY_SUBSAMPLE', session['id'], survey_data, start_date, end_date)
+        survey_error = app_methods.survey_data_import('survey', session['id'], survey_data, start_date, end_date)
 
-        # # Import shift data
-        # shift_data = form.shift_file.data
-        # app_methods.survey_data_import('SHIFT_DATA', session['id'], shift_data)
-        #
-        # # Import non_response data
-        # non_response_data = form.non_response_file.data
-        # app_methods.survey_data_import('NON_RESPONSE_DATA', session['id'], non_response_data)
-        #
-        # # Import unsampled data
-        # unsampled_data = form.unsampled_file.data
-        # app_methods.survey_data_import('UNSAMPLED_OOH_DATA', session['id'], unsampled_data)
-        #
-        # # Import tunnel data
-        # tunnel_data = form.tunnel_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], tunnel_data)
-        #
-        # # Import sea data
-        # sea_data = form.sea_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], sea_data)
-        #
-        # # Import air data
-        # air_data = form.air_file.data
-        # app_methods.survey_data_import('TRAFFIC_DATA', session['id'], air_data)
+        serial_error = survey_error[0]
+        date_error = survey_error[1]
+        # column_error = survey_error[2]
 
-        if survey_error[0] is False and survey_error[1] is False and survey_error[2] is False:
+        # Import shift data
+        shift_data = form.shift_file.data
+        app_methods.external_survey_data_import('shift', session['id'], shift_data)
+
+        # Import non_response data
+        non_response_data = form.non_response_file.data
+        app_methods.external_survey_data_import('nonresponse', session['id'], non_response_data)
+
+        # Import unsampled data
+        unsampled_data = form.unsampled_file.data
+        app_methods.external_survey_data_import('unsampled', session['id'], unsampled_data)
+
+        # Import tunnel data
+        tunnel_data = form.tunnel_file.data
+        app_methods.external_survey_data_import('tunnel', session['id'], tunnel_data)
+
+        # Import sea data
+        sea_data = form.sea_file.data
+        app_methods.external_survey_data_import('sea', session['id'], sea_data)
+
+        # Import air data
+        air_data = form.air_file.data
+        app_methods.external_survey_data_import('air', session['id'], air_data)
+
+        if serial_error is False and date_error is False: #and column_error is False
             if run_id:
                 current_app.logger.debug("Run_id given...")
                 return redirect('/new_run/new_run_4/' + run_id, code=302)
@@ -206,21 +211,18 @@ def new_run_3(run_id=None):
                 current_app.logger.debug("No run_id given...")
                 return redirect('/new_run/new_run_4', code=302)
         else:
-            if survey_error[0]:
+            if serial_error:
                 current_app.logger.warning('Survey Data - Serial column does not exist or is invalid.')
-                serial_error = True
                 print("Serial column does not exist or is invalid")
-            elif survey_error[2]:
+            elif date_error:
                 current_app.logger.warning('Survey Data - Dating error - Start date in '
                                            'input does not match start dates in file.')
-                serial_error = False
-                date_error = True
-                print("Start dates in survey data should reflect start dates in th uploaded file.")
-            elif survey_error[1]:
-                current_app.logger.warning('Survey Data - Incorrect number of columns.')
-                date_error = False
-                column_error = True
-                print("Survey Data file should contain 212 columns.")
+                column_error = False
+                print("Start dates in survey data should reflect start dates in the uploaded file.")
+            # elif column_error:
+            #     current_app.logger.warning('Survey Data - Incorrect number of columns.')
+            #     serial_error = False
+            #     print("Survey Data file should contain 212 columns.")
 
     elif request.method == 'GET':
         current_app.logger.info("Fulfilling GET request...")
@@ -335,7 +337,7 @@ def new_run_5():
                     }
             data_dictionary_array.append(data)
 
-        user = os.getlogin()
+        user = pwd.getpwuid(os.getuid()).pw_name
 
         current_app.logger.info("Getting session values...")
 
