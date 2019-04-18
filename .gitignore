@@ -1,2 +1,8 @@
-
+flask_logger*
+.idea/*
+*.pyc
+.cache
+venv
+.vscode
+.env
 .idea/workspace.xml
