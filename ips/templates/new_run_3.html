@@ -10,6 +10,7 @@
     </head>
 
     <body>
+
 		<!--Header content is imported from the parent template.-->
         <header class="page__header">
             <!--Header content is imported from the parent template.-->
@@ -39,7 +40,7 @@
 
         <section id="content">
             {% block content %}
-                <!--New run 3 page content-->
+                <!--New run 4 content-->
                 <section>
 
                     <div class="wrapper">
@@ -47,10 +48,10 @@
 
                             <div class="group top_40_extra_space">
                                 <div>
-                                    <h2 class="pluto grey_text ">Step 3 of 5 </h2>
+                                    <h2 class="pluto grey_text ">Step 4 of 5</h2>
                                 </div>
                                 <div>
-                                    <h2 class="saturn">Load data </h2>
+                                    <h2 class="saturn">Select process variables set </h2>
                                 </div>
                             </div>
 
@@ -62,217 +63,92 @@
                 <section>
 
                     <div class="wrapper">
-                        <div class="col-8 top_40_extra_space">
+                        <div class="group">
 
-                            <form id="run" action="/new_run/new_run_3" class="form", method="post", enctype="multipart/form-data">
+                            <form id="run" action="/new_run/new_run_3" class="form" method="POST">
 
-                                {% if csv_error %}
-                                <div class="collator-item">
-                                                <h2 class="collator-title"></h2>
-                                                <!-- Start: @panel--error -->
-                                                <div class="panel panel--error">
-                                                    <div class="panel__header">
-                                                        <div class="venus">Error</div>
+                                <div class="wrapper">
+                                    <div class="group">
+                                        <div class="col-8 top_40_extra_space">
+                                            <table class="table table__dense">
+                                                {% if table %}
+                                                    <thead class="table--head">
+                                                    {% for column in header %}
+                                                        <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
+                                                    {% endfor %}
+                                                    <th class="table--header--cell">Select</th>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- for each record, render each data value -->
+                                                    {% for record in table %}
+                                                    <tr class="table--row">
+                                                        <td class="table--cell">{{record['RUN_ID']}} </td>
+                                                        <td class="table--cell">{{record['NAME']}} </td>
+                                                        <td class="table--cell">{{record['USER']}}</td>
+                                                        <td class="table--cell">{{record['PERIOD']}}</td>
+                                                        <td class="table--cell">{{record['YEAR']}}</td>
+                                                        <td width="10%" class="table--cell field__item2">
+                                                            {% if pv_set_id %}
+                                                                {% if record['RUN_ID'] == pv_set_id %}
+                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
+                                                                {% else %}
+                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                {% if record['RUN_ID'] == "TEMPLATE" %}
+                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
+                                                                {% else %}
+                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                {% else %}
+                                                    <div class="top_50_extra_space">
+                                                        <div class="panel panel--simple panel--info">
+                                                            <div class="panel__body">
+                                                                <p class="mars">No Records to show... </p>
+                                                                <p></p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="panel__body">
-                                                        <p class="mars">All fields must be filled with .csv files only.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- End: @panel--error -->
-                                </div>
-                                {% endif %}
+                                                {% endif%}
+                                        </table>
+                                        </div>
 
-                                {% if serial_error %}
-                                <div class="collator-item">
-                                                <h2 class="collator-title"></h2>
-                                                <!-- Start: @panel--error -->
-                                                <div class="panel panel--error">
-                                                    <div class="panel__header">
-                                                        <div class="venus">Error</div>
-                                                    </div>
-                                                    <div class="panel__body">
-                                                        <p class="mars">Survey Data - Serial column is invalid.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- End: @panel--error -->
-                                </div>
-                                {% endif %}
 
-                                {% if column_error %}
-                                <div class="collator-item">
-                                                <h2 class="collator-title"></h2>
-                                                <!-- Start: @panel--error -->
-                                                <div class="panel panel--error">
-                                                    <div class="panel__header">
-                                                        <div class="venus">Error</div>
-                                                    </div>
-                                                    <div class="panel__body">
-                                                        <p class="mars">Survey Data - Incorrect number of columns (should be 212).</p>
-                                                    </div>
-                                                </div>
-                                                <!-- End: @panel--error -->
-                                </div>
-                                {% endif %}
+                                    </div>
 
-                                {% if date_error %}
-                                <div class="collator-item">
-                                                <h2 class="collator-title"></h2>
-                                                <!-- Start: @panel--error -->
-                                                <div class="panel panel--error">
-                                                    <div class="panel__header">
-                                                        <div class="venus">Error</div>
-                                                    </div>
-                                                    <div class="panel__body">
-                                                        <p class="mars">Survey Data - Input start date does not match start dates in file uploaded.</p>
-                                                    </div>
-                                                </div>
-                                                <!-- End: @panel--error -->
-                                </div>
-                                {% endif %}
-
-                                <div>
-                                    <label class="label venus" for="file" id="upload">Survey data
-
-                                        <span class="label__description pluto">File type accepted is .csv</span></label>
-                                    <input type="file" accept=".csv" id="file" name="survey_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.survey_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.survey_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label venus" for="file" id="upload">External data
-                                    <span class="label__description pluto">File type accepted is .csv </span>
-                                    </label>
+                                    <div class="wrapper">
+                                        <div class="group">
+                                            <div class="col-6 table-pagination-extra-padding">
+                                                <span>
+                                                    1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
+                                                    <a href="#">2</a>&nbsp;
+                                                    <a href="#">3</a>&nbsp;
+                                                    <a href="#">4</a>&nbsp;
+                                                    <a href="#">5</a>&nbsp;
+                                                    <a href="#">6</a>&nbsp;
+                                                    <a href="#">7</a>&nbsp;
+                                                    <a href="#">8</a>&nbsp;
+                                                    <a href="#">9</a>&nbsp;
+                                                    <a href="#">10</a>&nbsp;
+                                                    <a href="#">Next</a>&nbsp;
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Shift data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="shift_file" class="input input--upload" aria-describedby="upload">
-
-                                    {{ form.csrf_token }}
-
-                                    {% if form.shift_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.shift_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Non_response data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="non_response_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.non_response_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.non_response_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Unsampled data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="unsampled_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.unsampled_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.unsampled_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Tunnel data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="tunnel_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.tunnel_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.tunnel_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Sea data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="sea_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.sea_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.sea_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-
-                                </div>
-
-                                <br>
-
-                                <div>
-                                    <label class="label_venus" for="file" id="upload">Air data
-                                    </label>
-                                    <input type="file" accept=".csv" id="file" name="air_file" class="input input--upload" aria-describedby="upload">
-                                    {{ form.csrf_token }}
-
-                                    {% if form.air_file.errors %}
-                                    <ul>
-                                        {% for error_message in form.air_file.errors %}
-                                        <li style = "color:red;">{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-
-                                </div>
-                                <br>
                                 <div class="top_50_extra_space">
                                     <button class="btn btn--primary" type="submit">Save and continue</button>
                                     &nbsp;&nbsp;&nbsp;
-
-                                    {% if run_id %}
-                                        <a class="btn btn--secondary btn--border" href="/new_run/new_run_2/{{run_id}}">Back</a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/manage_run/{{run_id}}">Cancel</a></label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/new_run/new_run_4">Skip</a></label>
-                                    {% else %}
-                                        <a class="btn btn--secondary btn--border" href="/new_run/new_run_2">Back</a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/dashboard">Cancel</a></label>
-                                    {% endif %}
+                                    <a class="btn btn--secondary btn--border" href="/new_run/new_run_2">Back</a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label><a href="/dashboard">Cancel</a></label>
                                 </div>
 
                             </form>
@@ -291,8 +167,8 @@
                     </div>
                 </section>
 
-
             {% endblock %}
+
         </section>
 
         <!--Generic footer is imported from the parent template.-->

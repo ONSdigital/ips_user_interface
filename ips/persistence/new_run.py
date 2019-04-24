@@ -131,10 +131,10 @@ def new_run_2(run_id=None):
 
 
 # TODO: Implement edit run functionality when how we're dealing with files is determined.
-@bp.route('/new_run_3', methods=['GET', 'POST'])
-@bp.route('/new_run_3/<run_id>', methods=['GET', 'POST'])
+@bp.route('/new_run_5', methods=['GET', 'POST'])
+@bp.route('/new_run_5/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_3(run_id=None):
+def new_run_5(run_id=None):
     form = LoadDataForm()
 
     csv_error = False
@@ -206,10 +206,10 @@ def new_run_3(run_id=None):
         if serial_error is False and date_error is False: #and column_error is False
             if run_id:
                 current_app.logger.debug("Run_id given...")
-                return redirect('/new_run/new_run_4/' + run_id, code=302)
+                return redirect('/manage_run/' + run_id)
             else:
                 current_app.logger.debug("No run_id given...")
-                return redirect('/new_run/new_run_4', code=302)
+                return redirect('/new_run/new_run_5', code=302)
         else:
             if serial_error:
                 current_app.logger.warning('Survey Data - Serial column does not exist or is invalid.')
@@ -226,7 +226,7 @@ def new_run_3(run_id=None):
 
     elif request.method == 'GET':
         current_app.logger.info("Fulfilling GET request...")
-        return render_template('new_run_3.html',
+        return render_template('new_run_5.html',
                                form=form,
                                error=csv_error,
                                run_id=run_id)
@@ -234,13 +234,14 @@ def new_run_3(run_id=None):
         csv_error = True
         current_app.logger.warning('User did not fill all fields with .csv files.')
 
-    return render_template('new_run_3.html', form=form, csv_error=csv_error,
+    return render_template('new_run_5.html', form=form, csv_error=csv_error,
                            serial_error=serial_error, column_error=column_error, date_error=date_error)
 
 
-@bp.route('/new_run_4', methods=['GET', 'POST'])
+@bp.route('/new_run_3', methods=['GET', 'POST'])
+@bp.route('/new_run_3/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_4():
+def new_run_3(run_id = None):
     try:
         run_id = session['id']
     except:
@@ -249,9 +250,9 @@ def new_run_4():
     if request.method == "POST":
         session['template_id'] = request.form['selected']
 
-        current_app.logger.info("Redirecting to new_run_5 with template_id " + session['template_id'] + "...")
+        current_app.logger.info("Redirecting to new_run_4 with template_id " + session['template_id'] + "...")
 
-        return redirect('/new_run/new_run_5')
+        return redirect('/new_run/new_run_4')
 
     records = app_methods.get_process_variable_sets()
 
@@ -283,9 +284,9 @@ def new_run_4():
 
     header = ['RUN_ID', 'NAME', 'USER', 'PERIOD', 'YEAR']
 
-    current_app.logger.debug("Retrieved process variable sets, rendering new_run_4.")
+    current_app.logger.debug("Retrieved process variable sets, rendering new_run_3.")
 
-    return render_template('new_run_4.html', table=records, header=header)
+    return render_template('new_run_3.html', table=records, header=header)
 
 
 @bp.route('/edit')
@@ -294,9 +295,10 @@ def edit(row=None):
     return render_template('edit.html', row=row)
 
 
-@bp.route('/new_run_5', methods=['GET', 'POST'])
+@bp.route('/new_run_4', methods=['GET', 'POST'])
+@bp.route('/new_run_4/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_5():
+def new_run_4(run_id = None):
     if request.method == 'POST':
 
         current_app.logger.info("Getting data from Javascript modal...")
@@ -366,7 +368,7 @@ def new_run_5():
             app_methods.edit_process_variables(run_id, data_dictionary_array)
             current_app.logger.info("Records updated successfully.")
 
-        return redirect('/manage_run/' + run_id)
+        return redirect('/new_run/new_run_5/'+run_id)
 
     template_id = session['template_id']
 
@@ -377,5 +379,5 @@ def new_run_5():
     records = app_methods.get_process_variables(template_id)
     builds = app_methods.get_process_variables_builds(template_id)
     variables = app_methods.get_process_variables_variables()
-    return render_template('new_run_5.html', run_id=run_id, table=records, builds=builds,
+    return render_template('new_run_4.html', run_id=run_id, table=records, builds=builds,
                            header=header, pv_variables=variables)
