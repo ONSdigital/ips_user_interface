@@ -136,7 +136,6 @@ def new_run_2(run_id=None):
 @login_required
 def new_run_5(run_id=None):
     form = LoadDataForm()
-
     csv_error = False
     serial_error = False
     column_error = False
