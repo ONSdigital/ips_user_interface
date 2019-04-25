@@ -136,7 +136,7 @@ def new_run_2(run_id=None):
 @login_required
 def new_run_5(run_id=None):
     form = LoadDataForm()
-
+    print(run_id)
     csv_error = False
     serial_error = False
     column_error = False
@@ -204,10 +204,12 @@ def new_run_5(run_id=None):
         app_methods.external_survey_data_import('air', session['id'], air_data)
 
         if serial_error is False and date_error is False: #and column_error is False
+            print(run_id)
             if run_id:
                 current_app.logger.debug("Run_id given...")
                 return redirect('/manage_run/' + run_id)
             else:
+                print("No run_id given");
                 current_app.logger.debug("No run_id given...")
                 return redirect('/new_run/new_run_5', code=302)
         else:

@@ -217,20 +217,6 @@ def get_run_steps(run_id):
     return values
 
 
-def edit_run_step_status(run_id, value, step_number=None):
-    """
-    Purpose: Modifies an already existing run's steps through a PUT request.
-
-    :return: NA
-    """
-    route = API_TARGET + r'/run_steps/' + run_id + r'/' + value
-
-    if step_number:
-        route = route + "/" + step_number
-
-    requests.put(route)
-
-
 def get_export_data_table(run_id):
     """
         Purpose: Gets the export data for all the runs
@@ -285,28 +271,6 @@ def export_clob(run_id, target_filename, sql_table):
         print(run, file=text_file)
 
 
-def delete_export_data(run_id, target_filename, sql_table):
-    """
-            Purpose: Deletes export data
-            :return: NA
-            """
-    # Delete the  export with run id, filename and sql table
-    response = requests.delete(
-        API_TARGET + r'/export_data_download/' + run_id + '/' + target_filename + '/' + sql_table)
-
-
-def get_export_file(run_id, target_filename, sql_table):
-    """
-            Purpose: Get a single export by run id, filename and SQL table
-
-            :return: Export as JSON
-            """
-    response = requests.get(
-        API_TARGET + r'/EXPORT_DATA_DOWNLOAD' + r'/' + run_id + r'/' + target_filename + r'/' + sql_table)
-    response = json.loads(response.content)
-    return response
-
-
 def create_export_data_download(run_id, sql_table):
     """
             Purpose: Gets the export data and puts into a single long string
@@ -320,60 +284,6 @@ def create_export_data_download(run_id, sql_table):
         table_data_json = json.loads(response.content)
     except Exception as err:
         return False
-
-    # # TODO: THERE WILL BE A MUCH CLEANER WAY TO DO THIS
-
-    # # Lists to append data to and then combine
-    # columns = []
-    # values = []
-    #
-    # # Add all the columns to column list
-    # for x in table_data_json:
-    #     for key in x:
-    #         columns.append(key)
-    #     break
-    #
-    # # Add all the values to a list
-    # for x in table_data_json:
-    #     for key in x:
-    #         values.append(x[key])
-    #
-    # # Length of columns list so we know how far to slice values
-    # column_length = len(columns)
-    #
-    # # Create string of all columns split with comma and new line
-    # columns_csv_data = ','.join(columns) + '\n'
-    # values_csv_data = ''
-    #
-    # # All we do here is move through values in chunks to add to the right columns
-    # # Slice values by column length and append to values string
-    # column_counter = 0
-    # while column_counter <= len(values):
-    #     data_slice = values[:column_length]
-    #     values_csv_data += ','.join(map(str, data_slice)) + '\n'
-    #     # Delete slice so we can get the next
-    #     del values[:column_length]
-    #     column_counter += 1
-    #
-    # # Combine columns and rows to make one long csv string
-    # data = columns_csv_data + values_csv_data
-    #
-    # # Create dict with data to post
-    # json_data = {
-    #     'DATE_CREATED': datetime.now().strftime('%Y-%d-%m %H:%M:%S'),
-    #     'DOWNLOADABLE_DATA': data,
-    #     'FILENAME': target_filename,
-    #     'RUN_ID': run_id,
-    #     'SOURCE_TABLE': sql_table
-    # }
-    #
-    # # Convert to json
-    # data = json.dumps(json_data)
-    #
-    # # Post data to API gateway
-    # requests.post(API_TARGET + r'/EXPORT_DATA_DOWNLOAD', data=data)
-    #
-    # return True
 
 
 def edit_process_variables(run_id, json_dictionary):
@@ -414,6 +324,7 @@ def import_data(table_name, run_id, json_data):
             return redirect(url_for('/'))
 
 
+#George left this here as we may well use it at some point.
 def delete_data(table_name, run_id=None):
     route = API_TARGET + r'/' + table_name
 
@@ -516,7 +427,3 @@ def get_run_step_requests(run_id, step_number=None):
 def start_run(run_id, steps_to_run):
     steps_json = json.dumps(steps_to_run)
     requests.post(API_TARGET + r'/manage_run/start_run/' + str(run_id), json=steps_json)
-
-
-def buildCode(build):
-    print("temp")
