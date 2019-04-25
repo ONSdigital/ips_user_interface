@@ -3,14 +3,16 @@
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
     <head>
+        <meta charset="utf-8">
         <!--Styles are imported from the parent template.-->
         {% block styles %}
             {{ super() }}
+
+	        <script type="text/javascript" src="../../../../../static/js/edit-run.js"></script>
         {% endblock %}
     </head>
 
     <body>
-
 		<!--Header content is imported from the parent template.-->
         <header class="page__header">
             <!--Header content is imported from the parent template.-->
@@ -40,7 +42,7 @@
 
         <section id="content">
             {% block content %}
-                <!--New run 4 content-->
+                <!--New run 5 page content-->
                 <section>
 
                     <div class="wrapper">
@@ -48,10 +50,10 @@
 
                             <div class="group top_40_extra_space">
                                 <div>
-                                    <h2 class="pluto grey_text ">Step 4 of 5</h2>
+                                    <h2 class="pluto grey_text ">Step 5 of 5 &gt;</h2>
                                 </div>
                                 <div>
-                                    <h2 class="saturn">Select process variables set </h2>
+                                    <h2 class="saturn">Edit process variables </h2>
                                 </div>
                             </div>
 
@@ -64,44 +66,44 @@
 
                     <div class="wrapper">
                         <div class="group">
+                            <form id="run" name="pv_form" action="/new_run/new_run_4" class="form" method="post">
 
-                            <form id="run" action="/new_run/new_run_4" class="form" method="POST">
+                                <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
+                                <label id="rid" style="display:none;">{{run_id}}</label>
 
                                 <div class="wrapper">
                                     <div class="group">
                                         <div class="col-8 top_40_extra_space">
-                                            <table class="table table__dense">
-                                                {% if table %}
-                                                    <thead class="table--head">
-                                                    {% for column in header %}
-                                                        <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
-                                                    {% endfor %}
-                                                    <th class="table--header--cell">Select</th>
+                                            {% if table %}
+                                            <table name="form_table" id="form_table" class="table table__dense paginate" paginate="w_p">
+                                                    <thead name="table_header" class="table--head">
+                                                        <th name="" class="table--header--cell">PV name</th>
+                                                        <th name="" class="table--header--cell">PV Reason</th>
+                                                        <th name="table_header_cell"class="table--header--cell">Edit</th>
                                                 </thead>
-                                                <tbody>
-                                                    <!-- for each record, render each data value -->
+                                                 <tbody>
+                                                    <!-- for each record, render each data value-->
                                                     {% for record in table %}
-                                                    <tr class="table--row">
-                                                        <td class="table--cell">{{record['RUN_ID']}} </td>
-                                                        <td class="table--cell">{{record['NAME']}} </td>
-                                                        <td class="table--cell">{{record['USER']}}</td>
-                                                        <td class="table--cell">{{record['PERIOD']}}</td>
-                                                        <td class="table--cell">{{record['YEAR']}}</td>
-                                                        <td width="10%" class="table--cell field__item2">
-                                                            {% if pv_set_id %}
-                                                                {% if record['RUN_ID'] == pv_set_id %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
-                                                                {% else %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
-                                                                {% endif %}
-                                                            {% else %}
-                                                                {% if record['RUN_ID'] == "TEMPLATE" %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
-                                                                {% else %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
-                                                                {% endif %}
+
+                                                    <tr name="table_row" class="table--row">
+
+                                                        <td class="table--cell">{{record['PV_NAME']}}</td>
+                                                        <td class="table--cell">{{record['PV_DESC']}} </td>
+                                                        {% for var in pv_variables %}
+                                                            {% if var['PV_ID'] == record['PROCESS_VARIABLE_ID'] %}
+                                                                <td style="display:none; "class="pv_var">{{var['Name']}}</td>
                                                             {% endif %}
-                                                        </td>
+                                                        {% endfor %}
+                                                        {% for expression in builds %}
+                                                            {% if expression['pv'] == record['PROCESS_VARIABLE_ID'] %}
+                                                                <td style="display:none; "class="pv_build" block="{{expression['block']}}" expression="{{expression['expression']}}" const="{{expression['const']}}" var='{{expression["var"]}}' opp="{{expression['opp']}}" val="{{expression['val']}}" command="{{expression['command']}}"></td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <td style="display:none; "class="table--cell pv_def">{{record['PV_DEF']}}</td>
+                                                        <!--<td name="{{record['PV_CONTENT']}}" value="{{record['PV_CONTENT']}}" class="table&#45;&#45;cell">{{record['PV_CONTENT']}}</td>-->
+
+                                                        <!--Give the button a class so that we can call it via javascript, attach ID attribute-->
+                                                        <td name="button"class="table--cell"><button class="pv-edit-button" id={{record['PV_NAME']}} pvid={{record['PROCESS_VARIABLE_ID']}}>Edit</button></td>
                                                     </tr>
                                                     {% endfor %}
                                                     </tbody>
@@ -116,15 +118,12 @@
                                                     </div>
                                                 {% endif%}
                                         </table>
-                                        </div>
-
-
                                     </div>
 
                                     <div class="wrapper">
                                         <div class="group">
-                                            <div class="col-6 table-pagination-extra-padding">
-                                                <span>
+                                            <div class="col-6 table-pagination-extra-padding" >
+                                                <span id="w_p">
                                                     1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
                                                     <a href="#">2</a>&nbsp;
                                                     <a href="#">3</a>&nbsp;
@@ -145,10 +144,12 @@
 
                                 <div class="top_50_extra_space">
                                     <button class="btn btn--primary" type="submit">Save and continue</button>
-                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn--primary" id="savec">Save and Apply</button>
+
                                     <a class="btn btn--secondary btn--border" href="/new_run/new_run_3">Back</a>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label><a href="/dashboard">Cancel</a></label>
+                                </div>
                                 </div>
 
                             </form>
@@ -157,6 +158,30 @@
                     </div>
 
                 </section>
+
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                  <!-- Modal content -->
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Edit a process variable</h2>
+                      <!--Three inputs with different ID's-->
+                      <label>Name:</label>
+                      <input type="text" class="modal-input" id="id_input" disabled="true" placeholder="">
+                      <br>
+                      <label>Content:</label>
+                      <textarea data-maxlength="50000" class="modal-input" disabled="true" id="content_input"></textarea>
+                      <br>
+                      <label>Builder:</label>
+                      <br>
+                      <div id="builder"></div>
+                      <br><br>
+                      <button type="button" class="btn btn--primary" id="modal_okay_button">Ok</button>
+
+                  </div>
+
+                </div>
 
                 <section>
                     <div class="buttom_70_extra_space buttom_70_extra_space">
@@ -168,7 +193,6 @@
                 </section>
 
             {% endblock %}
-
         </section>
 
         <!--Generic footer is imported from the parent template.-->
