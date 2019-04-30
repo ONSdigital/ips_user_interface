@@ -299,8 +299,10 @@ def edit_process_variables(run_id, json_dictionary):
     create_process_variables(run_id, json_dictionary)
 
 
-def import_data(table_name, run_id, data):
-    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}", files={'ips-file': data})
+def import_data(table_name, run_id, file, month=None, year=None):
+    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}"
+                  , files={'ips-file': file}
+                  , data={'month': month, 'year': year})
 
 
 #George left this here as we may well use it at some point.
@@ -365,7 +367,7 @@ def survey_data_import(import_data_file, month, year):
         # if the serial column is invalid
         serial_error = True
 
-    return serial_error, date_error # , column_error
+    return serial_error, date_error
 
 
 def get_run_step_requests(run_id, step_number=None):

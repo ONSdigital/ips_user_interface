@@ -148,7 +148,7 @@ def new_run_5(run_id=None):
 
         # Import Survey Data
         survey_data = request.files['survey_file']
-        app_methods.import_data('survey', session['id'], survey_data)
+        app_methods.import_data('survey', session['id'], survey_data, start_date, end_date)
 
         # Import shift data
         shift_data = request.files['shift_file']
