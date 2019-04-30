@@ -4,6 +4,7 @@ import getpass
 import pwd
 from flask import request, render_template, Blueprint, session, redirect, current_app
 from flask_login import login_required
+from werkzeug.utils import secure_filename
 from ips.persistence import app_methods
 from .forms import CreateRunForm, DateSelectionForm, LoadDataForm
 
@@ -170,9 +171,11 @@ def new_run_5(run_id=None):
 
         current_app.logger.info("Importing data...")
 
-        # Import survey data
-        survey_data = form.survey_file.data
-        survey_error = app_methods.survey_data_import('survey', session['id'], survey_data, start_date, end_date)
+        survey_data = request.files['survey_file']
+
+        # survey_data = form.survey_file.data
+        survey_error = False
+        app_methods.import_data('survey', session['id'], survey_data)
 
         serial_error = survey_error[0]
         date_error = survey_error[1]

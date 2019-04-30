@@ -299,29 +299,17 @@ def edit_process_variables(run_id, json_dictionary):
     create_process_variables(run_id, json_dictionary)
 
 
-def get_all_run_ids():
-    response = requests.get(API_TARGET + r'/pv_sets')
-    dictionary_of_pv_sets = json.loads(response.content)
+def import_data(table_name, run_id, survey_data):
 
-    list_of_run_ids = []
-
-    for record in dictionary_of_pv_sets:
-        list_of_run_ids.append(record['RUN_ID'])
-
-    return list_of_run_ids
-
-
-def import_data(table_name, run_id, json_data):
-    url = API_TARGET + r'/import/' + table_name + r'/' + run_id
-    api = Flask(__name__)
-
-    @api.route('/upload', methods=['POST', 'GET'])
-    def upload():
-        if request.method == 'POST':
-            file = request.files['file']
-            upload_path = os.path.join(url, secure_filename(file.filename))
-            file.save(upload_path)
-            return redirect(url_for('/'))
+    # from tempfile import mkdtemp
+    # tempdir = mkdtemp()
+    # filename = survey_data.filename
+    # filepath = os.path.join(tempdir, filename)
+    # survey_data.save(filepath)
+    #
+    # with open(filepath, 'rb') as f:
+    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
+                  files={'survey_file': survey_data})
 
 
 #George left this here as we may well use it at some point.
@@ -389,6 +377,14 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
     #     column_error = True
 
     import_json = list(import_csv)
+
+    # # File storage object - has no data
+    # import_data(table_name, import_run_id, import_data_file)
+
+    # # CSV Reader object...
+    # import_data(table_name, import_run_id, import_csv)
+
+    # Json list
     import_data(table_name, import_run_id, import_json)
 
     return serial_error, date_error # , column_error
@@ -427,3 +423,16 @@ def get_run_step_requests(run_id, step_number=None):
 def start_run(run_id, steps_to_run):
     steps_json = json.dumps(steps_to_run)
     requests.post(API_TARGET + r'/manage_run/start_run/' + str(run_id), json=steps_json)
+
+
+
+def get_all_run_ids():
+    response = requests.get(API_TARGET + r'/pv_sets')
+    dictionary_of_pv_sets = json.loads(response.content)
+
+    list_of_run_ids = []
+
+    for record in dictionary_of_pv_sets:
+        list_of_run_ids.append(record['RUN_ID'])
+
+    return list_of_run_ids
