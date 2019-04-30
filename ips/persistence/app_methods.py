@@ -299,17 +299,9 @@ def edit_process_variables(run_id, json_dictionary):
     create_process_variables(run_id, json_dictionary)
 
 
-def import_data(table_name, run_id, survey_data):
-
-    # from tempfile import mkdtemp
-    # tempdir = mkdtemp()
-    # filename = survey_data.filename
-    # filepath = os.path.join(tempdir, filename)
-    # survey_data.save(filepath)
-    #
-    # with open(filepath, 'rb') as f:
+def import_data(table_name, run_id, data):
     requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
-                  files={'survey_file': survey_data})
+                  files={'ips-file': data})
 
 
 #George left this here as we may well use it at some point.
@@ -346,7 +338,7 @@ def date_check(month, year, month_list, year_list):
     return date_error
 
 
-def survey_data_import(table_name, import_run_id, import_data_file, month, year):
+def survey_data_import(import_data_file, month, year):
     # Import  data
     stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
     import_csv = csv.DictReader(stream)
@@ -371,21 +363,6 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
     if import_csv.fieldnames[0] != "SERIAL":
         # if the serial column is invalid
         serial_error = True
-
-    # if len(import_csv.fieldnames) != 212:
-    #     # if there is an incorrect number of columns
-    #     column_error = True
-
-    import_json = list(import_csv)
-
-    # # File storage object - has no data
-    # import_data(table_name, import_run_id, import_data_file)
-
-    # # CSV Reader object...
-    # import_data(table_name, import_run_id, import_csv)
-
-    # Json list
-    import_data(table_name, import_run_id, import_json)
 
     return serial_error, date_error # , column_error
 
