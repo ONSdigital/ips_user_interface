@@ -144,112 +144,35 @@ def new_run_5(run_id=None):
 
     if form.validate_on_submit():
 
-        # Functionality has been written. Stubbed for now as we are unsure yet as to the location and method
-        # of storing the csv's in a file system. Until we can access DAP and know where to store, this will remain.
-        # The below code shows the method for retrieving the filename and data from the uploaded files.
-
-        # Import survey data
-        # survey_data = form.survey_file.data
-        # stream = io.StringIO(survey_data.stream.read().decode("UTF8"), newline=None)
-        # survey_csv = csv.DictReader(stream)
-        # survey_csv.fieldnames = [name.upper() for name in survey_csv.fieldnames]
-        # survey_json = list(survey_csv)
-        # print(survey_json)
-        # app_methods.import_data('SHIFT_DATA', session['id'], survey_json)
-
-        # TODO: Duplicates causing issues with imports (Returning 500)... need to look into dealing with this. @TM
-
-        # External
-        current_app.logger.debug("Clearing down table records...")
-        # Clear down table records associated with the current run id
-        # app_methods.delete_data('SHIFT_DATA', session['id'])
-        # app_methods.delete_data('NON_RESPONSE_DATA', session['id'])
-        # app_methods.delete_data('UNSAMPLED_OOH_DATA', session['id'])
-        # app_methods.delete_data('TRAFFIC_DATA', session['id'])
-
-        current_app.logger.debug("Finished clearing down table records.")
-
         current_app.logger.info("Importing data...")
 
         # Import Survey Data
         survey_data = request.files['survey_file']
         app_methods.import_data('survey', session['id'], survey_data)
 
-        # TODO: Move and refactor validation to ips_services
-        # survey_error = app_methods.survey_data_import(form.survey_file.data, start_date, end_date)
-        # serial_error = survey_error[0]
-        # date_error = survey_error[1]
-        # column_error = survey_error[2]
-
-        # ORIGINAL Import shift data
-        # shift_data = form.shift_file.data
-        # app_methods.external_survey_data_import('shift', session['id'], shift_data)
-
         # Import shift data
         shift_data = request.files['shift_file']
         app_methods.import_data('shift', session['id'], shift_data)
-
-        # # ORIGIANL Import non_response data
-        # non_response_data = form.non_response_file.data
-        # app_methods.external_survey_data_import('nonresponse', session['id'], non_response_data)
 
         # Import non_response data
         non_response_data = request.files['non_response_file']
         app_methods.import_data('nonresponse', session['id'], non_response_data)
 
-        # # ORIGIANL Import unsampled data
-        # unsampled_data = form.unsampled_file.data
-        # app_methods.external_survey_data_import('unsampled', session['id'], unsampled_data)
-
         # Import unsampled data
         unsampled_data = request.files['unsampled_file']
         app_methods.import_data('unsampled', session['id'], unsampled_data)
-
-        # # ORIGINAL Import tunnel data
-        # tunnel_data = form.tunnel_file.data
-        # app_methods.external_survey_data_import('tunnel', session['id'], tunnel_data)
 
         # Import tunnel data
         tunnel_data = request.files['tunnel_file']
         app_methods.import_data('tunnel', session['id'], tunnel_data)
 
-        # # ORIGIANL Import sea data
-        # sea_data = form.sea_file.data
-        # app_methods.external_survey_data_import('sea', session['id'], sea_data)
-
         # Import sea data
         sea_data = request.files['sea_file']
         app_methods.import_data('sea', session['id'], sea_data)
 
-        # # ORIGINAL Import air data
-        # air_data = form.air_file.data
-        # app_methods.external_survey_data_import('air', session['id'], air_data)
-
         # Import air data
         air_data = request.files['air_file']
         app_methods.import_data('air', session['id'], air_data)
-
-        # TODO: Remove and refactor validation
-        # if serial_error is False and date_error is False: #and column_error is False
-        #     if run_id:
-        #         current_app.logger.debug("Run_id given...")
-        #         return redirect('/manage_run/' + run_id)
-        #     else:
-        #         current_app.logger.debug("No run_id given...")
-        #         return redirect('/new_run/new_run_5', code=302)
-        # else:
-        #     if serial_error:
-        #         current_app.logger.warning('Survey Data - Serial column does not exist or is invalid.')
-        #         print("Serial column does not exist or is invalid")
-        #     elif date_error:
-        #         current_app.logger.warning('Survey Data - Dating error - Start date in '
-        #                                    'input does not match start dates in file.')
-        #         column_error = False
-        #         print("Start dates in survey data should reflect start dates in the uploaded file.")
-        #     # elif column_error:
-        #     #     current_app.logger.warning('Survey Data - Incorrect number of columns.')
-        #     #     serial_error = False
-        #     #     print("Survey Data file should contain 212 columns.")
 
         if run_id:
             current_app.logger.debug("Run_id given...")

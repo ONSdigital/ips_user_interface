@@ -300,8 +300,7 @@ def edit_process_variables(run_id, json_dictionary):
 
 
 def import_data(table_name, run_id, data):
-    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
-                  files={'ips-file': data})
+    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}", files={'ips-file': data})
 
 
 #George left this here as we may well use it at some point.
@@ -316,6 +315,7 @@ def delete_data(table_name, run_id=None):
     print(rv)
 
 
+# TODO: El needs this to refactor and move validation to ips_services and can then be removed
 def date_check(month, year, month_list, year_list):
     date_error = False
     month = [month]
@@ -338,6 +338,7 @@ def date_check(month, year, month_list, year_list):
     return date_error
 
 
+# TODO: El needs this to refactor and move validation to ips_services and can then be removed
 def survey_data_import(import_data_file, month, year):
     # Import  data
     stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
@@ -365,19 +366,6 @@ def survey_data_import(import_data_file, month, year):
         serial_error = True
 
     return serial_error, date_error # , column_error
-
-
-def external_survey_data_import(table_name, import_run_id, import_data_file):
-    # Import  data
-    stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
-    import_csv = csv.DictReader(stream)
-    import_csv.fieldnames = [name.upper() for name in import_csv.fieldnames]
-
-    print("Field Names:")
-    print(import_csv.fieldnames)
-
-    import_json = list(import_csv)
-    import_data(table_name, import_run_id, import_json)
 
 
 def get_run_step_requests(run_id, step_number=None):
