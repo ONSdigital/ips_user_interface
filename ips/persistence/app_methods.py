@@ -299,34 +299,10 @@ def edit_process_variables(run_id, json_dictionary):
     create_process_variables(run_id, json_dictionary)
 
 
-def get_all_run_ids():
-    response = requests.get(API_TARGET + r'/pv_sets')
-    dictionary_of_pv_sets = json.loads(response.content)
-
-    list_of_run_ids = []
-
-    for record in dictionary_of_pv_sets:
-        list_of_run_ids.append(record['RUN_ID'])
-
-    return list_of_run_ids
-
-
-def import_data(table_name, run_id, json_data):
-    url = API_TARGET + r'/import/' + table_name + r'/' + run_id
-    # files = {'files': open('file.txt', 'rb')}
-    # values = {'upload_file': 'file.txt', 'DB': 'photcat', 'OUT': 'csv', 'SHORT': 'short'}
-    # r = requests.post(url, files=files, data=values)
-    # requests.post(API_TARGET + r'/import/' + table_name + r'/' + run_id, json=json_data)
-    # url = API_TARGET + r'/import/' + table_name + r'/' + run_id
-    # api = Flask(__name__)
-    #
-    # @api.route('/upload', methods=['POST', 'GET'])
-    # def upload():
-    #     if request.method == 'POST':
-    #         file = request.files['file']
-    #         upload_path = os.path.join(url, secure_filename(file.filename))
-    #         file.save(upload_path)
-    #         return redirect(url_for('/'))
+def import_data(table_name, run_id, file, month=None, year=None):
+    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}"
+                  , files={'ips-file': file}
+                  , data={'month': month, 'year': year})
 
 
 #George left this here as we may well use it at some point.
@@ -341,6 +317,7 @@ def delete_data(table_name, run_id=None):
     print(rv)
 
 
+# TODO: El needs this to refactor and move validation to ips_services and can then be removed
 def date_check(month, year, month_list, year_list):
     date_error = False
     month = [month]
@@ -363,7 +340,8 @@ def date_check(month, year, month_list, year_list):
     return date_error
 
 
-def survey_data_import(table_name, import_run_id, import_data_file, month, year):
+# TODO: El needs this to refactor and move validation to ips_services and can then be removed
+def survey_data_import(import_data_file, month, year):
     # Import  data
     stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
     import_csv = csv.DictReader(stream)
@@ -389,28 +367,7 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
         # if the serial column is invalid
         serial_error = True
 
-    # if len(import_csv.fieldnames) != 212:
-    #     # if there is an incorrect number of columns
-    #     column_error = True
-
-    import_json = list(import_csv)
-    print(import_json)
-    import_data(table_name, import_run_id, import_json)
-
-    return serial_error, date_error # , column_error
-
-
-def external_survey_data_import(table_name, import_run_id, import_data_file):
-    # Import  data
-    stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
-    import_csv = csv.DictReader(stream)
-    import_csv.fieldnames = [name.upper() for name in import_csv.fieldnames]
-
-    print("Field Names:")
-    print(import_csv.fieldnames)
-
-    import_json = list(import_csv)
-    import_data(table_name, import_run_id, import_json)
+    return serial_error, date_error
 
 
 def get_run_step_requests(run_id, step_number=None):
@@ -429,7 +386,20 @@ def get_run_step_requests(run_id, step_number=None):
     return values
 
 
-# Steps to run comes through as a string list containing the sßtep numbers to run
-def start_run(run_id):
-    print(API_TARGET+'/ips-service/start/' + str(run_id))
-    requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
+# Steps to run comes through as a string list containing the step numbers to run
+def start_run(run_id, steps_to_run):
+    steps_json = json.dumps(steps_to_run)
+    requests.post(API_TARGET + r'/manage_run/start_run/' + str(run_id), json=steps_json)
+
+
+
+def get_all_run_ids():
+    response = requests.get(API_TARGET + r'/pv_sets')
+    dictionary_of_pv_sets = json.loads(response.content)
+
+    list_of_run_ids = []
+
+    for record in dictionary_of_pv_sets:
+        list_of_run_ids.append(record['RUN_ID'])
+
+    return list_of_run_ids
