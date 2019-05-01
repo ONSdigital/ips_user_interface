@@ -387,9 +387,8 @@ def get_run_step_requests(run_id, step_number=None):
 
 
 # Steps to run comes through as a string list containing the step numbers to run
-def start_run(run_id, steps_to_run):
-    steps_json = json.dumps(steps_to_run)
-    requests.post(API_TARGET + r'/manage_run/start_run/' + str(run_id), json=steps_json)
+def start_run(run_id):
+    requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
 
 
 
