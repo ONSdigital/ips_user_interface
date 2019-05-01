@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+    <head>
+        <!--Styles are imported from the parent template.-->
+        {% block styles %}
+            {{ super() }}
+
+	        <script type="text/javascript" src="../../../../../static/js/edit-run.js"></script>
+        {% endblock %}
+    </head>
+
+    <body>
+
+		<!--Header content is imported from the parent template.-->
+        <header class="page__header">
+            <!--Header content is imported from the parent template.-->
+            {% block header %}
+                {{ super() }}
+
+				<div class="header__nav">
+					<div class="container">
+						<nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu" id="main-nav">
+							<ul class="nav__list" aria-label="Navigation menu" role="menubar">
+								<li class="nav__item " role="menuitem" aria-current="page">
+									<a href="/dashboard" class="nav__link">Dashboard</a>
+								</li>
+								<li class="nav__item " role="menuitem">
+									<a href="/new_run/new_run_1" class="nav__link">New Run</a>
+								</li>
+								<li class="nav__item " role="menuitem">
+									<a href="/system_info" class="nav__link">System Info</a>
+								</li>
+								<li class="nav__item nav__item--active" role="menuitem">
+									<a href="#" class="nav__link">Other</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+            {% endblock %}
+        </header>
+
+        <section id="content">
+            {% block content %}
+                <!--Export data page content-->
+                <section>
+                    <div class="wrapper">
+                        <div class="col-8">
+                            <div class="group top_40_extra_space">
+                                <div>
+                                    {% if data == "0"%}
+                                        <div class="collator-item">
+                                            <div class="panel panel--error">
+                                                <div class="panel__header">
+                                                    <div class="venus">Error</div>
+                                                </div>
+                                                <div class="panel__body">
+                                                    <p class="mars">There is no data to export.  Please select a different export.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+
+
+                            <div class="group top_40_extra_space">
+                                <div>
+                                    <h2 class="saturn">Export Data for <i>'{{current_run['RUN_NAME']}}'</i></h2>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </section>
+
+                <section>
+
+                    <div class="wrapper">
+                        <div class="col-8 top_40_extra_space">
+
+                            <form id="run" action="/export_data/{{current_run['RUN_ID']}}" class="form" method="post">
+
+                                <div class="field">
+                                    {{ form.csrf_token }}
+                                    {{ form.data_selection.label(class="label venus ", for="text-input")}}
+                                    {{ form.data_selection(class="input input--select", type="submit")}}
+
+                                    {% if form.data_selection.errors %}
+                                    <ul>
+                                        {% for error_message in form.data_selection.errors %}
+                                        <li>{{ error_message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="field">
+                                    {{ form.csrf_token }}
+                                    {{ form.filename.label(class="label venus ", for="text-input") }}
+                                    {{ form.filename(class="input input--text", type="text", id="text-input") }}
+
+                                    {% if form.filename.errors %}
+                                    <ul>
+                                        {% for error_message in form.filename.errors %}
+                                        <li>{{ error_message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+
+                                <div class="top_50_extra_space">
+                                    {{ form.csrf_token }}
+                                    {{ form.display_data(class="btn btn--primary", type="submit") }}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{ form.cancel_button(class="btn btn--secondary", type="submit") }}
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <section>
+                    <div class="buttom_40_extra_space buttom_40_extra_space">
+                        <table></table>
+                    </div>
+                    <div class="buttom_40_extra_space buttom_40_extra_space">
+                        <table></table>
+                    </div>
+                </section>
+
+            {% endblock %}
+        </section>
+
+        <!--Generic footer is imported from the parent template.-->
+        <footer class="page__footer">
+            {% block footer %}
+                {{ super() }}
+            {% endblock %}
+        </footer>
+
+    </body>
+</html>

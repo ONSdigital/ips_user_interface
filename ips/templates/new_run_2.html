@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<body>
+
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+
+        <div class="header__nav">
+            <div class="container">
+                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
+                     id="main-nav">
+                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
+                        <li class="nav__item " role="menuitem" aria-current="page">
+                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                        </li>
+                        <li class="nav__item nav__item--active" role="menuitem">
+                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                        </li>
+                        <li class="nav__item " role="menuitem">
+                            <a href="/system_info" class="nav__link">System Info</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 2 page content-->
+        <section>
+
+            <div class="wrapper">
+                <div class="col-8">
+                    <div class="top_50_extra_space">
+                        <div class="panel panel--simple panel--info">
+                            <div class="panel__body">
+                                {% if run_id %}
+                                    <p class="mars">You are editing run: {{ run_id }} </p>
+                                {% else %}
+                                    <p class="mars">You are creating a new IPS run. </p>
+                                {% endif %}
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% if form.s_month.errors or form.s_year.errors %}
+                        <div class="collator-item">
+                            <h2 class="collator-title"></h2>
+                            <div class="panel panel--error">
+                                <div class="panel__header">
+                                    <div class="venus">Error</div>
+                                </div>
+                                <div class="panel__body">
+                                    <p class="mars">Please enter valid fieldwork start and end dates.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="group top_40_extra_space">
+                        <div>
+                            <h2 class="pluto grey_text ">Step 2 of 5 </h2>
+                        </div>
+                        <div>
+                            <h2 class="saturn">Select fieldwork </h2>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+
+            <div class="wrapper">
+                <div class="col-8 top_40_extra_space">
+                    {% if run_id %}
+                        <form id="run" action="/new_run/new_run_2/{{ run_id }}" class="form" method="post">
+                    {% else %}
+                        <form id="run" action="/new_run/new_run_2" class="form" method="post">
+                    {% endif %}
+
+                    <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
+                        <legend class="fieldgroup__title venus">Start date</legend>
+                        {#                        <div class="fieldgroup__fields">#}
+
+                        <div class="field field--select field--month">
+                            {{ form.csrf_token }}
+                            {{ form.s_month.label(class="label mercury", for="input-date-range-from-month") }}
+                            {{ form.s_month(class="input input--select", value = last_entry['s_month']) }}
+                            {% if form.s_month.errors %}
+                                <ul>
+                                    {% for error_message in form.s_month.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <br>
+                        <div class="field field--input field--month">
+
+                            {{ form.csrf_token }}
+                            {{ form.s_year.label(class="label mercury", for="input-date-range-from-year") }}
+                            {{ form.s_year(class="input input--select", value = last_entry['s_year']) }}
+                            {% if form.s_year.errors %}
+                                <ul>
+                                    {% for error_message in form.s_year.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        {#                        </div>#}
+
+                    </fieldset>
+
+
+                    <div class="top_60_extra_space">
+                        <button class="btn btn--primary" type="submit" name="submit" value="create_run">Save and
+                            continue
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <a class="btn btn--secondary btn--border" href="/new_run/new_run_1">Back</a>
+                        {% if run_id %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label><a href="/manage_run/{{ run_id }}">Cancel</a></label>
+                        {% else %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/dashboard">Cancel</a></label>
+                        {% endif %}
+                    </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+        </section>
+
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+    {% endblock %}
+</footer>
+
+</body>
+</html>

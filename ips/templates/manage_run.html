@@ -1,0 +1,303 @@
+{% extends "layout.html" %}
+
+<html lang="en-gb" dir="ltr" class="no-js">
+    <head>
+        <!--Styles are imported from the parent template.-->
+        {% block styles %}
+            {{ super() }}
+        {% endblock %}
+    </head>
+
+    <body>
+
+		<!--Header content is imported from the parent template.-->
+        <header class="page__header">
+            <!--Header content is imported from the parent template.-->
+            {% block header %}
+                {{ super() }}
+
+				<div class="header__nav">
+					<div class="container">
+						<nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu" id="main-nav">
+							<ul class="nav__list" aria-label="Navigation menu" role="menubar">
+								<li class="nav__item" role="menuitem" aria-current="page">
+									<a href="/dashboard" class="nav__link">Dashboard</a>
+								</li>
+								<li class="nav__item " role="menuitem">
+									<a href="/new_run/new_run_1" class="nav__link">New Run</a>
+								</li>
+								<li class="nav__item " role="menuitem">
+									<a href="/system_info" class="nav__link">System Info</a>
+								</li>
+								<li class="nav__item nav__item--active" role="menuitem">
+									<a href="#" class="nav__link">Run Details</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+            {% endblock %}
+        </header>
+
+        <section id="content">
+            {% block content %}
+                <!--Manage run page content-->
+                <section>
+
+                    <div>
+                        <div class="wrapper">
+                            <div class="group top_50_extra_space">
+                                <div class="col-8">
+                                    <h2 class="jupiter sml-margin">{{current_run['RUN_NAME']}} </h2>
+                                    <h3 class="venus sml-margin buttom_10_extra_space">({{current_run['RUN_ID']}}) &nbsp;</h3>
+                                    <div>
+                                        <spam><strong>Description: </strong>&nbsp; {{current_run['RUN_DESC']}}</spam>
+                                        <br>
+                                        <spam><strong>Fieldwork period: </strong>&nbsp; {{current_run['PERIOD']}} {{current_run['YEAR']}}</spam>
+                                        <br>
+                                        <spam><strong>User: </strong>&nbsp;{{current_run['USER_ID']}}</spam>
+                                        <br>
+                                        <spam><strong>Execution date & time: </strong>&nbsp; {{current_run['LAST_MODIFIED']}}</spam>
+                                        <br>
+                                        <spam><strong>Run Status: </strong>&nbsp;</spam>
+                                        {% if current_run['RUN_STATUS'] == 'Ready' %}
+                                            <em class="status status--info ">{{current_run['RUN_STATUS']}}</em>
+                                        {% elif current_run['RUN_STATUS'] == 'In Progress' %}
+                                            <meta http-equiv="refresh" content="10">
+                                            <em class="status status--info ">{{current_run['RUN_STATUS']}}</em>
+                                        {% elif current_run['RUN_STATUS'] == 'Completed' %}
+                                            <em class="status status--success ">{{current_run['RUN_STATUS']}}</em>
+                                        {% elif current_run['RUN_STATUS'] == 'Failed' %}
+                                            <em class="status status--error ">{{current_run['RUN_STATUS']}}</em>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section>
+
+                    <form id="tabs" class="form", method="POST">
+                        <div class="wrapper">
+                            <div class="group">
+                                {{ form.csrf_token }}
+                                <div class="col-7 top_40_extra_space">
+                                    <ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
+                                        <li class="nav-tabs__tab--active"><a class="tab-label" href="/manage_run/{{current_run['RUN_ID']}}">Manage Run</a></li>
+                                        <li class="nav-tabs__tab"><a class="tab-label" href="/reference_export/{{current_run['RUN_ID']}}">Export </a></li>
+                                    </ul>
+                                    <script>
+                                        $(function() {
+                                            $('input[name=step_checkbox]').click(function(){
+                                                if(allPassed()){
+                                                    return true;
+                                                }
+                                                val = parseInt($(this).val());
+                                                if(!$(this).prop("checked")){
+                                                    uncheckAfter(val);
+                                                }else{
+                                                    checkBefore(val);
+                                                }
+                                            });
+                                        });
+                                        function failedBefore(val){
+                                            if($('input[name=step_checkbox][value='+val+']').attr("status") == "Failed"){
+                                                $('input[name=step_checkbox][value='+val+']').prop("checked",true);
+                                                failedBefore(val-1);
+                                            }
+                                        }
+
+                                        function allPassed(){
+                                            r = true;
+                                            $('input[name=step_checkbox]').each(function(){
+                                                v = $(this).val();
+                                                if($('em[step='+v+']').attr("status") != "Success"){
+                                                    r = false;
+                                                }
+                                            });
+                                            return r;
+                                        }
+
+                                        function uncheckAfter(val){
+                                            $('input[name=step_checkbox]').each(function(){
+                                                if(parseInt($(this).val()) > val){
+                                                     $(this).prop("checked",false);
+                                                }
+                                            });
+                                        }
+
+                                        function checkBefore(val){
+                                            $('input[name=step_checkbox]').each(function(){
+                                                if(parseInt($(this).val()) < val){
+                                                     $(this).prop("checked",true);
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <table class="table table__dense" id="run_table">
+                                        <thead class="table--head">
+                                            {% if current_run['RUN_STATUS'] == 'Ready' or current_run['RUN_STATUS'] == 'In Progress'%}
+                                                <th width="5%" class="table--header--cell">&nbsp;&nbsp;&nbsp; <input type="checkbox" checked disabled onClick="toggle(this)" />&nbsp;&nbsp;</th>
+                                            {% else %}
+                                                <th width="5%" class="table--header--cell">&nbsp;&nbsp;&nbsp; <input type="checkbox" checked onClick="toggle(this)" />&nbsp;&nbsp;</th>
+                                            {% endif %}
+                                            <th width="75%" class="table--header--cell">&nbsp;&nbsp; Steps</th>
+                                            <th width="20%" class="table--header--cell">Status</th>
+                                        </thead>
+                                        <tbody>
+                                            {% for step in run_status %}
+                                                <tr class="table--row">
+                                                    <td width="5%" class="table--cell field__item2">
+                                                        {% if current_run['RUN_STATUS'] == 'In Progress'%}
+                                                            <input name="step_checkbox" disabled type="checkbox" checked value="{{step['STEP_NUMBER']}}">&nbsp;&nbsp;
+                                                        {% elif current_run['RUN_STATUS'] == 'Ready'%}
+                                                            <input name="step_checkbox" type="checkbox" checked value="{{step['STEP_NUMBER']}}">&nbsp;&nbsp;
+                                                        {% else %}
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;<input name="step_checkbox" type="checkbox" checked value="{{step['STEP_NUMBER']}}">
+                                                        {% endif %}
+                                                    </td>
+                                                    <td width="75%" class="table--cell">&nbsp; {{step['STEP_NUMBER']}}. {{ step['STEP_NAME'] }}</td>
+
+                                                    <td width="20%" class="table--cell">
+                                                        <!--If the step has an associated report render the status with a button-->
+                                                        {% if step['STEP_NUMBER'] in (report_index) and step['STEP_STATUS'] in ('Success', 'Failed') %}
+                                                            <button type="button" data-toggle="modal" data-target="#myModal{{step['STEP_NUMBER']}}">
+                                                                {% if step['STEP_STATUS'] == 'Ready' %}
+                                                                    <em step="{{step['STEP_NUMBER']}}" status="Ready" class="status status--info status--small">{{ step['STEP_STATUS'] }}</em>
+                                                                {% elif step['STEP_STATUS'] == 'Success' %}
+                                                                    <em step="{{step['STEP_NUMBER']}}" status="Success" class="status status--warning status--small">{{ step['STEP_STATUS'] }}</em>
+                                                                {% elif step['STEP_STATUS'] == 'Failed' %}
+                                                                    <em step="{{step['STEP_NUMBER']}}" status="Failed" class="status status--error status--small">{{ step['STEP_STATUS'] }}</em>
+                                                                {% endif %}
+                                                            </button>
+                                                        <!--If there is no report just show the status label with on button-->
+                                                        {% else %}
+                                                            {% if step['STEP_STATUS'] == 'Ready' %}
+                                                                <em step="{{step['STEP_NUMBER']}}" status="Ready" class="status status--info status--small">{{ step['STEP_STATUS'] }}</em>
+                                                            {% elif step['STEP_STATUS'] == 'Success' %}
+                                                                <em step="{{step['STEP_NUMBER']}}" status="Success" class="status status--success status--small">{{ step['STEP_STATUS'] }}</em>
+                                                            {% elif step['STEP_STATUS'] == 'Failed' %}
+                                                                <em step="{{step['STEP_NUMBER']}}" status="Failed" class="status status--error status--small">{{ step['STEP_STATUS'] }}</em>
+                                                            {% elif step['STEP_STATUS'] == 'Running' %}
+                                                                <em step="{{step['STEP_NUMBER']}}" status="Running" class="status status--info status--small">{{ step['STEP_STATUS'] }}</em>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                            <div class="group">
+
+                                <div class="grid__col">
+
+                                        <div class="top_50_extra_space">
+                                            {{ form.csrf_token }}
+                                            {% if current_run['RUN_STATUS'] == 'In Progress'%}
+                                                <button class="btn btn--loader is-loading" disabled>Run</button>
+                                            {% else %}
+                                                {{ form.run_button(class="btn btn--primary", type="submit") }}
+                                            {% endif %}
+                                            {% if current_run['RUN_STATUS'] == 'Completed'%}
+                                                &nbsp;&nbsp;&nbsp;
+                                                {{ form.display_button(class="btn btn--primary", type="submit") }}
+                                            {% endif %}
+                                            &nbsp;&nbsp;&nbsp;
+                                            {{ form.edit_button(class="btn btn--secondary btn--border", type="submit") }}
+
+                                        </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+
+
+
+                </section>
+
+                {% for step in run_status %}
+                    <!-- The Modal Object defined by the step number-->
+                    <div id="myModal{{step['STEP_NUMBER']}}" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close" data-dismiss="modal">&times;</span>
+
+                            <u><label>Run Status Report</label></u>
+                            <br><br>
+                            <label>Step:</label>
+                            <input type="text" class="modal-input" id="id_input" VALUE="{{step['STEP_NAME']}}" readonly="readonly">
+                            <br>
+                            <label>Run Status:</label>
+                            <input type="text" class="modal-input" id="reason_input" value="{{step['STEP_STATUS']}}" readonly="readonly">
+                            <br>
+                            <label>Report History:</label>
+                            <br>
+                            <br>
+                            {% if step['STEP_NUMBER'] in (report_index) %}
+                                {% for rec in reports %}
+                                    {% if rec['STEP_NUMBER']|int == step['STEP_NUMBER']|int %}
+                                        {% if rec['RESPONSE_CODE']|int == 1 %}
+                                            <label>Success</label>
+                                            <textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['MESSAGE']}}
+{{rec['OUTPUT']}}</textarea>
+                                        {% elif rec['RESPONSE_CODE']|int == 2 %}
+                                            <label>Warning</label>
+                                            <textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['MESSAGE']}}
+{{rec['OUTPUT']}}</textarea>
+                                        {% elif rec['RESPONSE_CODE']|int == 3 %}
+                                            <label>Error</label>
+                                            <textarea data-maxlength="50000" class="modal-input" id="content_input" readonly="readonly">{{rec['MESSAGE']}}
+{{rec['OUTPUT']}}</textarea>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                            <br><br>
+                            <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+                <section>
+                    <div class="buttom_70_extra_space buttom_70_extra_space">
+                        <table></table>
+                    </div>
+                    <div class="buttom_70_extra_space buttom_70_extra_space">
+                        <table></table>
+                    </div>
+                </section>
+            {% endblock %}
+        </section>
+
+        <!--Generic footer is imported from the parent template.-->
+        <footer class="page__footer">
+            {% block footer %}
+                {{ super() }}
+
+                <script language="JavaScript">
+                function toggle(source) {
+                  checkboxes = document.getElementsByName('step_checkbox');
+                  for(var i=0, n=checkboxes.length;i<n;i++) {
+                    checkboxes[i].checked = source.checked;
+                  }
+                }
+                </script>
+            {% endblock %}
+        </footer>
+    </body>
+</html>

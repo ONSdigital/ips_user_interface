@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+    <title></title>
+</head>
+
+<body>
+
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    {% block header %}
+        {{ super() }}
+
+        <div class="header__nav">
+            <div class="container">
+                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
+                     id="main-nav">
+                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
+                        <li class="nav__item nav__item--active" role="menuitem" aria-current="page">
+                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                        </li>
+                        <li class="nav__item " role="menuitem">
+                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                        </li>
+                        <li class="nav__item " role="menuitem">
+                            <a href="/system_info" class="nav__link">System Info</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--Dashboard page content-->
+
+        <!--Search bar and filter-->
+        <section class="wrapper">
+            <div class="col-12 top_50_extra_space">
+                <div class="panel panel--search u-mb-l">
+                    <div class="group panel__body">
+                        <form id="form-search" action="/dashboard/" class="form" method="post">
+{#                            <div>#}
+{#                                <div class="col-12">#}
+{#                                    {{ form.csrf_token }}#}
+{#                                    {{ form.search_activity.label(class="saturn title_extra_space") }}#}
+{#                                    <br/>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="col-12">
+                                <div class="col-5">
+                                    {{ form.search_activity(class="input input--textarea js-charlimit-input",
+                                    cols="1",rows="1",id="text-input",maxlength="400", placeholder="Search...") }}
+                                </div>
+                                <div class="col-5">
+                                    {{ form.run_type_filter(class="input input--select", style="width:100%;", type="submit") }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form.search_button(class="btn ", style="width:100%; padding:10px;", type="submit") }}
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Run table-->
+        <section>
+            <div>
+                <div class="wrapper">
+                    <div class="group top_50_extra_space">
+                        <div class="col-8">
+                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <div class="wrapper">
+                    <div class="group">
+                        <div class="col-12">
+                            <table class="table table__dense">
+                                <thead class="table--head">
+                                {% for column in header %}
+                                    <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
+                                {% endfor %}
+                                </thead>
+                                <tbody>
+                                <!-- for each record, render each data value -->
+                                {% for record in records|reverse %}
+                                    <tr class="table--row">
+                                        <td width="30%" class="table--cell"><a
+                                                href="/manage_run/{{ record['RUN_ID'] }}">{{ record['RUN_ID'] }}</a>
+                                        </td>
+                                        <td width="10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
+                                        <td width="18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
+                                        <td width="7%" class="table--cell">{{ record['PERIOD'] }}</td>
+                                        <td width="5%" class="table--cell">{{ record['YEAR'] }}</td>
+                                        <td width="15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
+                                        <td width="5%" class="table--cell">{{ record['USER_ID'] }}</td>
+                                        {% if record['RUN_STATUS'] == 'Ready' %}
+                                            <td width="10%" class="table--cell"><em
+                                                    class="status status--info status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'In Progress' %}
+                                            <td width="10%" class="table--cell"><em
+                                                    class="status status--info status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'Completed' %}
+                                            <td width="10%" class="table--cell"><em
+                                                    class="status status--success status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'Failed' %}
+                                            <td width="10%" class="table--cell"><em
+                                                    class="status status--error status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttom_70_extra_space buttom_70_extra_space">
+                </div>
+            </div>
+
+        </section>
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+    {% endblock %}
+</footer>
+</body>
+</html>
