@@ -313,15 +313,20 @@ def get_all_run_ids():
 
 def import_data(table_name, run_id, json_data):
     url = API_TARGET + r'/import/' + table_name + r'/' + run_id
-    api = Flask(__name__)
-
-    @api.route('/upload', methods=['POST', 'GET'])
-    def upload():
-        if request.method == 'POST':
-            file = request.files['file']
-            upload_path = os.path.join(url, secure_filename(file.filename))
-            file.save(upload_path)
-            return redirect(url_for('/'))
+    # files = {'files': open('file.txt', 'rb')}
+    # values = {'upload_file': 'file.txt', 'DB': 'photcat', 'OUT': 'csv', 'SHORT': 'short'}
+    # r = requests.post(url, files=files, data=values)
+    # requests.post(API_TARGET + r'/import/' + table_name + r'/' + run_id, json=json_data)
+    # url = API_TARGET + r'/import/' + table_name + r'/' + run_id
+    # api = Flask(__name__)
+    #
+    # @api.route('/upload', methods=['POST', 'GET'])
+    # def upload():
+    #     if request.method == 'POST':
+    #         file = request.files['file']
+    #         upload_path = os.path.join(url, secure_filename(file.filename))
+    #         file.save(upload_path)
+    #         return redirect(url_for('/'))
 
 
 #George left this here as we may well use it at some point.
@@ -389,6 +394,7 @@ def survey_data_import(table_name, import_run_id, import_data_file, month, year)
     #     column_error = True
 
     import_json = list(import_csv)
+    print(import_json)
     import_data(table_name, import_run_id, import_json)
 
     return serial_error, date_error # , column_error
@@ -423,7 +429,7 @@ def get_run_step_requests(run_id, step_number=None):
     return values
 
 
-# Steps to run comes through as a string list containing the step numbers to run
-def start_run(run_id, steps_to_run):
-    steps_json = json.dumps(steps_to_run)
-    requests.post(API_TARGET + r'/manage_run/start_run/' + str(run_id), json=steps_json)
+# Steps to run comes through as a string list containing the sßtep numbers to run
+def start_run(run_id):
+    print(API_TARGET+'/ips-service/start/' + str(run_id))
+    requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
