@@ -80,7 +80,7 @@ def manage_run(run_id):
             # Get list of checked boxes from HTML to determine which steps to run
             step_boxes_checked = request.form.getlist("step_checkbox")
 
-            app_methods.start_run(run_id, step_boxes_checked)
+            app_methods.start_run(run_id)
 
             run_status = app_methods.get_run_steps(run['RUN_ID'])
 
