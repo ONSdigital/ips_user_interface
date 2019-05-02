@@ -101,19 +101,6 @@
 
                                 </div>
 
-                                <div class="field">
-                                    {{ form.csrf_token }}
-                                    {{ form.filename.label(class="label venus ", for="text-input") }}
-                                    {{ form.filename(class="input input--text", type="text", id="text-input") }}
-
-                                    {% if form.filename.errors %}
-                                    <ul>
-                                        {% for error_message in form.filename.errors %}
-                                        <li>{{ error_message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                </div>
 
                                 <div class="top_50_extra_space">
                                     {{ form.csrf_token }}

@@ -81,8 +81,6 @@ class ExportSelectionForm(FlaskForm):
         ("PS_IMBALANCE", "Imbalance Weight Summary")
     ]
 
-    # filename = StringField(label='Save file as',
-    #                        validators=[InputRequired(), Regexp(r'^[\w+-]+$'), NoneOf([" ", ".", ",", "'"])])
     data_selection = SelectField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
     display_data = SubmitField(label='Export')
     cancel_button = SubmitField(label='Cancel')
