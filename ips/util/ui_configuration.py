@@ -24,7 +24,7 @@ class UIConfiguration(Configuration):
     def get_api_uri(self):
         protocol = self.cfg['app']['api-server']['protocol'] or "http"
         host = self.cfg['app']['api-server']['host'] or "127.0.0.1"
-        port = self.cfg['app']['api-server']['port'] or "5000"
+        port = self.cfg['app']['api-server']['port']
         portSetting = ""
 
         if port is not None:
