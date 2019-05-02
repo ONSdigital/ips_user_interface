@@ -322,7 +322,7 @@ def new_run_4(run_id = None):
             current_app.logger.info("Existing run_id given, updating records...")
 
             # Edit existing process variables (for edit run)
-            app_methods.edit_process_variables(run_id, data_dictionary_array)
+            # app_methods.edit_process_variables(run_id, data_dictionary_array)
             current_app.logger.info("Records updated successfully.")
 
         return redirect('/new_run/new_run_5/'+run_id)

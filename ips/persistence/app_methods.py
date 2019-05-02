@@ -282,6 +282,7 @@ def create_export_data_download(run_id, sql_table):
         response = requests.get(API_TARGET + r'/export/' + run_id + r'/' + sql_table)
         # Convert to JSON
         table_data_json = json.loads(response.content)
+        return table_data_json['DOWNLOADABLE_DATA']
     except Exception as err:
         return False
 
