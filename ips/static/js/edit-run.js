@@ -61,9 +61,10 @@ $(document).ready(function(e){
                 pv_name = $(this).children().eq(0).text();
                 pv_desc = $(this).children().eq(1).text();
                 myJsonString = JSON.stringify(builds);
+                api = $("#api_target").val();
                 $.ajax({
                     type: "POST",
-                    url: 'http://127.0.0.1:5000/builder/' + $("#rid").text() + '/' + pvid,
+                    url: api+'/builder/' + $("#rid").text() + '/' + pvid,
                     contentType: 'application/x-www-form-urlencoded',
                     data: {json: myJsonString, pv: pv_code, pv_name: pv_name, pv_desc: pv_desc},
                     async:false

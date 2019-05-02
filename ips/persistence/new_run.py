@@ -7,8 +7,9 @@ from flask_login import login_required
 from werkzeug.utils import secure_filename
 from ips.persistence import app_methods
 from .forms import CreateRunForm, DateSelectionForm, LoadDataForm
+from ips.util.ui_configuration import UIConfiguration
 
-
+API_TARGET = UIConfiguration().get_api_uri()
 bp = Blueprint('new_run', __name__, url_prefix='/new_run', static_folder='static')
 
 
@@ -337,4 +338,4 @@ def new_run_4(run_id = None):
     builds = app_methods.get_process_variables_builds(template_id)
     variables = app_methods.get_process_variables_variables()
     return render_template('new_run_4.html', run_id=run_id, table=records, builds=builds,
-                           header=header, pv_variables=variables)
+                           header=header, pv_variables=variables, api_target=API_TARGET)
