@@ -300,9 +300,9 @@ def edit_process_variables(run_id, json_dictionary):
 
 
 def import_data(table_name, run_id, file, month=None, year=None):
-    requests.post(f"{API_TARGET}/import/{table_name}/{run_id}"
-                  , files={'ips-file': file}
-                  , data={'month': month, 'year': year})
+    return requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
+                         files={'ips-file': file},
+                         data={'month': month, 'year': year})
 
 
 #George left this here as we may well use it at some point.
