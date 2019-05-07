@@ -80,7 +80,7 @@ def manage_run(run_id):
             # Get list of checked boxes from HTML to determine which steps to run
             step_boxes_checked = request.form.getlist("step_checkbox")
 
-            app_methods.start_run(run_id, step_boxes_checked)
+            app_methods.start_run(run_id)
 
             run_status = app_methods.get_run_steps(run['RUN_ID'])
 
@@ -95,7 +95,7 @@ def manage_run(run_id):
         elif 'edit_button' in request.form:
             return redirect('/new_run/new_run_1/' + current_run['RUN_ID'], code=302)
         elif 'export_button' in request.form:
-            return redirect('/reference_export/' + current_run['RUN_ID'], code=302)
+            return redirect('/export_data/' + current_run['RUN_ID'], code=302)
         elif 'manage_run_button' in request.form:
             return redirect('/manage_run/' + current_run['RUN_ID'], code=302)
 
