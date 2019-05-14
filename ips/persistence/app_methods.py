@@ -403,3 +403,11 @@ def get_all_run_ids():
         list_of_run_ids.append(record['RUN_ID'])
 
     return list_of_run_ids
+
+def getErrorMessage(resp):
+    resp = json.loads(resp.content.decode('utf-8'))
+    resp = resp['description']
+    s = resp.find('(') + 1
+    resp = resp[s:-1]
+    error_message = resp.split(',')[2]
+    return error_message
