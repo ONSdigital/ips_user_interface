@@ -153,27 +153,27 @@ def new_run_5(run_id=None):
 
         # Import shift data
         shift_data = request.files['shift_file']
-        app_methods.import_data('shift', session['id'], shift_data)
+        shift_resp = app_methods.import_data('shift', session['id'], shift_data, start_date, end_date)
 
         # Import non_response data
         non_response_data = request.files['non_response_file']
-        app_methods.import_data('nonresponse', session['id'], non_response_data)
+        nr_resp = app_methods.import_data('nonresponse', session['id'], non_response_data, start_date, end_date)
 
         # Import unsampled data
         unsampled_data = request.files['unsampled_file']
-        app_methods.import_data('unsampled', session['id'], unsampled_data)
+        unsampled_resp = app_methods.import_data('unsampled', session['id'], unsampled_data, start_date, end_date)
 
         # Import tunnel data
         tunnel_data = request.files['tunnel_file']
-        app_methods.import_data('tunnel', session['id'], tunnel_data)
+        tunnel_resp = app_methods.import_data('tunnel', session['id'], tunnel_data, start_date, end_date)
 
         # Import sea data
         sea_data = request.files['sea_file']
-        app_methods.import_data('sea', session['id'], sea_data)
+        sea_resp = app_methods.import_data('sea', session['id'], sea_data, start_date, end_date)
 
         # Import air data
         air_data = request.files['air_file']
-        app_methods.import_data('air', session['id'], air_data)
+        air_resp = app_methods.import_data('air', session['id'], air_data, start_date, end_date)
 
         if run_id:
             current_app.logger.debug("Run_id given...")
