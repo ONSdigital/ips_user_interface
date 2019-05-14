@@ -147,7 +147,7 @@ def new_run_5(run_id=None):
 
         # Import Survey Data
         survey_data = request.files['survey_file']
-        resp = app_methods.import_data('survey', session['id'], survey_data, start_date, end_date)
+        resp = app_methods.import_data('survey', session['id'], survey_data)
         if resp.status_code != 200:
             error_message = app_methods.getErrorMessage(resp)
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
