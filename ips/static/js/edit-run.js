@@ -64,10 +64,12 @@ $(document).ready(function(e){
                 api = $("#api_target").val();
                 $.ajax({
                     type: "POST",
-                    url: api+'/builder/' + $("#rid").text() + '/' + pvid,
-                    contentType: 'application/x-www-form-urlencoded',
+                    url: '/builder/' + $("#rid").text() + '/' + pvid,
                     data: {json: myJsonString, pv: pv_code, pv_name: pv_name, pv_desc: pv_desc},
-                    async:false
+                    async:false,
+                    success: function () {
+                        console.log("test");
+                    }
                 });
             //}
         })
