@@ -70,7 +70,7 @@
                             {% endif %}
                             <form id="run" action="/new_run/new_run_5" class="form", method="post", enctype="multipart/form-data">
 
-                                {% if csv_error %}
+                                {% if error %}
                                 <div class="collator-item">
                                                 <h2 class="collator-title"></h2>
                                                 <!-- Start: @panel--error -->
@@ -79,7 +79,7 @@
                                                         <div class="venus">Error</div>
                                                     </div>
                                                     <div class="panel__body">
-                                                        <p class="mars">All fields must be filled with .csv files only.</p>
+                                                        <p class="mars">{{ error_message }}</p>
                                                     </div>
                                                 </div>
                                                 <!-- End: @panel--error -->
