@@ -392,7 +392,6 @@ def start_run(run_id):
     requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
 
 
-
 def get_all_run_ids():
     response = requests.get(API_TARGET + r'/pv_sets')
     dictionary_of_pv_sets = json.loads(response.content)
@@ -403,6 +402,7 @@ def get_all_run_ids():
         list_of_run_ids.append(record['RUN_ID'])
 
     return list_of_run_ids
+
 
 def getErrorMessage(resp):
     resp = json.loads(resp.content.decode('utf-8'))

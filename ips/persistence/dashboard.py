@@ -33,6 +33,12 @@ def dashboard_view():
         'Status'
     ]
 
+    if len(records) == 0:
+        return render_template('dashboard.html',
+                               header=header,
+                               records=records,
+                               form=form)
+
     records.sort(key=lambda x: x['LAST_MODIFIED'])
 
     # Setup key value pairs for displaying run information
@@ -48,9 +54,12 @@ def dashboard_view():
 
     run_statuses = {
         '0': 'Ready',
-        '1': 'In Progress',
-        '2': 'Completed',
-        '3': 'Failed'
+        '1': 'Not Started',
+        '2': 'Running',
+        '3': 'Completed',
+        '4': 'Cancelled',
+        '5': 'Invalid Run',
+        '6': 'Failed'
     }
 
     periods = {

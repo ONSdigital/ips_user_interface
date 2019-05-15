@@ -2,128 +2,132 @@
 
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
-    <head>
-        <!--Styles are imported from the parent template.-->
-        {% block styles %}
-            {{ super() }}
-        {% endblock %}
-    </head>
+<head>
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
 
-    <body>
+<body>
 
-		<!--Header content is imported from the parent template.-->
-        <header class="page__header">
-            <!--Header content is imported from the parent template.-->
-            {% block header %}
-                {{ super() }}
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
 
-				<div class="header__nav">
-					<div class="container">
-						<nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu" id="main-nav">
-							<ul class="nav__list" aria-label="Navigation menu" role="menubar">
-								<li class="nav__item " role="menuitem" aria-current="page">
-									<a href="/dashboard" class="nav__link">Dashboard</a>
-								</li>
-								<li class="nav__item nav__item--active" role="menuitem">
-									<a href="/new_run/new_run_1" class="nav__link">New Run</a>
-								</li>
-								<li class="nav__item " role="menuitem">
-									<a href="/system_info" class="nav__link">System Info</a>
-								</li>
-							</ul>
-						</nav>
-					</div>
-				</div>
+        <div class="header__nav">
+            <div class="container">
+                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
+                     id="main-nav">
+                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
+                        <li class="nav__item " role="menuitem" aria-current="page">
+                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                        </li>
+                        <li class="nav__item nav__item--active" role="menuitem">
+                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                        </li>
+                        <li class="nav__item " role="menuitem">
+                            <a href="/system_info" class="nav__link">System Info</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
 
-            {% endblock %}
-        </header>
+    {% endblock %}
+</header>
 
-        <section id="content">
-            {% block content %}
-                <!--New run 4 content-->
-                <section>
+<section id="content">
+    {% block content %}
+        <!--New run 4 content-->
+        <section>
 
-                    <div class="wrapper">
-                        <div class="col-8">
-
-                            <div class="group top_40_extra_space">
-                                <div>
-                                    <h2 class="pluto grey_text ">Step 4 of 5</h2>
-                                </div>
-                                <div>
-                                    <h2 class="saturn">Select process variables set </h2>
-                                </div>
-                            </div>
-
-                        </div>
+            <div class="wrapper">
+                <div >
+                    <div class="col-8">
+                        <h2 class="saturn sml-margin buttom_10_extra_space">Select process variables set</h2>
                     </div>
+                </div>
+            </div>
 
-                </section>
+        </section>
 
-                <section>
+        <section>
 
-                    <div class="wrapper">
-                        <div class="group">
 
-                            <form id="run" action="/new_run/new_run_3" class="form" method="POST">
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <div class="wrapper">
+                    <div class="group">
+                        <form id="run" action="/new_run/new_run_3" class="form" method="POST">
+
+                            <div class="wrapper">
+                                <div class="group">
+
+                                    <table class="table table__dense">
+                                        {% if table %}
+                                            <thead class="table--head">
+                                            {% for column in header %}
+                                                <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
+                                            {% endfor %}
+                                            <th class="table--header--cell">Select</th>
+                                            </thead>
+                                            <tbody>
+                                            <!-- for each record, render each data value -->
+                                            {% for record in table %}
+                                                <tr class="table--row">
+                                                    <td style="width: 35%"
+                                                        class="table--cell">{{ record['RUN_ID'] }} </td>
+                                                    <td style="width: 30%" class="table--cell">{{ record['NAME'] }} </td>
+                                                    <td style="width: 15%" class="table--cell">{{ record['USER'] }}</td>
+                                                    <td style="width: 10%" class="table--cell">{{ record['PERIOD'] }}</td>
+                                                    <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
+                                                    <td class="table--cell field__item2" style="border-bottom: 0" >
+                                                        {% if pv_set_id %}
+                                                            <label>
+                                                            {% if record['RUN_ID'] == pv_set_id %}
+                                                                <input class="input--radio2" type="radio"
+                                                                       name="selected" checked
+                                                                       value={{ record['RUN_ID'] }}>
+                                                            {% else %}
+                                                                <input class="input--radio2" type="radio"
+                                                                       name="selected" value={{ record['RUN_ID'] }}>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            {% if record['RUN_ID'] == "TEMPLATE" %}
+                                                                <input class="input--radio2" type="radio"
+                                                                       name="selected" checked
+                                                                       value={{ record['RUN_ID'] }}>
+                                                            {% else %}
+
+                                                                <input class="input--radio2" type="radio"
+                                                                       name="selected" value={{ record['RUN_ID'] }}>
+
+                                                            {% endif %}
+                                                        {% endif %}
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        {% else %}
+                                            <div class="top_50_extra_space">
+                                                <div class="panel panel--simple panel--info">
+                                                    <div class="panel__body">
+                                                        <p class="mars">No records available... </p>
+                                                        <p></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </table>
+                                </div>
+
 
                                 <div class="wrapper">
                                     <div class="group">
-                                        <div class="col-8 top_40_extra_space">
-                                            <table class="table table__dense">
-                                                {% if table %}
-                                                    <thead class="table--head">
-                                                    {% for column in header %}
-                                                        <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
-                                                    {% endfor %}
-                                                    <th class="table--header--cell">Select</th>
-                                                </thead>
-                                                <tbody>
-                                                    <!-- for each record, render each data value -->
-                                                    {% for record in table %}
-                                                    <tr class="table--row">
-                                                        <td class="table--cell">{{record['RUN_ID']}} </td>
-                                                        <td class="table--cell">{{record['NAME']}} </td>
-                                                        <td class="table--cell">{{record['USER']}}</td>
-                                                        <td class="table--cell">{{record['PERIOD']}}</td>
-                                                        <td class="table--cell">{{record['YEAR']}}</td>
-                                                        <td width="10%" class="table--cell field__item2">
-                                                            {% if pv_set_id %}
-                                                                {% if record['RUN_ID'] == pv_set_id %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
-                                                                {% else %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
-                                                                {% endif %}
-                                                            {% else %}
-                                                                {% if record['RUN_ID'] == "TEMPLATE" %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" checked = True value = {{record['RUN_ID']}}>
-                                                                {% else %}
-                                                                    <input class="input--radio2" type="radio" name = "selected" value = {{record['RUN_ID']}}>
-                                                                {% endif %}
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                {% else %}
-                                                    <div class="top_50_extra_space">
-                                                        <div class="panel panel--simple panel--info">
-                                                            <div class="panel__body">
-                                                                <p class="mars">No Records to show... </p>
-                                                                <p></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% endif%}
-                                        </table>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="wrapper">
-                                        <div class="group">
-                                            <div class="col-6 table-pagination-extra-padding">
+                                        <div class="col-6 table-pagination-extra-padding">
                                                 <span>
                                                     1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
                                                     <a href="#">2</a>&nbsp;
@@ -137,46 +141,46 @@
                                                     <a href="#">10</a>&nbsp;
                                                     <a href="#">Next</a>&nbsp;
                                                 </span>
-                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
 
-                                <div class="top_50_extra_space">
-                                    <button class="btn btn--primary" type="submit">Save and continue</button>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <a class="btn btn--secondary btn--border" href="/new_run/new_run_2">Back</a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><a href="/dashboard">Cancel</a></label>
-                                </div>
+                            </div>
 
-                            </form>
+                            <div class="top_50_extra_space">
+                                <button class="btn btn--primary" type="submit">Save and continue</button>
+                                &nbsp;&nbsp;&nbsp;
+                                <a class="btn btn--secondary btn--border" href="/new_run/new_run_2">Back</a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label><a href="/dashboard">Cancel</a></label>
+                            </div>
 
-                        </div>
+                        </form>
                     </div>
 
-                </section>
-
-                <section>
-                    <div class="buttom_70_extra_space buttom_70_extra_space">
-                        <table></table>
-                    </div>
-                    <div class="buttom_70_extra_space buttom_70_extra_space">
-                        <table></table>
-                    </div>
-                </section>
-
-            {% endblock %}
-
+                </div>
+            </div>
         </section>
 
-        <!--Generic footer is imported from the parent template.-->
-        <footer class="page__footer">
-            {% block footer %}
-                {{ super() }}
-            {% endblock %}
-        </footer>
+        <section>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+        </section>
 
-    </body>
+    {% endblock %}
+
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+    {% endblock %}
+</footer>
+
+</body>
 </html>

@@ -14,9 +14,12 @@ def manage_run(run_id):
 
     status_values = {
         '0': 'Ready',
-        '1': 'Success',
-        '2': 'Failed',
-        '3': 'Running'
+        '1': 'Not Started',
+        '2': 'Running',
+        '3': 'Completed',
+        '4': 'Cancelled',
+        '5': 'Invalid Run',
+        '6': 'Failed'
     }
 
     run_types = {
@@ -31,9 +34,12 @@ def manage_run(run_id):
 
     run_statuses = {
         '0': 'Ready',
-        '1': 'In Progress',
-        '2': 'Completed',
-        '3': 'Failed'
+        '1': 'Not Started',
+        '2': 'Running',
+        '3': 'Completed',
+        '4': 'Cancelled',
+        '5': 'Invalid Run',
+        '6': 'Failed'
     }
 
     periods = {
