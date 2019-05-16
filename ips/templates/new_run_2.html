@@ -45,18 +45,18 @@
 
             <div class="wrapper">
                 <div class="col-8">
-                    <div class="top_50_extra_space">
-                        <div class="panel panel--simple panel--info">
-                            <div class="panel__body">
-                                {% if run_id %}
-                                    <p class="mars">You are editing run: {{ run_id }} </p>
-                                {% else %}
-                                    <p class="mars">You are creating a new IPS run. </p>
-                                {% endif %}
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="top_50_extra_space">#}
+{#                        <div class="panel panel--simple panel--info">#}
+{#                            <div class="panel__body">#}
+{#                                {% if run_id %}#}
+{#                                    <p class="mars">You are editing run: {{ run_id }} </p>#}
+{#                                {% else %}#}
+{#                                    <p class="mars">You are creating a new IPS run. </p>#}
+{#                                {% endif %}#}
+{#                                <p></p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                     {% if form.s_month.errors or form.s_year.errors %}
                         <div class="collator-item">
                             <h2 class="collator-title"></h2>

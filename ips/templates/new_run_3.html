@@ -7,7 +7,9 @@
     {% block styles %}
         {{ super() }}
     {% endblock %}
+
 </head>
+
 
 <body>
 
@@ -41,11 +43,21 @@
 
 <section id="content">
     {% block content %}
+        <style>
+            td {
+                border: 0;
+                border-bottom: none;
+            }
+
+            .input--radio2 {
+                top: 0.35rem;
+            }
+        </style>
         <!--New run 4 content-->
         <section>
 
             <div class="wrapper">
-                <div >
+                <div>
                     <div class="col-8">
                         <h2 class="saturn sml-margin buttom_10_extra_space">Select process variables set</h2>
                     </div>
@@ -55,8 +67,6 @@
         </section>
 
         <section>
-
-
             <div class="buttom_70_extra_space buttom_70_extra_space">
                 <div class="wrapper">
                     <div class="group">
@@ -79,11 +89,13 @@
                                                 <tr class="table--row">
                                                     <td style="width: 35%"
                                                         class="table--cell">{{ record['RUN_ID'] }} </td>
-                                                    <td style="width: 30%" class="table--cell">{{ record['NAME'] }} </td>
+                                                    <td style="width: 30%"
+                                                        class="table--cell">{{ record['NAME'] }} </td>
                                                     <td style="width: 15%" class="table--cell">{{ record['USER'] }}</td>
-                                                    <td style="width: 10%" class="table--cell">{{ record['PERIOD'] }}</td>
+                                                    <td style="width: 10%"
+                                                        class="table--cell">{{ record['PERIOD'] }}</td>
                                                     <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                                    <td class="table--cell field__item2" style="border-bottom: 0" >
+                                                    <td class="table--cell field__item2">
                                                         {% if pv_set_id %}
                                                             <label>
                                                             {% if record['RUN_ID'] == pv_set_id %}

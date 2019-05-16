@@ -8,6 +8,7 @@
         {{ super() }}
     {% endblock %}
     <title></title>
+    <link rel="stylesheet" href="/static/css/dashboard.css" media="all">
 </head>
 
 <body>
@@ -99,28 +100,32 @@
                                                 href="/manage_run/{{ record['RUN_ID'] }}">{{ record['RUN_ID'] }}</a>
                                         </td>
                                         <td style="width: 10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
-                                        <td style="width: 18%"  class="table--cell">{{ record['RUN_DESC'] }} </td>
+                                        <td style="width: 18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
                                         <td style="width: 7%" class="table--cell">{{ record['PERIOD'] }}</td>
-                                        <td style="width: 5%"  class="table--cell">{{ record['YEAR'] }}</td>
-                                        <td style="width: 15%"  class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
-                                        <td style="width: 5%"  class="table--cell">{{ record['USER_ID'] }}</td>
+                                        <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
+                                        <td style="width: 15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
+                                        <td style="width: 5%" class="table--cell">{{ record['USER_ID'] }}</td>
 
                                         {% if record['RUN_STATUS'] == 'Ready' %}
-                                            <td style="width: 10%"  class="table--cell">
+                                            <td style="width: 10%" class="table--cell">
                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Not Started' %}
                                             <meta http-equiv="refresh" content="10">
-                                            <td style="width: 10%"  class="table--cell">
+                                            <td style="width: 10%" class="table--cell">
                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Running' %}
                                             <meta http-equiv="refresh" content="10">
-                                            <td style="width: 10%"  class="table--cell">
-                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                            <td class="table--cell">
+                                                <em>
+                                                    <img style="height:20px;" src="/static/img/loader.gif" alt="Running">
+                                                    {{ record['RUN_STATUS'] }}
+                                                </em>
+{#                                             <em class="status status--busy">{{ record['RUN_STATUS'] }}</em>#}
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Completed' %}
-                                            <td style="width: 10%"  class="table--cell">
+                                            <td style="width: 10%" class="table--cell">
                                                 <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Cancelled' %}
@@ -128,7 +133,7 @@
                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Invalid Run' %}
-                                            <tdstyle="width: 10%" class="table--cell">
+                                            <td style="width: 10%" class="table--cell">
                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Failed' %}

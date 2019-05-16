@@ -92,10 +92,12 @@
 
         <section>
 
-            <form id="tabs" class="form" , method="POST">
+            <form id="tabs" class="form" method="POST">
+
                 <div class="wrapper">
                     <div class="group">
                         {{ form.csrf_token }}
+
                         <div class="col-7 top_40_extra_space">
                             <ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
                                 <li class="nav-tabs__tab--active"><a class="tab-label"
@@ -105,94 +107,25 @@
                                                              href="/export_data/{{ current_run['RUN_ID'] }}">Export </a>
                                 </li>
                             </ul>
-                            <script>
-                                $(function () {
-                                    $('input[name=step_checkbox]').click(function () {
-                                        if (allPassed()) {
-                                            return true;
-                                        }
-                                        val = parseInt($(this).val());
-                                        if (!$(this).prop("checked")) {
-                                            uncheckAfter(val);
-                                        } else {
-                                            checkBefore(val);
-                                        }
-                                    });
-                                });
 
-                                function failedBefore(val) {
-                                    if ($('input[name=step_checkbox][value=' + val + ']').attr("status") == "Failed") {
-                                        $('input[name=step_checkbox][value=' + val + ']').prop("checked", true);
-                                        failedBefore(val - 1);
-                                    }
-                                }
-
-                                function allPassed() {
-                                    r = true;
-                                    $('input[name=step_checkbox]').each(function () {
-                                        v = $(this).val();
-                                        if ($('em[step=' + v + ']').attr("status") != "Success") {
-                                            r = false;
-                                        }
-                                    });
-                                    return r;
-                                }
-
-                                function uncheckAfter(val) {
-                                    $('input[name=step_checkbox]').each(function () {
-                                        if (parseInt($(this).val()) > val) {
-                                            $(this).prop("checked", false);
-                                        }
-                                    });
-                                }
-
-                                function checkBefore(val) {
-                                    $('input[name=step_checkbox]').each(function () {
-                                        if (parseInt($(this).val()) < val) {
-                                            $(this).prop("checked", true);
-                                        }
-                                    });
-                                }
-                            </script>
                             <table class="table table__dense" id="run_table">
+
                                 <thead class="table--head">
-                                {% if current_run['RUN_STATUS'] == 'Ready' or current_run['RUN_STATUS'] == 'In Progress' %}
-                                    <th width="5%" class="table--header--cell">&nbsp;&nbsp;&nbsp; <input type="checkbox"
-                                                                                                         checked
-                                                                                                         disabled
-                                                                                                         onClick="toggle(this)"/>&nbsp;&nbsp;
-                                    </th>
-                                {% else %}
-                                    <th width="5%" class="table--header--cell">&nbsp;&nbsp;&nbsp; <input type="checkbox"
-                                                                                                         checked
-                                                                                                         onClick="toggle(this)"/>&nbsp;&nbsp;
-                                    </th>
-                                {% endif %}
-                                <th width="75%" class="table--header--cell">&nbsp;&nbsp; Steps</th>
-                                <th width="20%" class="table--header--cell">Status</th>
+                                <th style="width: 75%" class="table--header--cell">&nbsp;&nbsp; &nbsp; &nbsp;
+                                    Steps
+                                </th>
+                                <th style="width: 20%" class="table--header--cell">Status</th>
                                 </thead>
                                 <tbody>
                                 {% for step in run_status %}
                                     <tr class="table--row">
-                                        <td width="5%" class="table--cell field__item2">
-                                            {% if current_run['RUN_STATUS'] == 'In Progress' %}
-                                                <input name="step_checkbox" disabled type="checkbox" checked
-                                                       value="{{ step['STEP_NUMBER'] }}">&nbsp;&nbsp;
-                                            {% elif current_run['RUN_STATUS'] == 'Ready' %}
-                                                <input name="step_checkbox" type="checkbox" checked
-                                                       value="{{ step['STEP_NUMBER'] }}">&nbsp;&nbsp;
-                                            {% else %}
-                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <input name="step_checkbox" type="checkbox" checked
-                                                       value="{{ step['STEP_NUMBER'] }}">
-                                            {% endif %}
-                                        </td>
-                                        <td width="75%" class="table--cell">
-                                            &nbsp; {{ step['STEP_NUMBER'] }}. {{ step['STEP_NAME'] }}</td>
 
-                                        <td width="20%" class="table--cell">
+                                        <td style="width: 80%" class="table--cell">
+                                            &nbsp; {{ step['STEP_NUMBER'] }}. &nbsp;{{ step['STEP_NAME'] }}</td>
+
+                                        <td style="width: 20%" class="table--cell">
                                             <!--If the step has an associated report render the status with a button-->
-                                            {% if step['STEP_NUMBER'] in (report_index) and step['STEP_STATUS'] in ('Success', 'Failed') %}
+                                            {% if step['STEP_NUMBER'] in (report_index) and step['STEP_STATUS'] in ('Completed', 'Failed') %}
                                                 <button type="button" data-toggle="modal"
                                                         data-target="#myModal{{ step['STEP_NUMBER'] }}">
                                                     {% if step['STEP_STATUS'] == 'Ready' %}
@@ -257,7 +190,6 @@
                     </div>
                 </div>
             </form>
-
 
         </section>
 
@@ -338,5 +270,56 @@
         </script>
     {% endblock %}
 </footer>
+
+<script>
+    $(function () {
+        $('input[name=step_checkbox]').click(function () {
+            if (allPassed()) {
+                return true;
+            }
+            val = parseInt($(this).val());
+            if (!$(this).prop("checked")) {
+                uncheckAfter(val);
+            } else {
+                checkBefore(val);
+            }
+        });
+    });
+
+    function failedBefore(val) {
+        if ($('input[name=step_checkbox][value=' + val + ']').attr("status") === "Failed") {
+            $('input[name=step_checkbox][value=' + val + ']').prop("checked", true);
+            failedBefore(val - 1);
+        }
+    }
+
+    function allPassed() {
+        r = true;
+        $('input[name=step_checkbox]').each(function () {
+            v = $(this).val();
+            if ($('em[step=' + v + ']').attr("status") !== "Success") {
+                r = false;
+            }
+        });
+        return r;
+    }
+
+    function uncheckAfter(val) {
+        $('input[name=step_checkbox]').each(function () {
+            if (parseInt($(this).val()) > val) {
+                $(this).prop("checked", false);
+            }
+        });
+    }
+
+    function checkBefore(val) {
+        $('input[name=step_checkbox]').each(function () {
+            if (parseInt($(this).val()) < val) {
+                $(this).prop("checked", true);
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

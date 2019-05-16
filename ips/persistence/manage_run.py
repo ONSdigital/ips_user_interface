@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import request, render_template, Blueprint, session, redirect, url_for, abort
+from flask import request, render_template, Blueprint, session, redirect, url_for, abort, get_template_attribute
 from flask_login import login_required
 from ips.persistence import app_methods
 from .forms import ManageRunForm, DataSelectionForm
@@ -84,7 +84,7 @@ def manage_run(run_id):
         if 'run_button' in request.form:
 
             # Get list of checked boxes from HTML to determine which steps to run
-            step_boxes_checked = request.form.getlist("step_checkbox")
+            # step_boxes_checked = request.form.getlist("step_checkbox")
 
             app_methods.start_run(run_id)
 
@@ -94,7 +94,8 @@ def manage_run(run_id):
                 step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
                 step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-            return redirect(url_for('dashboard.dashboard_view'), code=302)
+            return redirect(f"/manage_run/{current_run['RUN_ID']}", code=302)
+            # return redirect(url_for('dashboard.dashboard_view'), code=302)
 
         elif 'display_button' in request.form:
             return redirect('/manage_run/weights/' + current_run['RUN_ID'], code=302)
