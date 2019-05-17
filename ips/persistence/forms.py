@@ -120,8 +120,8 @@ class LoadDataForm(FlaskForm):
 
 
 class ManageRunForm(FlaskForm):
-    run_button = SubmitField(label='Run Selected')
-    edit_button = SubmitField(label='Edit Run')
+    run_button = SubmitField(label='Run')
+    edit_button = SubmitField(label='Edit')
     display_button = SubmitField(label='Display Weights')
     export_button = SubmitField(label='Export')
     manage_run_button = SubmitField(label='Manage Run')
