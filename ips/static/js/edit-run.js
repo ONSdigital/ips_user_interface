@@ -61,7 +61,6 @@ $(document).ready(function(e){
                 pv_name = $(this).children().eq(0).text();
                 pv_desc = $(this).children().eq(1).text();
                 myJsonString = JSON.stringify(builds);
-                api = $("#api_target").val();
                 $.ajax({
                     type: "POST",
                     url: '/builder/' + $("#rid").text() + '/' + pvid,

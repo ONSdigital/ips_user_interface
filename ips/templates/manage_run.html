@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
-<html lang="en-gb" dir="ltr" class="no-js">
+<html lang="en-gb" dir="ltr" class="">
 <head>
+
     <!--Styles are imported from the parent template.-->
     {% block styles %}
         {{ super() }}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/manage_run.js') }}"></script>
     {% endblock %}
+
 </head>
 
 <body>
@@ -48,7 +51,7 @@
                 <div class="wrapper">
                     <div class="col-8">
                         <h2 class="jupiter sml-margin">{{ current_run['RUN_NAME'] }} </h2>
-                        <h3 class="venus sml-margin buttom_10_extra_space">({{ current_run['RUN_ID'] }}) &nbsp;</h3>
+                        <h3 id="run_id" class="venus sml-margin buttom_10_extra_space">{{current_run['RUN_ID']}}</h3>
                         <div>
                             <spam><strong>Description: </strong>&nbsp; {{ current_run['RUN_DESC'] }}</spam>
                             <br>
@@ -60,16 +63,16 @@
                             <spam><strong>Execution date & time: </strong>&nbsp; {{ current_run['LAST_MODIFIED'] }}
                             </spam>
                             <br>
+                            <spam><strong>Progress: </strong>&nbsp;</spam><spam><strong id="progress"></strong></spam>
+                            <br>
                             <spam><strong>Run Status: </strong>&nbsp;</spam>
                             {% if current_run['RUN_STATUS'] == 'Ready' %}
                                 <em id="current_run_status"
                                     class="status status--success">{{ current_run['RUN_STATUS'] }}</em>
                             {% elif current_run['RUN_STATUS'] == 'Not Started' %}
-                                <meta http-equiv="refresh" content="10">
                                 <em id="current_run_status"
                                     class="status status--info">{{ current_run['RUN_STATUS'] }}</em>
                             {% elif current_run['RUN_STATUS'] == 'Running' %}
-                                <meta http-equiv="refresh" content="10">
                                 <em id="current_run_status"
                                     class="status status--info">{{ current_run['RUN_STATUS'] }}</em>
                             {% elif current_run['RUN_STATUS'] == 'Completed' %}
@@ -129,7 +132,7 @@
                                             &nbsp; {{ step['STEP_NUMBER'] }}. &nbsp;{{ step['STEP_NAME'] }}
                                         </td>
 
-                                        <td style="width: 20%" class="table--cell">
+                                        <td style="width: 20%" class="table--cell status_column" step_num="{{ step['STEP_NUMBER'] }}">
 
                                             <!--If the step has an associated report render the status with a button-->
                                             {% if step['STEP_NUMBER'] in (report_index) and step['STEP_STATUS'] in ('Completed', 'Failed') %}

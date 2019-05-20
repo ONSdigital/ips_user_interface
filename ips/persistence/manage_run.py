@@ -3,6 +3,10 @@ from flask import request, render_template, Blueprint, session, redirect, url_fo
 from flask_login import login_required
 from ips.persistence import app_methods
 from .forms import ManageRunForm, DataSelectionForm
+import requests
+from ips.util.ui_configuration import UIConfiguration
+
+API_TARGET = UIConfiguration().get_api_uri()
 
 bp = Blueprint('manage_run', __name__, url_prefix='/manage_run', static_folder='static')
 
@@ -192,5 +196,15 @@ def weights_2(id, table=None, table_title=None, source=None):
                                    run_id=id)
         else:
             return redirect(url_for('export.export_data', run_id=id), code=302)
+    else:
+        abort(404)
+
+
+@bp.route('/status/<run_id>', methods=['GET'])
+@login_required
+def status(run_id = None):
+    if run_id:
+        response = requests.get(API_TARGET + r'/ips-service/status/' + run_id)
+        return response.content
     else:
         abort(404)
