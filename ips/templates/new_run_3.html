@@ -2,14 +2,15 @@
 
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
+
 <head>
+    <title></title>
     <!--Styles are imported from the parent template.-->
     {% block styles %}
         {{ super() }}
     {% endblock %}
 
 </head>
-
 
 <body>
 
@@ -25,13 +26,13 @@
                      id="main-nav">
                     <ul class="nav__list" aria-label="Navigation menu" role="menubar">
                         <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item nav__item--active" role="menuitem">
-                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                            <a href="{{ url_for('new_run.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                         <li class="nav__item " role="menuitem">
-                            <a href="/system_info" class="nav__link">System Info</a>
+                            <a href="{{ url_for('system_info.system_info') }}" class="nav__link">System Info</a>
                         </li>
                     </ul>
                 </nav>
@@ -57,20 +58,27 @@
         <section>
 
             <div class="wrapper">
-                <div>
-                    <div class="col-8">
-                        <h2 class="saturn sml-margin buttom_10_extra_space">Select process variables set</h2>
+                <div class="group top_40_extra_space">
+                    <div>
+                        <h2 class="pluto grey_text ">Step 3 of 5 </h2>
+                    </div>
+                    <div>
+                        <h2 class="saturn">Select process variables set</h2>
                     </div>
                 </div>
+
+
             </div>
 
         </section>
 
+
         <section>
-            <div class="buttom_70_extra_space buttom_70_extra_space">
-                <div class="wrapper">
+            <div class="wrapper">
+                <div class="col-8 top_40_extra_space">
+
                     <div class="group">
-                        <form id="run" action="/new_run/new_run_3" class="form" method="POST">
+                        <form id="run" action="{{ url_for('.new_run_3') }}" class="form" method="post">
 
                             <div class="wrapper">
                                 <div class="group">
@@ -87,9 +95,9 @@
                                             <!-- for each record, render each data value -->
                                             {% for record in table %}
                                                 <tr class="table--row">
-                                                    <td style="width: 35%"
+                                                    <td style="width: 45%"
                                                         class="table--cell">{{ record['RUN_ID'] }} </td>
-                                                    <td style="width: 30%"
+                                                    <td style="width: 20%"
                                                         class="table--cell">{{ record['NAME'] }} </td>
                                                     <td style="width: 15%" class="table--cell">{{ record['USER'] }}</td>
                                                     <td style="width: 10%"
@@ -160,11 +168,19 @@
                             </div>
 
                             <div class="top_50_extra_space">
-                                <button class="btn btn--primary" type="submit">Save and continue</button>
-                                &nbsp;&nbsp;&nbsp;
-                                <a class="btn btn--secondary btn--border" href="/new_run/new_run_2">Back</a>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <label><a href="/dashboard">Cancel</a></label>
+                                <button class="btn btn--primary" type="submit" name="submit" value="create_run">
+                                    Save and continue
+                                </button>
+
+                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                    <a style="text-decoration: none;"
+                                       href="{{ url_for('.new_run_2') }}">Back</a>
+                                </button>
+
+                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                    <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                                </button>
+
                             </div>
 
                         </form>

@@ -1,14 +1,12 @@
-import os
-import json
-import uuid
 import getpass
-import pwd
+import uuid
+
 from flask import request, render_template, Blueprint, session, redirect, current_app
 from flask_login import login_required
-from werkzeug.utils import secure_filename
+
 from ips.persistence import app_methods
-from .forms import CreateRunForm, DateSelectionForm, LoadDataForm
 from ips.util.ui_configuration import UIConfiguration
+from .forms import CreateRunForm, DateSelectionForm, LoadDataForm
 
 API_TARGET = UIConfiguration().get_api_uri()
 bp = Blueprint('new_run', __name__, url_prefix='/new_run', static_folder='static')
@@ -159,7 +157,8 @@ def new_run_5(run_id=None):
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
         # Import non_response data
         non_response_data = request.files['non_response_file']
-        resp = app_methods.import_data('nonresponse', session['id'], non_response_data, session['period'], session['year'])
+        resp = app_methods.import_data('nonresponse', session['id'], non_response_data, session['period'],
+                                       session['year'])
         if resp.status_code != 200:
             error_message = app_methods.getErrorMessage(resp)
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
@@ -194,6 +193,7 @@ def new_run_5(run_id=None):
             current_app.logger.debug("No run_id given...")
             return redirect('/new_run/new_run_5', code=302)
 
+    # TODO this isn't there
     elif request.method == 'GET':
         current_app.logger.info("Fulfilling GET request...")
         return render_template('new_run_5.html',
@@ -211,7 +211,7 @@ def new_run_5(run_id=None):
 @bp.route('/new_run_3', methods=['GET', 'POST'])
 @bp.route('/new_run_3/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_3(run_id = None):
+def new_run_3(run_id=None):
     try:
         run_id = session['id']
     except:
@@ -268,7 +268,7 @@ def edit(row=None):
 @bp.route('/new_run_4', methods=['GET', 'POST'])
 @bp.route('/new_run_4/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_4(run_id = None):
+def new_run_4(run_id=None):
     if request.method == 'POST':
 
         current_app.logger.info("Getting data from Javascript modal...")
@@ -309,7 +309,7 @@ def new_run_4(run_id = None):
                     }
             data_dictionary_array.append(data)
 
-        user = pwd.getpwuid(os.getuid()).pw_name
+        user = getpass.getuser()
 
         current_app.logger.info("Getting session values...")
 
@@ -338,7 +338,7 @@ def new_run_4(run_id = None):
             # app_methods.edit_process_variables(run_id, data_dictionary_array)
             current_app.logger.info("Records updated successfully.")
 
-        return redirect('/new_run/new_run_5/'+run_id)
+        return redirect('/new_run/new_run_5/' + run_id)
 
     template_id = session['template_id']
 

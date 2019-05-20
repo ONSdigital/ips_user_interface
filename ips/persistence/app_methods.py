@@ -56,6 +56,7 @@ def edit_run(run_id, run_name, run_description, period, year, run_type='0', run_
     run['RUN_TYPE_ID'] = run_type
     run['RUN_STATUS'] = run_status
     run['LAST_MODIFIED'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    s = API_TARGET + r'/runs/' + run_id
     requests.put(API_TARGET + r'/runs/' + run_id, json=run)
 
 

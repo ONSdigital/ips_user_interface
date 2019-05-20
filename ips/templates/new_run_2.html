@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
 <head>
+    <title></title>
     {% block styles %}
         {{ super() }}
     {% endblock %}
@@ -22,13 +23,13 @@
                      id="main-nav">
                     <ul class="nav__list" aria-label="Navigation menu" role="menubar">
                         <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item nav__item--active" role="menuitem">
-                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                            <a href="{{ url_for('new_run.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                         <li class="nav__item " role="menuitem">
-                            <a href="/system_info" class="nav__link">System Info</a>
+                            <a href="{{ url_for('system_info.system_info') }}" class="nav__link">System Info</a>
                         </li>
                     </ul>
                 </nav>
@@ -45,18 +46,7 @@
 
             <div class="wrapper">
                 <div class="col-8">
-{#                    <div class="top_50_extra_space">#}
-{#                        <div class="panel panel--simple panel--info">#}
-{#                            <div class="panel__body">#}
-{#                                {% if run_id %}#}
-{#                                    <p class="mars">You are editing run: {{ run_id }} </p>#}
-{#                                {% else %}#}
-{#                                    <p class="mars">You are creating a new IPS run. </p>#}
-{#                                {% endif %}#}
-{#                                <p></p>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+
                     {% if form.s_month.errors or form.s_year.errors %}
                         <div class="collator-item">
                             <h2 class="collator-title"></h2>
@@ -90,9 +80,9 @@
             <div class="wrapper">
                 <div class="col-8 top_40_extra_space">
                     {% if run_id %}
-                        <form id="run" action="/new_run/new_run_2/{{ run_id }}" class="form" method="post">
+                        <form id="run" action="{{ url_for('.new_run_2', run_id=run_id) }}" class="form" method="post">
                     {% else %}
-                        <form id="run" action="/new_run/new_run_2" class="form" method="post">
+                        <form id="run" action="{{ url_for('.new_run_2') }}" class="form" method="post">
                     {% endif %}
 
                     <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
@@ -116,6 +106,7 @@
                             {{ form.csrf_token }}
                             {{ form.s_year.label(class="label mercury", for="input-date-range-from-year") }}
                             {{ form.s_year(class="input input--select", value = last_entry['s_year']) }}
+
                             {% if form.s_year.errors %}
                                 <ul>
                                     {% for error_message in form.s_year.errors %}
@@ -123,23 +114,29 @@
                                     {% endfor %}
                                 </ul>
                             {% endif %}
+
                         </div>
-                        {#                        </div>#}
 
                     </fieldset>
 
 
                     <div class="top_60_extra_space">
-                        <button class="btn btn--primary" type="submit" name="submit" value="create_run">Save and
-                            continue
+                        <button class="btn btn--primary" type="submit" name="submit" value="create_run">
+                            Save and continue
                         </button>
-                        &nbsp;&nbsp;&nbsp;
-                        <a class="btn btn--secondary btn--border" href="/new_run/new_run_1">Back</a>
+
+                        <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                            <a style="text-decoration: none;" href="{{ url_for('.new_run_1', run_id=run_id) }}">Back</a>
+                        </button>
+
                         {% if run_id %}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label><a href="/manage_run/{{ run_id }}">Cancel</a></label>
+                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                <a style="text-decoration: none;" href="{{ url_for('.manage_run', run_id=run_id) }}">Cancel</a>
+                            </button>
                         {% else %}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label><a href="/dashboard">Cancel</a></label>
+                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                            </button>
                         {% endif %}
                     </div>
 

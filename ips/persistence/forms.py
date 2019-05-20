@@ -63,7 +63,7 @@ class DateSelectionForm(FlaskForm):
         (str(now.year - 1), now.year - 1), (str(now.year), now.year),
     ]
 
-    s_month = SelectField(label='Month', choices=months, validators=[InputRequired()])
+    s_month = SelectField(label='Month or Period', choices=months, validators=[InputRequired()])
     s_year = SelectField(label='Year', choices=years)  # , validators=[InputRequired()])
 
 
