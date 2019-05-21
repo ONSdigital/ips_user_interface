@@ -131,7 +131,7 @@
 
                         {% if run_id %}
                             <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                <a style="text-decoration: none;" href="{{ url_for('.manage_run', run_id=run_id) }}">Cancel</a>
+                                <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Cancel</a>
                             </button>
                         {% else %}
                             <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
