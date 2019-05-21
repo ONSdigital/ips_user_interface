@@ -38,7 +38,8 @@ $(document).ready(function(e){
 
     $("#savec").click(function(){
         storeAllPVs()
-    })
+    });
+
     function storeAllPVs() {
         json = {};
         $("#form_table").children("tbody").children("tr").each(function () {
@@ -72,7 +73,7 @@ $(document).ready(function(e){
             type: "POST",
             url: '/builder/' + $("#rid").text(),
             data: {json: json},
-            async:false,
+            async: false,
             success: function () {
                 console.log("test");
             }

@@ -92,7 +92,6 @@
                                         <tbody>
                                         <!-- for each record, render each data value-->
                                         {% for record in table %}
-
                                             <tr class="table--row">
 
                                                 <td style="vertical-align: middle;"
@@ -172,16 +171,22 @@
                             </div>
 
                             <div class="top_50_extra_space">
-                                <button class="btn btn--primary" id="savec">Save and continue</button>
+                                <div class="btn-group">
+                                    <button class="btn btn-group__btn" id="savec">Save and continue</button>
 
-                                <a style="margin-left: 10px;"
-                                   class="btn btn--secondary" href="{{ url_for('.new_run_3') }}">
-                                    Back
-                                </a>
-                                <a style="margin-left: 10px;"
-                                   class="btn btn--secondary" href="{{ url_for('dashboard.dashboard_view') }}">
-                                    Cancel
-                                </a>
+                                    <button class="btn btn-group__btn btn--secondary" type="button">
+                                        <a style="text-decoration: none;"
+                                           href="{{ url_for('.new_run_3') }}">Back
+                                        </a>
+                                    </button>
+
+                                    <button class="btn btn-group__btn btn--secondary" type="button">
+                                        <a style="text-decoration: none;"
+                                           href="{{ url_for('dashboard.dashboard_view') }}">Cancel
+                                        </a>
+                                    </button>
+
+                                </div>
                             </div>
                         </div>
 
