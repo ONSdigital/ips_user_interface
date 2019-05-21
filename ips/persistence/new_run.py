@@ -328,9 +328,6 @@ def new_run_4(run_id=None):
             # Creates a new set of process variables, then fill the empty set with the edited javascript data
             app_methods.create_process_variables_set(run_id, run_name, user, period, year)
 
-            # Fill newly created pv set with new process variables (for new runs)
-            app_methods.create_process_variables(run_id, data_dictionary_array)
-            current_app.logger.info("New process variable set created.")
         else:
             current_app.logger.info("Existing run_id given, updating records...")
 
