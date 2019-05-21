@@ -199,7 +199,7 @@
                                         type=button onclick="start_run()">Run
                                 </button>
 
-                                {{ form.edit_button(class="btn btn--secondary btn--border",
+                                {{ form.edit_button(class="btn btn--secondary",
                                    style="width: 100px; margin-left: 20px;", type="submit") }}
 
                             </div>
@@ -280,12 +280,6 @@
         {{ super() }}
 
         <script>
-            function toggle(source) {
-                checkboxes = document.getElementsByName('step_checkbox');
-                for (var i = 0, n = checkboxes.length; i < n; i++) {
-                    checkboxes[i].checked = source.checked;
-                }
-            }
 
             function start_run() {
                 let run_id = '{{ current_run['RUN_ID'] }}';
