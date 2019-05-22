@@ -201,7 +201,9 @@ def new_run_5(run_id=None):
             return jsonify(res)
         else:
             current_app.logger.debug("No run_id given...")
-            return redirect('/new_run/new_run_5', code=302)
+            res = {'redirect': '/new_run/new_run_5'}
+            return jsonify(res)
+#            return redirect('/new_run/new_run_5', code=302)
 
     # TODO this isn't there
     elif request.method == 'GET':
