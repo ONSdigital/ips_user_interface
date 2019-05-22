@@ -133,23 +133,16 @@ def manage_run(run_id):
 
     run_status = app_methods.get_run_steps(run['RUN_ID'])
 
-    run_step_requests = app_methods.get_run_step_requests(run_id)
-
     for step in run_status:
         step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
         step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-    r_index = []
-
-    for report in run_step_requests:
-        for step in run_status:
-            if report['STEP_NUMBER'] == int(step['STEP_NUMBER']):
-                r_index.append(step['STEP_NUMBER'])
+    print(run_status)
 
     return render_template('manage_run.html',
                            form=form,
                            current_run=current_run,
-                           run_status=run_status, reports=run_step_requests, report_index=r_index)
+                           run_status=run_status)
 
 
 @bp.route('/weights/<run_id>', methods=['GET', 'POST'])

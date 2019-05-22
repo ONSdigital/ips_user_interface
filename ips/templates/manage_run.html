@@ -135,7 +135,7 @@
                                         <td style="width: 20%" class="table--cell status_column" step_num="{{ step['STEP_NUMBER'] }}">
 
                                             <!--If the step has an associated report render the status with a button-->
-                                            {% if step['STEP_NUMBER'] in (report_index) and step['STEP_STATUS'] in ('Completed', 'Failed') %}
+                                            {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
                                                 <button type="button" data-toggle="modal"
                                                         data-target="#myModal{{ step['STEP_NUMBER'] }}">
 
@@ -232,27 +232,21 @@
                     <label>Report History:</label>
                     <br>
                     <br>
-                    {% if step['STEP_NUMBER'] in (report_index) %}
-                        {% for rec in reports %}
-                            {% if rec['STEP_NUMBER']|int == step['STEP_NUMBER']|int %}
-                                {% if rec['RESPONSE_CODE']|int == 1 %}
-                                    <label>Success</label>
-                                    <textarea data-maxlength="50000" class="modal-input" id="content_input"
-                                              readonly="readonly">{{ rec['MESSAGE'] }}
-                                        {{ rec['OUTPUT'] }}</textarea>
-                                {% elif rec['RESPONSE_CODE']|int == 2 %}
-                                    <label>Warning</label>
-                                    <textarea data-maxlength="50000" class="modal-input" id="content_input"
-                                              readonly="readonly">{{ rec['MESSAGE'] }}
-                                        {{ rec['OUTPUT'] }}</textarea>
-                                {% elif rec['RESPONSE_CODE']|int == 3 %}
-                                    <label>Error</label>
-                                    <textarea data-maxlength="50000" class="modal-input" id="content_input"
-                                              readonly="readonly">{{ rec['MESSAGE'] }}
-                                        {{ rec['OUTPUT'] }}</textarea>
-                                {% endif %}
+                    {% if "Responses" in step %}
+                        <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px;">
+                        {% for rec in step['Responses'] %}
+                            <div style="display: inline-block">
+                            {% if rec['RESPONSE_CODE']|int == 1 %}
+                                SUCCESS:
+                            {% elif rec['RESPONSE_CODE']|int == 2 %}
+                                WARNING:
+                            {% elif rec['RESPONSE_CODE']|int == 3 %}
+                                ERROR:
                             {% endif %}
+                            </div>
+                            <div style="display: inline-block">{{ rec['MESSAGE'] }}</div><br>
                         {% endfor %}
+                        </div>
                     {% endif %}
 
                     <br><br>
