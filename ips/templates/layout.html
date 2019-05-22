@@ -29,10 +29,11 @@
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css') }}" media="all">
 
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/industry-range.js') }}"></script>
-
         <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/v2.0.0/css/responsive.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
+
     {% endblock %}
 </head>
 
@@ -97,9 +98,6 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
 
         <script>
             jQuery(document).ready(function ($) {
