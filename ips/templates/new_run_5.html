@@ -329,11 +329,12 @@
                         url = "{{ url_for('.new_run_5', run_id=run_id) }}";
                     }
 
-                    let loc = "{{ url_for('static', filename='img/busy.gif') }}";
+                    let loc = "{{ url_for('static', filename='img/download.svg') }}";
 
 
                     $.blockUI({
-                        message: "<h1 style='padding: 10px 10px 10px 50px;'><img src='" + loc + "'/> Uploading Files ...</h1>",
+                        message: "<div style='padding: 10px 0px 10px 0px;'><h1>Uploading Files ...</h1><img src='" + loc + "'/></div>",
+                        css: { backgroundColor: '#3B7A9E', color: '#fff', 'border-style': 'none;' }
                     });
 
                     $.ajax({
