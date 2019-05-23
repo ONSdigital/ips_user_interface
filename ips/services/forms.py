@@ -2,8 +2,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, SelectField, SubmitField, PasswordField, validators
 from wtforms.validators import InputRequired
-from wtforms.validators import NoneOf
-from wtforms.validators import Regexp
 
 
 class LoginForm(FlaskForm):

@@ -1,12 +1,12 @@
 from datetime import datetime
-from flask import request, render_template, Blueprint, session, redirect, url_for, abort, get_template_attribute, json
-from flask_login import login_required
-from ips.persistence import app_methods
-from .forms import ManageRunForm, DataSelectionForm
-import requests
-from ips.util.ui_configuration import UIConfiguration
 
-API_TARGET = UIConfiguration().get_api_uri()
+import requests
+from flask import request, render_template, Blueprint, session, redirect, url_for, abort, json
+from flask_login import login_required
+from ips_common.ips_logging import log
+
+from ips.services import app_methods, API_TARGET
+from .forms import ManageRunForm, DataSelectionForm
 
 bp = Blueprint('manage_run', __name__, url_prefix='/manage_run', static_folder='static')
 
@@ -79,7 +79,7 @@ def start_run(run_id):
     #     step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
     #     step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-    print(f"Start run: {run_id}")
+    log.info(f"Start run: {run_id}")
     return json.dumps({'status': 'OK'})
 
 
@@ -102,8 +102,8 @@ def manage_run(run_id):
     current_run['RUN_STATUS'] = run_statuses[str(int(current_run['RUN_STATUS']))]
     current_run['RUN_TYPE_ID'] = run_types[str(int(current_run['RUN_TYPE_ID']))]
     current_run['PERIOD'] = periods[run['PERIOD']]
-    current_run['LAST_MODIFIED'] = datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime(
-        '%Y-%m-%d %H:%M:%S')
+    current_run['LAST_MODIFIED'] = \
+        datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime('%Y-%m-%d %H:%M:%S')
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
@@ -119,25 +119,24 @@ def manage_run(run_id):
                 step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
                 step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-            print("GOT SUBMIT")
             return json.dumps({'status': 'OK'})
 
         elif 'display_button' in request.form:
             return redirect('/manage_run/weights/' + current_run['RUN_ID'], code=302)
         elif 'edit_button' in request.form:
-            return redirect('/new_run/new_run_1/' + current_run['RUN_ID'], code=302)
+            return redirect('/new_run_steps/new_run_1/' + current_run['RUN_ID'], code=302)
         elif 'export_button' in request.form:
             return redirect('/export_data/' + current_run['RUN_ID'], code=302)
         elif 'manage_run_button' in request.form:
             return redirect('/manage_run/' + current_run['RUN_ID'], code=302)
+
+    log.info("Rendering existing run")
 
     run_status = app_methods.get_run_steps(run['RUN_ID'])
 
     for step in run_status:
         step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
         step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
-
-    print(run_status)
 
     return render_template('manage_run.html',
                            form=form,
@@ -164,8 +163,13 @@ def weights(run_id=None):
                 session['dw_table'] = table_name
                 session['dw_title'] = table_title
                 session['dw_source'] = data_source
-                return redirect(url_for('manage_run.weights_2', table=table_name, id=run['RUN_ID'], source=data_source,
-                                        table_title=table_title), code=302)
+                return redirect(
+                    url_for('manage_run.weights_2',
+                            table=table_name,
+                            id=run['RUN_ID'],
+                            source=data_source,
+                            table_title=table_title)
+                )
         return render_template('weights.html',
                                form=form,
                                current_run=current_run)
@@ -195,7 +199,7 @@ def weights_2(id, table=None, table_title=None, source=None):
 
 @bp.route('/status/<run_id>', methods=['GET'])
 @login_required
-def status(run_id = None):
+def status(run_id=None):
     if run_id:
         response = requests.get(API_TARGET + r'/ips-service/status/' + run_id)
         return response.content

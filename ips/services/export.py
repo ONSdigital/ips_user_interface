@@ -1,17 +1,18 @@
 import io
 import os
 import zipfile
+
 from flask import request, render_template, Blueprint, session, redirect, send_file, abort, Response
 from flask_login import login_required
-from ips.persistence.app_methods import create_export_data_download
-from ips.persistence.app_methods import export_clob
-from ips.persistence.app_methods import get_export_data_table
-from ips.persistence.app_methods import get_run
-from ips.persistence.forms import ExportSelectionForm
+
+from ips.services.app_methods import create_export_data_download
+from ips.services.app_methods import export_clob
+from ips.services.app_methods import get_run
+from ips.services.forms import ExportSelectionForm
 
 bp = Blueprint('export', __name__, url_prefix='', static_folder='static')
 
-@bp.route('/export_data/<run_id>/<file_name>/<source_table>', methods=['DELETE', 'GET', 'POST'])
+
 @bp.route('/export_data/<run_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
 def export_data(run_id):
@@ -38,8 +39,7 @@ def export_data(run_id):
                 return Response(
                     csv,
                     mimetype="text/csv",
-                    headers={"Content-disposition":
-                                 "attachment; filename="+sql_table})
+                    headers={"Content-disposition": "attachment; filename=" + sql_table})
 
         elif request.method == 'POST':
             if 'cancel_button' in request.form:
