@@ -83,6 +83,19 @@ def start_run(run_id):
     return json.dumps({'status': 'OK'})
 
 
+@bp.route('/stop/<run_id>', methods=['GET'])
+@login_required
+def stop_run(run_id):
+    run = app_methods.get_run(run_id)
+    if not run:
+        return json.dumps({'status': 'Error: Run ID not Found'})
+
+    res = app_methods.cancel_run(run_id)
+
+    print(f"Cancel run: {run_id}")
+    return json.dumps({'status': 'OK'})
+
+
 @bp.route('/<run_id>', methods=['GET', 'POST'])
 @login_required
 def manage_run(run_id):

@@ -126,51 +126,35 @@
 
                                 <tbody>
                                 {% for step in run_status %}
+                                    {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                                    <tr data-toggle="modal" data-target="#myModal{{step['STEP_NUMBER']}}" style="cursor: pointer" class="table--row">
+                                    {% else %}
                                     <tr class="table--row">
+                                    {% endif %}
 
-                                        <td style="width: 80%" class="table--cell">
-                                            &nbsp; {{ step['STEP_NUMBER'] }}. &nbsp;{{ step['STEP_NAME'] }}
-                                        </td>
+                                        <td style="width: 80%" class="table--cell">{{ step['STEP_NAME'] }}</td>
 
                                         <td style="width: 20%" class="table--cell status_column" step_num="{{ step['STEP_NUMBER'] }}">
 
                                             <!--If the step has an associated report render the status with a button-->
-                                            {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                                                <button type="button" data-toggle="modal"
-                                                        data-target="#myModal{{ step['STEP_NUMBER'] }}">
-
-                                                    {% if step['STEP_STATUS'] == 'Completed' %}
-                                                        <em class="status status--info status--small">
-                                                            Completed
-                                                        </em>
-                                                    {% elif step['STEP_STATUS'] == 'Failed' %}
-                                                        <em class="status status--error status--small">
-                                                            Failed
-                                                        </em>
-                                                    {% endif %}
-
-                                                </button>
-                                                <!--If there is no report just show the status label with on button-->
-                                            {% else %}
-
-                                                {% if step['STEP_STATUS'] == 'Ready' %}
-                                                    <em class="status status--success status--small">Ready</em>
-                                                {% elif step['STEP_STATUS'] == 'Not Started' %}
-                                                    <em class="status status--success status--small">Not Started</em>
-                                                {% elif step['STEP_STATUS'] == 'Running' %}
-                                                    <em class="status status--info status--small">Running</em>
-                                                {% elif step['STEP_STATUS'] == 'Completed' %}
-                                                    <em class="status status--success status--small">Completed</em>
-                                                {% elif step['STEP_STATUS'] == 'Cancelled' %}
-                                                    <em class="status status--dead status--small">Cancelled</em>
-                                                {% elif step['STEP_STATUS'] == 'Invalid Run' %}
-                                                    <em class="status status--dead status--small">Invalid Run</em>
-                                                {% elif step['STEP_STATUS'] == 'Failed' %}
-                                                    <em class="status status--error status--small">Failed</em>
-                                                {% endif %}
-
+                                            {% if step['STEP_STATUS'] == 'Ready' %}
+                                                <em class="status status--info status--small">Ready</em>
+                                            {% elif step['STEP_STATUS'] == 'Not Started' %}
+                                                <em class="status status--success status--small">Not Started</em>
+                                            {% elif step['STEP_STATUS'] == 'Running' %}
+                                                <em class="status status--info status--small">Running</em>
+                                            {% elif step['STEP_STATUS'] == 'Completed' %}
+                                                <em class="status status--success status--small">Completed</em>
+                                            {% elif step['STEP_STATUS'] == 'Cancelled' %}
+                                                <em class="status status--dead status--small">Cancelled</em>
+                                            {% elif step['STEP_STATUS'] == 'Invalid Run' %}
+                                                <em class="status status--dead status--small">Invalid Run</em>
+                                            {% elif step['STEP_STATUS'] == 'Failed' %}
+                                                <em class="status status--error status--small">Failed</em>
                                             {% endif %}
-
+                                            {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                                                <img class="info_img" src={{ url_for('static', filename='img/icons--info.svg') }} width='20px' style="vertical-align: sub;">
+                                            {% endif %}
                                         </td>
                                     </tr>
 
@@ -197,6 +181,11 @@
                                 <button style="width: 100px;" name="run_button" id="run_button"
                                         class="btn btn--primary btn--border"
                                         type=button onclick="start_run()">Run
+                                </button>
+
+                                <button style="width: 100px; margin-left: 20px; display: none;" name="run_button" id="cancel_button"
+                                        class="btn btn--secondary"
+                                        type=button onclick="cancel_run()">Cancel
                                 </button>
 
                                 {{ form.edit_button(class="btn btn--secondary",
@@ -232,10 +221,12 @@
                     <label>Report History:</label>
                     <br>
                     <br>
+                    <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px; height: 200px; overflow: auto">
+                    <table class="reports" style="font-size: 12px">
                     {% if "Responses" in step %}
-                        <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px;">
                         {% for rec in step['Responses'] %}
-                            <div style="display: inline-block">
+                            <tr style="line-height: 0px">
+                            <td class="report_td">
                             {% if rec['RESPONSE_CODE']|int == 1 %}
                                 SUCCESS:
                             {% elif rec['RESPONSE_CODE']|int == 2 %}
@@ -243,11 +234,13 @@
                             {% elif rec['RESPONSE_CODE']|int == 3 %}
                                 ERROR:
                             {% endif %}
-                            </div>
-                            <div style="display: inline-block">{{ rec['MESSAGE'] }}</div><br>
+                            </td>
+                            <td class="report_td">{{ rec['MESSAGE'] }}</td>
+                            </tr>
                         {% endfor %}
-                        </div>
                     {% endif %}
+                    </table>
+                    </div>
 
                     <br><br>
                     <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close
@@ -298,9 +291,35 @@
                     }
                 });
 
+                $("#cancel_button").show();
                 $("#run_button").attr("disabled", true);
                 $("#edit_button").attr("disabled", true);
                 $("#run_button").attr("class", 'btn btn--loader is-loading');
+
+            }
+
+            function cancel_run() {
+                let run_id = '{{ current_run['RUN_ID'] }}';
+
+                console.log("submitting to: " + '/manage_run/stop/' + run_id);
+
+                $.ajax({
+                    type: "GET",
+                    url: '/manage_run/stop/' + run_id,
+                    async: true,
+                    success: function (data) {
+                        $("#run_button").attr("disabled", false);
+                        $("#edit_button").attr("disabled", false);
+                        $("#run_button").attr("class", 'btn btn--loader');
+                        $("#cancel_button").hide();
+                    },
+
+                    error: function (error) {
+                        console.log('got error: ' + error);
+                    }
+                });
+
+
 
             }
 

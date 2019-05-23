@@ -4,6 +4,7 @@
 */
 
 $(document).ready(function(e){
+    $('.modal').height(screen.height);
     getStatus();
     window.setInterval(getStatus, 2000);
 });
@@ -27,11 +28,45 @@ function setUIStatus(status){
     main.attr('class', 'status '+getStepStatusClass(status['status']));
     main.text(getStepText(status['status']));
     $('#progress').text(status['percentage_done']+"%");
+    cancelButton(status['status']);
     for (step of steps){
-        const el = $('.status_column[step_num="'+step+'"]').children("em");
-        el.attr('class', 'status status--small '+getStepStatusClass(status['steps'][step]));
-        el.text(getStepText(status['steps'][step]));
+        const td = $('.status_column[step_num="'+step+'"]');
+        const tr = td.parent();
+        const el = td.children("em");
+        el.attr('class', 'status status--small '+getStepStatusClass(status['steps'][step]['Status']));
+        el.text(getStepText(status['steps'][step]['Status']));
+        if(status['steps'][step].hasOwnProperty('Responses')){
+            const reports = $('#myModal'+step).find(".reports");
+            reports.empty();
+            setReports(tr, td, step, reports, status['steps'][step]['Responses']);
+        }else{
+            noReports(tr, td);
+        }
     }
+}
+
+function setReports(tr, td, step_num, reports, response_data){
+    const responses = Object.keys(response_data);
+    if(! td.children('img').length){
+        td.append("<img class='info_img' src='/static/img/icons--info.svg' width='20px' style='vertical-align: sub;'>");
+    }
+    for (response of responses){
+        appendToReport(reports, response_data[response]);
+    }
+    tr.attr("data-toggle", "modal");
+    tr.attr("data-target", "#myModal"+step_num);
+    tr.css( 'cursor', 'pointer' );
+}
+
+function noReports(tr, td){
+    td.find('img').remove();
+    tr.removeAttr("data-toggle");
+    tr.removeAttr("data-target");
+    tr.css( 'cursor', 'default' );
+}
+
+function appendToReport(report, response){
+    report.append('<tr style="line-height: 0px"><td class="report_td">'+getReportStatus(response['RESPONSE_CODE'])+':</td><td class="report_td">'+response['MESSAGE']+'</td></tr>');
 }
 
 function getStepStatusClass(status){
@@ -73,5 +108,28 @@ function getStepText(status){
             return 'Failed';
           default:
         // code block
+    }
+}
+
+function getReportStatus(status){
+    status = status.toString();
+    switch(status) {
+        case '0':
+            return 'Ready';
+        case '1':
+            return 'SUCCESS';
+        case '2':
+            return 'WARNING';
+        case '3':
+            return 'ERROR';
+    }
+}
+
+function cancelButton(status){
+    console.log(status);
+    if(status == "2"){
+        $("#cancel_button").show();
+    }else{
+        $("#cancel_button").hide();
     }
 }

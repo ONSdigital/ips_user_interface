@@ -393,6 +393,10 @@ def start_run(run_id):
     requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
 
 
+def cancel_run(run_id):
+    requests.get(API_TARGET + r'/ips-service/cancel/' + str(run_id))
+
+
 def get_all_run_ids():
     response = requests.get(API_TARGET + r'/pv_sets')
     dictionary_of_pv_sets = json.loads(response.content)
