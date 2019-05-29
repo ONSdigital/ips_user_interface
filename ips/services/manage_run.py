@@ -1,59 +1,105 @@
 from datetime import datetime
-from flask import request, render_template, Blueprint, session, redirect, url_for, abort
+
+import requests
+from flask import request, render_template, Blueprint, session, redirect, url_for, abort, json
 from flask_login import login_required
-from ips.persistence import app_methods
+from ips_common.ips_logging import log
+
+from ips.services import app_methods, API_TARGET
 from .forms import ManageRunForm, DataSelectionForm
 
 bp = Blueprint('manage_run', __name__, url_prefix='/manage_run', static_folder='static')
+
+status_values = {
+    '0': 'Ready',
+    '1': 'Not Started',
+    '2': 'Running',
+    '3': 'Completed',
+    '4': 'Cancelled',
+    '5': 'Invalid Run',
+    '6': 'Failed'
+}
+
+run_types = {
+    '0': 'Test',
+    '1': 'Live',
+    '2': 'Deleted',
+    '3': 'SQL',
+    '4': 'SQL',
+    '5': 'SQL',
+    '6': 'SQL'
+}
+
+run_statuses = {
+    '0': 'Ready',
+    '1': 'Not Started',
+    '2': 'Running',
+    '3': 'Completed',
+    '4': 'Cancelled',
+    '5': 'Invalid Run',
+    '6': 'Failed'
+}
+
+periods = {
+    "01": "January",
+    "02": "February",
+    "03": "March",
+    "04": "April",
+    "05": "May",
+    "06": "June",
+    "07": "July",
+    "08": "August",
+    "09": "September",
+    "10": "October",
+    "11": "Novemeber",
+    "12": "December",
+    "Q1": "Quarter 1",
+    "Q2": "Quarter 2",
+    "Q3": "Quarter 3",
+    "Q4": "Quarter 4"
+}
+
+
+@bp.route('/start/<run_id>', methods=['POST'])
+@login_required
+def start_run(run_id):
+    form = ManageRunForm()
+
+    run = app_methods.get_run(run_id)
+    if not run:
+        return json.dumps({'status': 'Error: Run ID not Found'})
+
+    form.validate()
+
+    res = app_methods.start_run(run_id)
+
+    # run_status = app_methods.get_run_steps(run['RUN_ID'])
+    #
+    # for step in run_status:
+    #     step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
+    #     step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
+
+    log.info(f"Start run: {run_id}")
+    return json.dumps({'status': 'OK'})
+
+
+@bp.route('/stop/<run_id>', methods=['GET'])
+@login_required
+def stop_run(run_id):
+    run = app_methods.get_run(run_id)
+    if not run:
+        return json.dumps({'status': 'Error: Run ID not Found'})
+
+    res = app_methods.cancel_run(run_id)
+
+    print(f"Cancel run: {run_id}")
+    return json.dumps({'status': 'OK'})
 
 
 @bp.route('/<run_id>', methods=['GET', 'POST'])
 @login_required
 def manage_run(run_id):
     form = ManageRunForm()
-
-    status_values = {
-        '0': 'Ready',
-        '1': 'Success',
-        '2': 'Failed',
-        '3': 'Running'
-    }
-
-    run_types = {
-        '0': 'Test',
-        '1': 'Live',
-        '2': 'Deleted',
-        '3': 'SQL',
-        '4': 'SQL',
-        '5': 'SQL',
-        '6': 'SQL'
-    }
-
-    run_statuses = {
-        '0': 'Ready',
-        '1': 'In Progress',
-        '2': 'Completed',
-        '3': 'Failed'
-    }
-
-    periods = {
-        "01": "January",
-        "02": "February",
-        "03": "March",
-        "04": "April",
-        "05": "May",
-        "06": "June",
-        "07": "July",
-        "08": "August",
-        "09": "September",
-        "10": "October",
-        "11": "Novemeber",
-        "12": "December",
-        "Q1": "Quarter 1",
-        "Q2": "Quarter 2",
-        "Q3": "Quarter 3",
-        "Q4": "Quarter 4"
-    }
 
     run = app_methods.get_run(run_id)
     if not run:
@@ -69,18 +115,16 @@ def manage_run(run_id):
     current_run['RUN_STATUS'] = run_statuses[str(int(current_run['RUN_STATUS']))]
     current_run['RUN_TYPE_ID'] = run_types[str(int(current_run['RUN_TYPE_ID']))]
     current_run['PERIOD'] = periods[run['PERIOD']]
-    current_run['LAST_MODIFIED'] = datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime(
-        '%Y-%m-%d %H:%M:%S')
+    current_run['LAST_MODIFIED'] = \
+        datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime('%Y-%m-%d %H:%M:%S')
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
         # If the run button is selected run the calculation steps
+
         if 'run_button' in request.form:
 
-            # Get list of checked boxes from HTML to determine which steps to run
-            step_boxes_checked = request.form.getlist("step_checkbox")
-
-            app_methods.start_run(run_id)
+            res = app_methods.start_run(run_id)
 
             run_status = app_methods.get_run_steps(run['RUN_ID'])
 
@@ -88,36 +132,29 @@ def manage_run(run_id):
                 step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
                 step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-            return redirect(url_for('dashboard.dashboard_view'), code=302)
+            return json.dumps({'status': 'OK'})
 
         elif 'display_button' in request.form:
             return redirect('/manage_run/weights/' + current_run['RUN_ID'], code=302)
         elif 'edit_button' in request.form:
-            return redirect('/new_run/new_run_1/' + current_run['RUN_ID'], code=302)
+            return redirect('/new_run_steps/new_run_1/' + current_run['RUN_ID'], code=302)
         elif 'export_button' in request.form:
             return redirect('/export_data/' + current_run['RUN_ID'], code=302)
         elif 'manage_run_button' in request.form:
             return redirect('/manage_run/' + current_run['RUN_ID'], code=302)
 
-    run_status = app_methods.get_run_steps(run['RUN_ID'])
+    log.info("Rendering existing run")
 
-    run_step_requests = app_methods.get_run_step_requests(run_id)
+    run_status = app_methods.get_run_steps(run['RUN_ID'])
 
     for step in run_status:
         step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
         step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
 
-    r_index = []
-
-    for report in run_step_requests:
-        for step in run_status:
-            if report['STEP_NUMBER'] == int(step['STEP_NUMBER']):
-                r_index.append(step['STEP_NUMBER'])
-
     return render_template('manage_run.html',
                            form=form,
                            current_run=current_run,
-                           run_status=run_status, reports=run_step_requests, report_index=r_index)
+                           run_status=run_status)
 
 
 @bp.route('/weights/<run_id>', methods=['GET', 'POST'])
@@ -139,8 +176,13 @@ def weights(run_id=None):
                 session['dw_table'] = table_name
                 session['dw_title'] = table_title
                 session['dw_source'] = data_source
-                return redirect(url_for('manage_run.weights_2', table=table_name, id=run['RUN_ID'], source=data_source,
-                                        table_title=table_title), code=302)
+                return redirect(
+                    url_for('manage_run.weights_2',
+                            table=table_name,
+                            id=run['RUN_ID'],
+                            source=data_source,
+                            table_title=table_title)
+                )
         return render_template('weights.html',
                                form=form,
                                current_run=current_run)
@@ -167,3 +209,12 @@ def weights_2(id, table=None, table_title=None, source=None):
     else:
         abort(404)
 
+
+@bp.route('/status/<run_id>', methods=['GET'])
+@login_required
+def status(run_id=None):
+    if run_id:
+        response = requests.get(API_TARGET + r'/ips-service/status/' + run_id)
+        return response.content
+    else:
+        abort(404)

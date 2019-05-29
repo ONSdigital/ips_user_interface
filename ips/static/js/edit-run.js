@@ -38,41 +38,46 @@ $(document).ready(function(e){
 
     $("#savec").click(function(){
         storeAllPVs()
-    })
+    });
+
     function storeAllPVs() {
+        json = {};
         $("#form_table").children("tbody").children("tr").each(function () {
             pvid = $(this).attr("index");
-            //if(pvid == 2) {
-                var builds = {}
-                $(this).children(".pv_build").each(function () {
-                    block = $(this).attr("block");
-                    expression = $(this).attr("expression");
-                    consta = $(this).attr("const");
-                    va = $(this).attr("var");
-                    opp = $(this).attr("opp");
-                    val = $(this).attr("val");
-                    command = $(this).attr("command");
-                    if (!builds.hasOwnProperty(block)) {
-                        builds[block] = {}
-                    }
-                    builds[block][expression] = {const: consta, var: va, opp: opp, val: val, command: command};
-                });
-                pv_code = $(this).children(".pv_def").text();
-                pv_name = $(this).children().eq(0).text();
-                pv_desc = $(this).children().eq(1).text();
-                myJsonString = JSON.stringify(builds);
-                api = $("#api_target").val();
-                $.ajax({
-                    type: "POST",
-                    url: '/builder/' + $("#rid").text() + '/' + pvid,
-                    data: {json: myJsonString, pv: pv_code, pv_name: pv_name, pv_desc: pv_desc},
-                    async:false,
-                    success: function () {
-                        console.log("test");
-                    }
-                });
-            //}
-        })
+            json[pvid] = {};
+            var builds = {}
+            $(this).children(".pv_build").each(function () {
+                block = $(this).attr("block");
+                expression = $(this).attr("expression");
+                consta = $(this).attr("const");
+                va = $(this).attr("var");
+                opp = $(this).attr("opp");
+                val = $(this).attr("val");
+                command = $(this).attr("command");
+                if (!builds.hasOwnProperty(block)) {
+                    builds[block] = {}
+                }
+                builds[block][expression] = {const: consta, var: va, opp: opp, val: val, command: command};
+            });
+            pv_code = $(this).children(".pv_def").text();
+            pv_name = $(this).children().eq(0).text();
+            pv_desc = $(this).children().eq(1).text();
+            myJsonString = JSON.stringify(builds);
+            json[pvid]['json'] = builds;
+            json[pvid]['pv'] = pv_code;
+            json[pvid]['pv_name'] = pv_name;
+            json[pvid]['pv_desc'] = pv_desc;
+        });
+        json = JSON.stringify(json);
+        $.ajax({
+            type: "POST",
+            url: '/builder/' + $("#rid").text(),
+            data: {json: json},
+            async: false,
+            success: function () {
+                console.log("test");
+            }
+        });
     }
 
     function saveBuildToUI(pv,pv_id){

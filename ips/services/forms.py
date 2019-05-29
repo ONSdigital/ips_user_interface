@@ -2,8 +2,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, SelectField, SubmitField, PasswordField, validators
 from wtforms.validators import InputRequired
-from wtforms.validators import NoneOf
-from wtforms.validators import Regexp
 
 
 class LoginForm(FlaskForm):
@@ -63,7 +61,7 @@ class DateSelectionForm(FlaskForm):
         (str(now.year - 1), now.year - 1), (str(now.year), now.year),
     ]
 
-    s_month = SelectField(label='Month', choices=months, validators=[InputRequired()])
+    s_month = SelectField(label='Month or Period', choices=months, validators=[InputRequired()])
     s_year = SelectField(label='Year', choices=years)  # , validators=[InputRequired()])
 
 
@@ -120,8 +118,8 @@ class LoadDataForm(FlaskForm):
 
 
 class ManageRunForm(FlaskForm):
-    run_button = SubmitField(label='Run Selected')
-    edit_button = SubmitField(label='Edit Run')
+    run_button = SubmitField(label='Run')
+    edit_button = SubmitField(label='Edit')
     display_button = SubmitField(label='Display Weights')
     export_button = SubmitField(label='Export')
     manage_run_button = SubmitField(label='Manage Run')

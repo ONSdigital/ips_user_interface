@@ -1,8 +1,11 @@
 from flask_login import login_required
-from flask import request, render_template, Blueprint, current_app, redirect
+from flask import request, render_template, Blueprint, redirect
 from datetime import datetime
+
+from ips_common.ips_logging import log
+
 from .forms import SearchActivityForm
-from ips.persistence import app_methods
+from ips.services import app_methods
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 
@@ -13,13 +16,13 @@ def dashboard_view():
     form = SearchActivityForm()
 
     # Log that dashboard view has been accessed
-    current_app.logger.info('Dashboard being accessed...')
+    log.info('Dashboard being accessed...')
 
     # Get the records and separate the headers and values
     try:
         records = app_methods.get_runs()
     except Exception as error:
-        current_app.logger.error(error, exc_info=True)
+        log.error(error, exc_info=True)
         return redirect("/")  # return the actual error and display it
 
     header = [
@@ -32,6 +35,12 @@ def dashboard_view():
         'User',
         'Status'
     ]
+
+    if len(records) == 0:
+        return render_template('dashboard.html',
+                               header=header,
+                               records=records,
+                               form=form)
 
     records.sort(key=lambda x: x['LAST_MODIFIED'])
 
@@ -48,9 +57,12 @@ def dashboard_view():
 
     run_statuses = {
         '0': 'Ready',
-        '1': 'In Progress',
-        '2': 'Completed',
-        '3': 'Failed'
+        '1': 'Not Started',
+        '2': 'Running',
+        '3': 'Completed',
+        '4': 'Cancelled',
+        '5': 'Invalid Run',
+        '6': 'Failed'
     }
 
     periods = {
@@ -104,7 +116,7 @@ def dashboard_view():
                            search_activity.lower() in x['PERIOD'].lower() or
                            search_activity.lower() in x['YEAR'].lower()]
 
-    current_app.logger.info('Rendering dashboard now...')
+    log.info('Rendering dashboard now...')
 
     return render_template('dashboard.html',
                            header=header,

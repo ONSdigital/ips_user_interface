@@ -8,6 +8,8 @@
         {{ super() }}
     {% endblock %}
     <title></title>
+
+    <link rel="stylesheet" href="{{ url_for('static', href='css/dashboard.css') }}">
 </head>
 
 <body>
@@ -23,13 +25,13 @@
                      id="main-nav">
                     <ul class="nav__list" aria-label="Navigation menu" role="menubar">
                         <li class="nav__item nav__item--active" role="menuitem" aria-current="page">
-                            <a href="/dashboard" class="nav__link">Dashboard</a>
+                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item " role="menuitem">
-                            <a href="/new_run/new_run_1" class="nav__link">New Run</a>
+                            <a href="{{  url_for('new_run_steps.new_run_1')}}" class="nav__link">New Run</a>
                         </li>
                         <li class="nav__item " role="menuitem">
-                            <a href="/system_info" class="nav__link">System Info</a>
+                            <a href="{{ url_for('system_info.system_info')}}" class="nav__link">System Info</a>
                         </li>
                     </ul>
                 </nav>
@@ -49,13 +51,7 @@
                 <div class="panel panel--search u-mb-l">
                     <div class="group panel__body">
                         <form id="form-search" action="/dashboard/" class="form" method="post">
-{#                            <div>#}
-{#                                <div class="col-12">#}
-{#                                    {{ form.csrf_token }}#}
-{#                                    {{ form.search_activity.label(class="saturn title_extra_space") }}#}
-{#                                    <br/>#}
-{#                                </div>#}
-{#                            </div>#}
+
                             <div class="col-12">
                                 <div class="col-5">
                                     {{ form.search_activity(class="input input--textarea js-charlimit-input",
@@ -86,6 +82,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="buttom_70_extra_space buttom_70_extra_space">
                 <div class="wrapper">
                     <div class="group">
@@ -100,30 +97,49 @@
                                 <!-- for each record, render each data value -->
                                 {% for record in records|reverse %}
                                     <tr class="table--row">
-                                        <td width="30%" class="table--cell"><a
+                                        <td style="width: 30%" class="table--cell"><a
                                                 href="/manage_run/{{ record['RUN_ID'] }}">{{ record['RUN_ID'] }}</a>
                                         </td>
-                                        <td width="10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
-                                        <td width="18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
-                                        <td width="7%" class="table--cell">{{ record['PERIOD'] }}</td>
-                                        <td width="5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                        <td width="15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
-                                        <td width="5%" class="table--cell">{{ record['USER_ID'] }}</td>
+                                        <td style="width: 10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
+                                        <td style="width: 18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
+                                        <td style="width: 7%" class="table--cell">{{ record['PERIOD'] }}</td>
+                                        <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
+                                        <td style="width: 15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
+                                        <td style="width: 5%" class="table--cell">{{ record['USER_ID'] }}</td>
+
                                         {% if record['RUN_STATUS'] == 'Ready' %}
-                                            <td width="10%" class="table--cell"><em
-                                                    class="status status--info status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             </td>
-                                        {% elif record['RUN_STATUS'] == 'In Progress' %}
-                                            <td width="10%" class="table--cell"><em
-                                                    class="status status--info status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                        {% elif record['RUN_STATUS'] == 'Not Started' %}
+                                            <meta http-equiv="refresh" content="10">
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'Running' %}
+                                            <meta http-equiv="refresh" content="10">
+                                            <td class="table--cell">
+                                                <em>
+                                                    <img style="height:20px;" src="/static/img/loader.gif" alt="Running">
+                                                    {{ record['RUN_STATUS'] }}
+                                                </em>
+{#                                             <em class="status status--busy">{{ record['RUN_STATUS'] }}</em>#}
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Completed' %}
-                                            <td width="10%" class="table--cell"><em
-                                                    class="status status--success status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'Cancelled' %}
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                        {% elif record['RUN_STATUS'] == 'Invalid Run' %}
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Failed' %}
-                                            <td width="10%" class="table--cell"><em
-                                                    class="status status--error status--small">{{ record['RUN_STATUS'] }}</em>&nbsp;
+                                            <td style="width: 10%" class="table--cell">
+                                                <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                             </td>
                                         {% endif %}
                                     </tr>

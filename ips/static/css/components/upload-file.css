@@ -1,27 +1,26 @@
-
 /* Styles for non-js file-picker */
 
 .upload-file::before {
-  content: " ";
-  /* background: transparent url("/s/img/icons/upload--icon_blue.svg") no-repeat center center; */
-  background-size: 1.6rem;
-  min-width: 27px;
-  min-width: 1.5rem;
-  height: 27px;
-  height: 1.5rem;
-  margin-left: 0.5em;
-  float: right;
-  font-size: 0.8rem;
+    content: "";
+    /* background: transparent url("/s/img/icons/upload--icon_blue.svg") no-repeat center center; */
+    background-size: 1.6rem;
+    min-width: 27px;
+    min-width: 1.5rem;
+    height: 27px;
+    height: 1.5rem;
+    margin-left: 0.5em;
+    float: right;
+    font-size: 0.8rem;
 }
 
 input[type=file]::-webkit-file-upload-button {
-  font-size: 1.25rem;
-  font-size: 1rem;
+    font-size: 1.25rem;
+    font-size: 1rem;
     border: none;
     border-right: 1px solid #999999;
     padding: 0.6rem 1rem;
-    background:#F5F6FF;
-    color:#033e58;
+    background: #F5F6FF;
+    color: #033e58;
 }
 
 input[type=file] {
@@ -36,7 +35,7 @@ input[type=file] {
 
 input[type=file]:hover,
 input[type=file]::-webkit-file-upload-button:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /*
@@ -57,51 +56,51 @@ input[type=file]::-webkit-file-upload-button:hover {
 
 
 .u-hidden {
-  /* stylelint-disable declaration-no-important */
-  display: none !important;
-  /* stylelint-enable */
-  visibility: hidden;
+    /* stylelint-disable declaration-no-important */
+    display: none !important;
+    /* stylelint-enable */
+    visibility: hidden;
 }
 
 .u-visuallyhidden,
 .u-vh {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 
 .u-visuallyhidden.u-focusable:active,
 .u-vh.u-focusable:active,
 .u-visuallyhidden.u-focusable:focus,
 .u-vh.u-focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  width: auto;
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
 }
 
 .u-invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .u-ir {
-  background-color: transparent;
-  border: 0;
-  overflow: hidden;
-  *text-indent: -9999px;
+    background-color: transparent;
+    border: 0;
+    overflow: hidden;
+    *text-indent: -9999px;
 }
 
 .u-ir::before {
-  content: "";
-  display: block;
-  width: 0;
-  height: 150%;
+    content: "";
+    display: block;
+    width: 0;
+    height: 150%;
 }
 

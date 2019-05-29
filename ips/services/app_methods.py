@@ -2,15 +2,13 @@ import csv
 import io
 import json
 import os
-import requests
 from datetime import datetime
-from flask import Flask, request, url_for, redirect, current_app
-from werkzeug.utils import secure_filename
-from ips.util.ui_configuration import UIConfiguration
 
+import requests
+
+from ips.services import API_TARGET
 
 APP_DIR = os.path.dirname(__file__)
-API_TARGET = UIConfiguration().get_api_uri()
 
 
 def create_run(unique_id, run_name, run_description, user_id, period, year, run_type='0', run_status='0'):
@@ -56,6 +54,7 @@ def edit_run(run_id, run_name, run_description, period, year, run_type='0', run_
     run['RUN_TYPE_ID'] = run_type
     run['RUN_STATUS'] = run_status
     run['LAST_MODIFIED'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    s = API_TARGET + r'/runs/' + run_id
     requests.put(API_TARGET + r'/runs/' + run_id, json=run)
 
 
@@ -306,7 +305,7 @@ def import_data(table_name, run_id, file, month=None, year=None):
                          data={'month': month, 'year': year})
 
 
-#George left this here as we may well use it at some point.
+# George left this here as we may well use it at some point.
 def delete_data(table_name, run_id=None):
     route = API_TARGET + r'/' + table_name
 
@@ -392,6 +391,9 @@ def start_run(run_id):
     requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
 
 
+def cancel_run(run_id):
+    requests.get(API_TARGET + r'/ips-service/cancel/' + str(run_id))
+
 
 def get_all_run_ids():
     response = requests.get(API_TARGET + r'/pv_sets')
@@ -403,6 +405,7 @@ def get_all_run_ids():
         list_of_run_ids.append(record['RUN_ID'])
 
     return list_of_run_ids
+
 
 def getErrorMessage(resp):
     resp = json.loads(resp.content.decode('utf-8'))
