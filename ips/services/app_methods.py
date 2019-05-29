@@ -2,15 +2,13 @@ import csv
 import io
 import json
 import os
-import requests
 from datetime import datetime
-from flask import Flask, request, url_for, redirect, current_app
-from werkzeug.utils import secure_filename
-from ips.util.ui_configuration import UIConfiguration
 
+import requests
+
+from ips.services import API_TARGET
 
 APP_DIR = os.path.dirname(__file__)
-API_TARGET = UIConfiguration().get_api_uri()
 
 
 def create_run(unique_id, run_name, run_description, user_id, period, year, run_type='0', run_status='0'):
@@ -307,7 +305,7 @@ def import_data(table_name, run_id, file, month=None, year=None):
                          data={'month': month, 'year': year})
 
 
-#George left this here as we may well use it at some point.
+# George left this here as we may well use it at some point.
 def delete_data(table_name, run_id=None):
     route = API_TARGET + r'/' + table_name
 
