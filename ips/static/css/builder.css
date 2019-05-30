@@ -1,22 +1,26 @@
-.b_icon{
-    font-size:12px;
-    height:30px;
+.b_icon {
+    font-size: 12px;
+    height: 30px;
     cursor: pointer;
 }
-.right{
-    text-align:right;
+
+.right {
+    text-align: right;
 }
-.b_div{
+
+.b_div {
     width: 8%;
     display: inline-block;
-    float:right;
+    float: right;
 }
-.builder_main{
+
+.builder_main {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 20px 12px 20px 12px;
 }
-.grb_btn_look{
+
+.grb_btn_look {
     width: 5rem !important;
     display: inline-block !important;
     cursor: pointer;
@@ -28,19 +32,27 @@
     background-color: #3b7a9e;
     color: white !important;
 }
-.grb_i{
-    font-size:12px;
+
+.grb_i {
+    font-size: 12px;
     width: 13% !important;
     display: inline-block !important;
     margin: 0px 5px 0px 5px;
 }
-.grb_l{
-    font-size:12px;
+
+.grb_l {
+    font-size: 12px;
     border: none !important;
     width: 13% !important;
     display: inline-block !important;
     margin: 0px 5px 0px 5px;
 }
-.grb_var{
+
+.grb_var {
     width: 30% !important;
+}
+
+.info_img {
+    width: 20px !important;
+    vertical-align: sub;
 }

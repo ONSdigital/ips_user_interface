@@ -10,32 +10,32 @@ table {
 }
 
 th {
-  border: none;
-  text-align: left;
-  padding: 2px 0;
-  width: 200px;
-  line-height: 1.4;
+    border: none;
+    text-align: left;
+    padding: 2px 0;
+    width: 200px;
+    line-height: 1.4;
 }
 
 td {
-  border-bottom: none;
-  padding: 2px 0;
-  line-height: 1.4;
+    border-bottom: none;
+    padding: 2px 0;
+    line-height: 1.4;
 }
 
 
 .table-grey-text {
-  color: #999999;
-  font-weight: 400;
+    color: #999999;
+    font-weight: 400;
 }
 
 .table-grey-text-reveal {
-  width: 56px;
-  color: #999999;
-  font-weight: 400;
+    width: 56px;
+    color: #999999;
+    font-weight: 400;
 }
 
 .legal {
-  border-bottom: 1px solid #cfcfcf;
-  padding: 0.75rem 0;
+    border-bottom: 1px solid #cfcfcf;
+    padding: 0.75rem 0;
 }

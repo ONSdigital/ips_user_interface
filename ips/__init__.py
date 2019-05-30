@@ -3,7 +3,7 @@ import logging
 from flask import Flask, redirect, url_for, session
 from flask_bootstrap import Bootstrap
 
-from ips.services import dashboard, export, manage_run, system_info, auth, builder, new_run
+from ips.services import dashboard, export, manage_run, auth, builder, new_run
 
 from ips.services.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
@@ -28,7 +28,6 @@ app.logger.disabled = True
 app.register_blueprint(builder.bp)
 app.register_blueprint(auth.bp)
 app.register_blueprint(dashboard.bp)
-app.register_blueprint(system_info.bp)
 app.register_blueprint(new_run.bp)
 app.register_blueprint(manage_run.bp)
 app.register_blueprint(export.bp)
