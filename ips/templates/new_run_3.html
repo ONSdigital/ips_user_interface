@@ -83,7 +83,7 @@
                             <div class="wrapper">
                                 <div class="group">
 
-                                    <table class="table table__dense">
+                                    <table class="table table__dense paginate" paginate="w_p">
                                         {% if table %}
                                             <thead class="table--head">
                                             {% for column in header %}
@@ -148,7 +148,7 @@
                                 <div class="wrapper">
                                     <div class="group">
                                         <div class="col-6 table-pagination-extra-padding">
-                                                <span>
+                                                <span id="w_p">
                                                     1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
                                                     <a href="#">2</a>&nbsp;
                                                     <a href="#">3</a>&nbsp;

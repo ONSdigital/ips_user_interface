@@ -137,7 +137,11 @@
             function setPaginateDiv(deliminator, rows, div) {
                 pages = Math.ceil(rows / deliminator);
                 div.empty();
-                div.append("<label class='pag_info'>1 to 20 of " + rows + "</label>");
+                if(rows < deliminator){
+                    div.append("<label class='pag_info'>1 to "+rows+" of " + rows + "</label>");
+                }else {
+                    div.append("<label class='pag_info'>1 to 20 of " + rows + "</label>");
+                }
                 for (i = 1; i <= rows; i++) {
                     if (i === 1) {
                         div.append("<a current=true class='pag_index cur' index='" + i + "'>" + i + "</a>");
@@ -145,6 +149,9 @@
                         div.append("<a current=false class='pag_index' index='" + i + "' href='javascript:void(0)'>" + i + "</a>");
                     } else {
                         div.append("<a current=false class='pag_index' style='display:none' index='" + i + "' href='javascript:void(0)'>" + i + "</a>");
+                    }
+                    if(i == pages){
+                        break;
                     }
                 }
                 div.append("<a current=false class='pag_index' href='#'>Next</a>");
