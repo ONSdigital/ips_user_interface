@@ -81,7 +81,7 @@
                             <div class="group">
                                 <div class="col-8 top_40_extra_space">
                                     {% if table %}
-                                        <table id="form_table" class="table table__dense paginate" paginate="w_p">
+                                        <table id="form_table" class="table table__dense">
                                         <thead class="table--head">
                                         <tr>
                                             <th class="table--header--cell">PV Name</th>
@@ -92,7 +92,7 @@
                                         <tbody>
                                         <!-- for each record, render each data value-->
                                         {% for record in table %}
-                                            <tr class="table--row">
+                                            <tr class="table--row" index="{{ record['PROCESS_VARIABLE_ID'] }}">
 
                                                 <td style="vertical-align: middle;"
                                                     class="table--cell">{{ record['PV_NAME'] }}</td>
@@ -147,27 +147,6 @@
                                     {% endif %}
                                     </table>
                                 </div>
-
-                                <div class="wrapper">
-                                    <div class="group">
-                                        <div class="col-6 table-pagination-extra-padding">
-                                                <span id="w_p">
-                                                    1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
-                                                    <a href="#">2</a>&nbsp;
-                                                    <a href="#">3</a>&nbsp;
-                                                    <a href="#">4</a>&nbsp;
-                                                    <a href="#">5</a>&nbsp;
-                                                    <a href="#">6</a>&nbsp;
-                                                    <a href="#">7</a>&nbsp;
-                                                    <a href="#">8</a>&nbsp;
-                                                    <a href="#">9</a>&nbsp;
-                                                    <a href="#">10</a>&nbsp;
-                                                    <a href="#">Next</a>&nbsp;
-                                                </span>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
                             <div class="top_50_extra_space">
