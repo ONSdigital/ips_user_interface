@@ -10,7 +10,7 @@
 @import "components/search.css";
 @import "components/table.css";
 @import "components/nav2.css";
-@import "components/progress/dialog.css";
+@import "components/dialog.css";
 @import "components/upload-file.css";
 @import "components/own.css";
 @import "components/multiple-select.css";
@@ -22,15 +22,18 @@
     padding: 27px 27px 9px 27px;
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
 }
-.pag_index{
-    margin-right:5px;
+
+.pag_index {
+    margin-right: 5px;
 }
-.cur{
-    color:#000000;
+
+.cur {
+    color: #000000;
     text-decoration: none;
 }
-.pag_info{
-    margin-right:15px;
+
+.pag_info {
+    margin-right: 15px;
 }
 
 .input--select {

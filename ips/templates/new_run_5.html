@@ -32,9 +32,6 @@
                         <li class="nav__item nav__item--active" role="menuitem">
                             <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
-                        <li class="nav__item " role="menuitem">
-                            <a href="{{ url_for('system_info.system_info') }}" class="nav__link">System Info</a>
-                        </li>
                     </ul>
                 </nav>
             </div>
@@ -136,7 +133,8 @@
                     {% endif %}
 
                     {% if run_id %}
-                        <form id="run_5_form" action="{{ url_for('.new_run_5', run_id=run_id) }}" class="form" method="post"
+                        <form id="run_5_form" action="{{ url_for('.new_run_5', run_id=run_id) }}" class="form"
+                              method="post"
                               enctype="multipart/form-data">
                     {% else %}
                         <form id="run_5_form" action="{{ url_for('.new_run_5') }}" class="form" method="post"
@@ -334,9 +332,10 @@
 
                     $.blockUI({
                         message: "<div style='padding: 10px 0px 10px 0px;'><h1>Uploading Files ...</h1><img src='" + loc + "'/></div>",
-                        css: { backgroundColor: '#3B7A9E', color: '#fff', 'border-style': 'none;' }
+                        css: {backgroundColor: '#3B7A9E', color: '#fff', 'border-style': 'none;'}
                     });
 
+                    console.log(" cxalling: " + loc);
                     $.ajax({
                         url: url,
                         method: "POST",
@@ -347,7 +346,13 @@
 
                     }).done(function (data, textStatus, jqXHR) {
                         $.unblockUI();
-                        location.replace(data.redirect)
+                        if (data.redirect) {
+                            location.replace(data.redirect)
+                        } else {
+                            var newDoc = document.open("text/html", "replace");
+                            newDoc.write(data);
+                            newDoc.close();
+                        }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         $.unblockUI();
                     });

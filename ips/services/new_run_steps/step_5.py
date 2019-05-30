@@ -85,6 +85,6 @@ def run_step_5(run_id):
     else:
         error = True
         log.warning('User did not fill all fields with .csv files.')
-        error_message = "All fields must be filled with .csv files only."
+        error_message = "Select .csv file types for all filename fields"
 
-    return render_template('new_run_5.html', form=form, error=error, error_message=error_message)
+    return render_template('new_run_5.html', form=form, error=error, error_message=error_message, run_id=run_id)

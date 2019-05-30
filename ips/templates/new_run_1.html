@@ -28,9 +28,6 @@
                         <li class="nav__item nav__item--active" role="menuitem">
                             <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
-                        <li class="nav__item " role="menuitem">
-                            <a href="{{ url_for('system_info.system_info') }}" class="nav__link">System Info</a>
-                        </li>
                     </ul>
                 </nav>
             </div>
@@ -88,9 +85,9 @@
                         {{ form.csrf_token }}
                         {{ form.run_name.label(class="label venus ", for="text-input") }}
                         {% if form.run_name.default %}
-                            {{ form.run_name(class="input input--text", type="text", id="text-input", placeholder="Enter run name", maxlength="30", value=form.run_name.default) }}
+                            {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="Enter run name", maxlength="30", value=form.run_name.default) }}
                         {% else %}
-                            {{ form.run_name(class="input input--text", type="text", id="text-input", placeholder="Enter run name", maxlength="30") }}
+                            {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="Enter run name", maxlength="30") }}
                         {% endif %}
                         {% if form.run_name.errors %}
                             <ul>

@@ -156,60 +156,6 @@ def manage_run(run_id):
                            current_run=current_run,
                            run_status=run_status)
 
-
-@bp.route('/weights/<run_id>', methods=['GET', 'POST'])
-@login_required
-def weights(run_id=None):
-    form = DataSelectionForm()
-
-    run = app_methods.get_run(run_id)
-    if run:
-        session['id'] = run['RUN_ID']
-        session['run_name'] = run['RUN_NAME']
-        session['run_description'] = run['RUN_DESC']
-        current_run = run
-
-        if request.method == 'POST':
-            if form.validate():
-                # print(request.values)
-                table_name, table_title, data_source = request.values['data_selection'].split('|')
-                session['dw_table'] = table_name
-                session['dw_title'] = table_title
-                session['dw_source'] = data_source
-                return redirect(
-                    url_for('manage_run.weights_2',
-                            table=table_name,
-                            id=run['RUN_ID'],
-                            source=data_source,
-                            table_title=table_title)
-                )
-        return render_template('weights.html',
-                               form=form,
-                               current_run=current_run)
-    else:
-        abort(404)
-
-
-@bp.route('/weights_2/<id>', methods=['GET', 'POST'])
-@bp.route('/weights_2/<id>/<table>/<table_title>/<source>', methods=['GET', 'POST'])
-@login_required
-def weights_2(id, table=None, table_title=None, source=None):
-    if id:
-        if table:
-            dataframe = app_methods.get_display_data_json(table, id, source)
-            file_name = table + ".csv";
-            return render_template('weights_2.html',
-                                   table_title=table_title,
-                                   table_name=table,
-                                   table=dataframe,
-                                   file_name=file_name,
-                                   run_id=id)
-        else:
-            return redirect(url_for('export.export_data', run_id=id), code=302)
-    else:
-        abort(404)
-
-
 @bp.route('/status/<run_id>', methods=['GET'])
 @login_required
 def status(run_id=None):

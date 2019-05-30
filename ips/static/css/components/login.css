@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 .field {
-  padding: 0 0 8px 0;
-  padding: 0 0 0.4444rem 0;
+    padding: 0 0 8px 0;
+    padding: 0 0 0.4444rem 0;
 }
 
 .label--inline {
