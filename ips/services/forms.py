@@ -26,9 +26,12 @@ class SearchActivityForm(FlaskForm):
     run_type_list = [
         ('-1', 'All Runs'),
         ('0', 'Ready'),
-        ('1', 'In Progress'),
-        ('2', 'Completed'),
-        ('3', 'Failed')
+        ('1', 'Not Started'),
+        ('2', 'Running'),
+        ('3', 'Completed'),
+        ('4', 'Cancelled'),
+        ('5', 'Invalid Run'),
+        ('6', 'Failed')
     ]
     run_type_filter = SelectField(label='RunType', choices=run_type_list)
 

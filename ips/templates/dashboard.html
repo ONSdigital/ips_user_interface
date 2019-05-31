@@ -28,7 +28,7 @@
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item " role="menuitem">
-                            <a href="{{  url_for('new_run_steps.new_run_1')}}" class="nav__link">New Run</a>
+                            <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                     </ul>
                 </nav>
@@ -49,16 +49,18 @@
                     <div class="group panel__body">
                         <form id="form-search" action="/dashboard/" class="form" method="post">
 
+                            {{ form.csrf_token }}
+
                             <div class="col-12">
                                 <div class="col-5">
                                     {{ form.search_activity(class="input input--textarea js-charlimit-input",
-                                    cols="1",rows="1",id="text-input",maxlength="400", placeholder="Search...") }}
+                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
                                 </div>
                                 <div class="col-5">
-                                    {{ form.run_type_filter(class="input input--select", style="width:100%;", type="submit") }}
+                                    {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
                                 </div>
                                 <div class="col-2">
-                                    {{ form.search_button(class="btn ", style="width:100%; padding:10px;", type="submit") }}
+                                    {{ form.search_button(class="btn ", id="search_button", style="width:100%; padding:10px;", type="submit") }}
                                 </div>
                             </div>
 
@@ -117,10 +119,11 @@
                                             <meta http-equiv="refresh" content="10">
                                             <td class="table--cell">
                                                 <em>
-                                                    <img style="height:20px;" src="/static/img/loader.gif" alt="Running">
+                                                    <img style="height:20px;" src="/static/img/loader.gif"
+                                                         alt="Running">
                                                     {{ record['RUN_STATUS'] }}
                                                 </em>
-{#                                             <em class="status status--busy">{{ record['RUN_STATUS'] }}</em>#}
+                                                {#                                             <em class="status status--busy">{{ record['RUN_STATUS'] }}</em>#}
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Completed' %}
                                             <td style="width: 10%" class="table--cell">
@@ -156,6 +159,15 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $('#filter_dropdown').change(function () {
+                    $('#search_button').click();
+                });
+            });
+        </script>
+
     {% endblock %}
 </footer>
 </body>

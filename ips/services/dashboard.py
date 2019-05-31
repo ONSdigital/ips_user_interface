@@ -99,26 +99,36 @@ def dashboard_view():
         if 'search_button' in request.form:
             search_activity = request.form['search_activity']
             filter_value = request.form['run_type_filter']
+
+            def fil(x):
+
+                return (
+                        search_activity.lower() in x['RUN_NAME'].lower() or
+                        search_activity.lower() in x['RUN_DESC'].lower() or
+                        search_activity.lower() in x['PERIOD'].lower() or
+                        search_activity.lower() in x['USER_ID'].lower() or
+                        search_activity.lower() in str(x['YEAR'])
+                )
+
+            records = filter(fil, records)
+
             # If the filer is -1 then no filter to apply otherwise filter using the run_status value
             if request.form['run_type_filter'] != '-1':
-                records = [x for x in records
-                           if (search_activity.lower() in x['RUN_ID'].lower() or
-                               search_activity.lower() in x['RUN_NAME'].lower() or
-                               search_activity.lower() in x['RUN_DESC'].lower() or
-                               search_activity.lower() in x['PERIOD'].lower() or
-                               search_activity.lower() in x['YEAR'].lower()) and
-                           run_statuses[filter_value].lower() == x['RUN_STATUS'].lower()]
-            else:
-                records = [x for x in records
-                           if search_activity.lower() in x['RUN_ID'].lower() or
-                           search_activity.lower() in x['RUN_NAME'].lower() or
-                           search_activity.lower() in x['RUN_DESC'].lower() or
-                           search_activity.lower() in x['PERIOD'].lower() or
-                           search_activity.lower() in x['YEAR'].lower()]
+                records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
-    log.info('Rendering dashboard now...')
+    log.debug('Rendering dashboard now...')
 
     return render_template('dashboard.html',
                            header=header,
                            records=records,
                            form=form)
+
+
+def fil(search_activity, x):
+    return (
+            search_activity.lower() in x['RUN_ID'].lower() or
+            search_activity.lower() in x['RUN_NAME'].lower() or
+            search_activity.lower() in x['RUN_DESC'].lower() or
+            search_activity.lower() in x['PERIOD'].lower() or
+            search_activity.lower() in str(x['YEAR'])
+    )
