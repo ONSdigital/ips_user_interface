@@ -10,7 +10,6 @@ Flask-Caching==1.6.0
 Flask-Login==0.4.1
 Flask-WTF==0.14.2
 idna==2.8
-IPS-Common-Library==0.1.16
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
