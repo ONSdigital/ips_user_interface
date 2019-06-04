@@ -2,7 +2,7 @@ import getpass
 import uuid
 
 from flask import request, render_template, session, redirect
-from ips_common.ips_logging import log
+from ips.util.ui_logging import log
 
 from ips.services import app_methods
 from ips.services.forms import DateSelectionForm
@@ -13,7 +13,7 @@ def run_step_2(run_id):
 
     # if request is a post
     if request.method == 'POST':
-        log.debug("Processing post request.")
+        log.debug("run_step_2 [POST] request")
         session['period'] = request.form['s_month']
         session['year'] = request.form['s_year']
 
@@ -37,17 +37,17 @@ def run_step_2(run_id):
                     app_methods.edit_run(run_id=run_id, run_name=run['RUN_NAME'], run_description=run['RUN_DESC'],
                                          period=run['PERIOD'], year=run['YEAR'],
                                          run_type=run['RUN_TYPE_ID'], run_status='0')
-                    log.info("Run edited with start and end date. Redirecting to new_run_3...")
+                    log.debug("run_step_2 [POST] Run edited with start and end date. Redirecting to new_run_3...")
 
                     return redirect('/new_run_steps/new_run_3/' + run_id, code=302)
                 else:
                     unique_id = uuid.uuid4()
                     session['id'] = str(unique_id)
-                    log.debug("Generated new unique_id.")
+                    log.debug("run_step_2 [POST] Generated new unique_id.")
                     app_methods.create_run(session['id'], session['run_name'], session['run_description'],
                                            getpass.getuser(),
                                            session['period'], session['year'])
-                    log.info("New run created from session variables. Redirecting to new_run_3...")
+                    log.debug("run_step_2 [POST] New run created from session variables. Redirecting to new_run_3...")
 
                     return redirect('/new_run_steps/new_run_3/' + session['id'], code=302)
 

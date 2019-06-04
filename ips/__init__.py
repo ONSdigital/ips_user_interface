@@ -2,6 +2,7 @@ import logging
 
 from flask import Flask, redirect, url_for, session
 from flask_bootstrap import Bootstrap
+from ips.util.ui_logging import log
 
 from ips.services import dashboard, export, manage_run, auth, builder, new_run
 
@@ -32,6 +33,7 @@ app.register_blueprint(new_run.bp)
 app.register_blueprint(manage_run.bp)
 app.register_blueprint(export.bp)
 
+log.debug("IPS UI Started")
 
 @app.route('/')
 def index():

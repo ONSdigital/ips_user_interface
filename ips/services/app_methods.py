@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 
 from ips.services import API_TARGET
+from ips.util.ui_logging import log
 
 APP_DIR = os.path.dirname(__file__)
 
@@ -28,6 +29,8 @@ def create_run(unique_id, run_name, run_description, user_id, period, year, run_
         'RUN_STATUS': run_status,
         'LAST_MODIFIED': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
+
+    log.debug(f"app_methods: creating new run: {new_run}")
 
     requests.post(API_TARGET + r"/runs", json=new_run)
 
@@ -54,26 +57,12 @@ def edit_run(run_id, run_name, run_description, period, year, run_type='0', run_
     run['RUN_TYPE_ID'] = run_type
     run['RUN_STATUS'] = run_status
     run['LAST_MODIFIED'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    log.debug(f"app_methods: editing run: {run}")
+
     s = API_TARGET + r'/runs/' + run_id
     requests.put(API_TARGET + r'/runs/' + run_id, json=run)
 
-
-def get_system_info():
-    """
-    Purpose: Collects and returns the current build's system info to be displayed on the web application.
-             This function uses placeholder data and may not be required in the final system.
-
-    :return: List of records containing the system info
-    """
-    import flask
-    import sys
-    import ips_common
-    return [
-        ['Technology', 'Version'],
-        ['Flask', flask.__version__],
-        ['Python', sys.version],
-        ['IPS-Common-Library', ips_common.__version__]
-    ]
 
 
 def get_runs():
@@ -84,7 +73,10 @@ def get_runs():
     """
 
     response = requests.get(API_TARGET + r'/runs')
-    return json.loads(response.content)
+    js = json.loads(response.content)
+    log.debug(f"app_methods: getting runs: {js}")
+
+    return js
 
 
 def get_run(run_id):
@@ -93,6 +85,8 @@ def get_run(run_id):
 
     :return: A specific JSON run object
     """
+
+    log.debug(f"app_methods: getting run for id: {run_id}")
     response = requests.get(API_TARGET + r'/runs')
     runs = json.loads(response.content)
 
@@ -156,10 +150,13 @@ def get_display_data_json(table_name, run_id=None, data_source=None):
 def get_process_variables(run_id):
     response = requests.get(API_TARGET + r'/process_variables/TEMPLATE')
 
+    log.debug(f"app_methods: get_process_variables: {run_id}")
+
     return json.loads(response.content)
 
 
 def get_process_variables_builds(run_id):
+    log.debug(f"app_methods: get_process_variables_builds: {run_id}")
     response = requests.get(API_TARGET + r'/builder/' + run_id)
     return json.loads(response.content)
 
@@ -170,6 +167,7 @@ def get_process_variables_variables():
 
 
 def create_process_variables_set(run_id, name, user, period, year):
+    log.debug(f"app_methods: create_process_variables_set: {run_id}, {name}, {user}, {period}, {year}")
     response = requests.get(API_TARGET + r'/pv_sets')
     file = json.loads(response.content)
     new_pv_set = file[0]
@@ -184,26 +182,25 @@ def create_process_variables_set(run_id, name, user, period, year):
 
 
 def create_process_variables(run_id, json):
+    log.debug(f"app_methods: create_process_variables: {run_id}")
     requests.post(API_TARGET + r'/process_variables/' + run_id, json=json)
 
 
 def get_process_variable_sets():
+    log.debug(f"app_methods: get_process_variable_sets")
     response = requests.get(API_TARGET + r'/pv_sets')
     return json.loads(response.content)
 
 
 def create_run_steps(run_id):
-    """
-    Purpose: Creates a new set of run steps for a newly generated run.
-
-    :return: NA
-    """
+    log.debug(f"app_methods: create_run_steps: {run_id}")
     route = API_TARGET + r"/run_steps/" + run_id
 
     requests.post(route)
 
 
 def get_run_steps(run_id):
+    log.debug(f"app_methods: get_run_steps: {run_id}")
     address = API_TARGET + r'/run_steps/' + run_id
 
     response = requests.get(address)
@@ -217,12 +214,7 @@ def get_run_steps(run_id):
 
 
 def get_export_data_table(run_id):
-    """
-        Purpose: Gets the export data for all the runs
-
-        :return: List of exports as JSON
-        """
-    # API gateway response is a list of JSON data containing the export data for all the runs
+    log.debug(f"app_methods: get_export_data_table: {run_id}")
     response = requests.get(API_TARGET + r'/EXPORT_DATA_DOWNLOAD/' + run_id)
 
     # Set boolean to assume records exist
@@ -250,12 +242,7 @@ def get_export_data_table(run_id):
 
 
 def export_clob(run_id, target_filename, sql_table):
-    """
-        Purpose: Puts the export downloadable data into a text file
-
-        :return: NA
-        """
-    # API gateway response to get a single export from run id, filename and the SQL table
+    log.debug(f"app_methods: export_clob: {run_id}, {target_filename}, {sql_table}")
     response = requests.get(
         API_TARGET + r'/EXPORT_DATA_DOWNLOAD' + r'/' + run_id + r'/' + target_filename + r'/' + sql_table)
 
@@ -271,12 +258,7 @@ def export_clob(run_id, target_filename, sql_table):
 
 
 def create_export_data_download(run_id, sql_table):
-    """
-            Purpose: Gets the export data and puts into a single long string
-            :return: Boolean - posts the data to the database
-            """
-
-    # Get the export data by SQL table and run id
+    log.debug(f"app_methods: create_export_data_download: {run_id}, {sql_table}")
     try:
         response = requests.get(API_TARGET + r'/export/' + run_id + r'/' + sql_table)
         # Convert to JSON
@@ -287,19 +269,14 @@ def create_export_data_download(run_id, sql_table):
 
 
 def edit_process_variables(run_id, json_dictionary):
-    """
-    :param run_id:
-    :param pv_content:
-    :param pv_name:
-    :param reason_for_change:
-    :return:
-    """
-    response = requests.delete(API_TARGET + r'/process_variables/' + run_id)
+    log.debug(f"app_methods: edit_process_variables: {run_id}")
+    requests.delete(API_TARGET + r'/process_variables/' + run_id)
 
     create_process_variables(run_id, json_dictionary)
 
 
 def import_data(table_name, run_id, file, month=None, year=None):
+    log.debug(f"app_methods: import_data: {table_name}, {run_id}, {file}")
     return requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
                          files={'ips-file': file},
                          data={'month': month, 'year': year})
@@ -307,6 +284,7 @@ def import_data(table_name, run_id, file, month=None, year=None):
 
 # George left this here as we may well use it at some point.
 def delete_data(table_name, run_id=None):
+    log.debug(f"app_methods: delete_data: {table_name}, {run_id}")
     route = API_TARGET + r'/' + table_name
 
     if run_id:
@@ -319,6 +297,9 @@ def delete_data(table_name, run_id=None):
 
 # TODO: El needs this to refactor and move validation to ips_services and can then be removed
 def date_check(month, year, month_list, year_list):
+
+    log.debug(f"app_methods: date_check: month: {month}, year: {year}")
+
     date_error = False
     month = [month]
     year = [year]
@@ -343,6 +324,7 @@ def date_check(month, year, month_list, year_list):
 # TODO: El needs this to refactor and move validation to ips_services and can then be removed
 def survey_data_import(import_data_file, month, year):
     # Import  data
+    log.debug(f"app_methods: survey_data_import: data_file: {import_data_file},  month: {month}, year: {year}")
     stream = io.StringIO(import_data_file.stream.read().decode("utf-8"), newline=None)
     import_csv = csv.DictReader(stream)
     import_csv.fieldnames = [name.upper() for name in import_csv.fieldnames]
@@ -357,9 +339,6 @@ def survey_data_import(import_data_file, month, year):
     year_list = list(year_set)
     date_error = date_check(month, year, month_list, year_list)
 
-    print("Field Names:")
-    print(import_csv.fieldnames)
-
     serial_error = False
     # column_error = False
 
@@ -371,6 +350,8 @@ def survey_data_import(import_data_file, month, year):
 
 
 def get_run_step_requests(run_id, step_number=None):
+    log.debug(f"app_methods: get_run_step_requests: run_id: {run_id},  step_number: {step_number}")
+
     address = API_TARGET + r'/RESPONSE/' + run_id
 
     if step_number:
@@ -388,10 +369,12 @@ def get_run_step_requests(run_id, step_number=None):
 
 # Steps to run comes through as a string list containing the step numbers to run
 def start_run(run_id):
+    log.debug(f"app_methods: start_run: run_id: {run_id}")
     requests.put(API_TARGET + r'/ips-service/start/' + str(run_id))
 
 
 def cancel_run(run_id):
+    log.debug(f"app_methods: cancel_run: run_id: {run_id}")
     requests.get(API_TARGET + r'/ips-service/cancel/' + str(run_id))
 
 
@@ -407,7 +390,7 @@ def get_all_run_ids():
     return list_of_run_ids
 
 
-def getErrorMessage(resp):
+def get_error_message(resp):
     resp = json.loads(resp.content.decode('utf-8'))
     resp = resp['description']
     s = resp.find('(') + 1

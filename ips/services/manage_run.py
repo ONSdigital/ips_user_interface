@@ -1,12 +1,12 @@
 from datetime import datetime
 
 import requests
-from flask import request, render_template, Blueprint, session, redirect, url_for, abort, json
+from flask import request, render_template, Blueprint, session, redirect, abort, json
 from flask_login import login_required
-from ips_common.ips_logging import log
+from ips.util.ui_logging import log
 
 from ips.services import app_methods, API_TARGET
-from .forms import ManageRunForm, DataSelectionForm
+from .forms import ManageRunForm
 
 bp = Blueprint('manage_run', __name__, url_prefix='/manage_run', static_folder='static')
 
@@ -63,23 +63,21 @@ periods = {
 @bp.route('/start/<run_id>', methods=['POST'])
 @login_required
 def start_run(run_id):
+
+    log.debug(f"manage_run[start_run] for run_id: {run_id}")
+
     form = ManageRunForm()
 
     run = app_methods.get_run(run_id)
     if not run:
+        log.warning(f"start_run: The requested run_id: {run_id} not found")
         return json.dumps({'status': 'Error: Run ID not Found'})
 
     form.validate()
 
-    res = app_methods.start_run(run_id)
+    app_methods.start_run(run_id)
 
-    # run_status = app_methods.get_run_steps(run['RUN_ID'])
-    #
-    # for step in run_status:
-    #     step['STEP_STATUS'] = status_values[str(int(step['STEP_STATUS']))]
-    #     step['STEP_NUMBER'] = str(int(step['STEP_NUMBER']))
-
-    log.info(f"Start run: {run_id}")
+    log.info(f"Started run: {run_id}")
     return json.dumps({'status': 'OK'})
 
 
@@ -88,11 +86,13 @@ def start_run(run_id):
 def stop_run(run_id):
     run = app_methods.get_run(run_id)
     if not run:
+        log.warning(f"manage_run[stop_run]: The requested run_id: {run_id} not found")
         return json.dumps({'status': 'Error: Run ID not Found'})
 
-    res = app_methods.cancel_run(run_id)
+    app_methods.cancel_run(run_id)
 
-    print(f"Cancel run: {run_id}")
+    log.info(f"Cancelling run: {run_id}")
+
     return json.dumps({'status': 'OK'})
 
 
@@ -102,8 +102,11 @@ def manage_run(run_id):
     form = ManageRunForm()
 
     run = app_methods.get_run(run_id)
+
     if not run:
+        log.error("manage_run[manage_run]: No run_id provided")
         abort(404)
+        return
 
     session['id'] = run['RUN_ID']
     session['run_name'] = run['RUN_NAME']
@@ -124,7 +127,7 @@ def manage_run(run_id):
 
         if 'run_button' in request.form:
 
-            res = app_methods.start_run(run_id)
+            app_methods.start_run(run_id)
 
             run_status = app_methods.get_run_steps(run['RUN_ID'])
 
@@ -143,7 +146,7 @@ def manage_run(run_id):
         elif 'manage_run_button' in request.form:
             return redirect('/manage_run/' + current_run['RUN_ID'], code=302)
 
-    log.info("Rendering existing run")
+    log.info("manage_run: Rendering existing run")
 
     run_status = app_methods.get_run_steps(run['RUN_ID'])
 
@@ -156,11 +159,14 @@ def manage_run(run_id):
                            current_run=current_run,
                            run_status=run_status)
 
+
 @bp.route('/status/<run_id>', methods=['GET'])
 @login_required
 def status(run_id=None):
+
     if run_id:
         response = requests.get(API_TARGET + r'/ips-service/status/' + run_id)
         return response.content
     else:
+        log.error("manage_run[status]: No run_id provided")
         abort(404)

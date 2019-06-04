@@ -2,7 +2,7 @@ from flask_login import login_required
 from flask import request, render_template, Blueprint, redirect
 from datetime import datetime
 
-from ips_common.ips_logging import log
+from ips.util.ui_logging import log
 
 from .forms import SearchActivityForm
 from ips.services import app_methods
@@ -16,7 +16,7 @@ def dashboard_view():
     form = SearchActivityForm()
 
     # Log that dashboard view has been accessed
-    log.info('Dashboard being accessed...')
+    log.debug('Dashboard being accessed...')
 
     # Get the records and separate the headers and values
     try:
@@ -94,11 +94,13 @@ def dashboard_view():
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
-
+        log.debug("dashboard [POST] request")
         # If the search button is selected filter the results on the run status and the searched word.
         if 'search_button' in request.form:
+
             search_activity = request.form['search_activity']
             filter_value = request.form['run_type_filter']
+            log.debug(f"dashboard search request, search term {search_activity}, filter: {filter_value}")
 
             def fil(x):
 
@@ -116,7 +118,7 @@ def dashboard_view():
             if request.form['run_type_filter'] != '-1':
                 records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
-    log.debug('Rendering dashboard now...')
+    log.debug('dashboard: Rendering dashboard now...')
 
     return render_template('dashboard.html',
                            header=header,

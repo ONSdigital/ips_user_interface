@@ -1,5 +1,5 @@
 from flask import request, render_template, session, redirect, current_app
-
+from ips.util.ui_logging import log
 from ips.services import app_methods
 
 
@@ -7,12 +7,14 @@ def run_step_3(run_id):
     try:
         run_id = session['id']
     except:
+        log.warning("run_step_3: No run_id in session")
         run_id = False
 
     if request.method == "POST":
+        log.debug("run_step_3 [POST] request")
         session['template_id'] = request.form['selected']
 
-        current_app.logger.info("Redirecting to new_run_4 with template_id " + session['template_id'] + "...")
+        log.debug("run_step_3 [POST] Redirecting to new_run_4 with template_id " + session['template_id'] + "...")
 
         return redirect('/new_run_steps/new_run_4')
 
@@ -46,6 +48,6 @@ def run_step_3(run_id):
 
     header = ['RUN_ID', 'NAME', 'USER', 'PERIOD', 'YEAR']
 
-    current_app.logger.debug("Retrieved process variable sets, rendering new_run_3.")
+    log.debug("run_step_3 [GET]  Retrieved process variable sets, rendering new_run_3.")
 
     return render_template('new_run_3.html', table=records, header=header)

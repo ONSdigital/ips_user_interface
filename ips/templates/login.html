@@ -25,36 +25,58 @@
 </header>
 {% block content %}
     {{ super() }}
-    <br>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <form action="" method="post" class="form" role="form">
-                    {{ form.csrf_token }}
-                    {% for field in form %}
-                        {% if field.type != "SubmitField" %}
-                            {% if field.type != "CSRFTokenField" %}
-                                <div class="field u-mb-m">
-                                    {{ field.label(class_="label u-fs-r") }}
-                                    {% if field.errors %}
-                                        {{ field(class_="form-control is-invalid") }}
-                                        {% for error in field.errors %}
-                                            <div class="invalid-feedback">{{ error }}</div>
-                                        {% endfor %}
-                                    {% else %}
-                                        {{ field(class_="input input--text") }}
-                                    {% endif %}
-                                </div>
+        {% if error %}
+            <section>
+                <div class="collator-item">
+                    <h2 class="collator-title"></h2>
+                    <!-- Start: @panel--error -->
+                    <div class="panel panel--error">
+                        <div class="panel__header">
+                            <div class="venus">Error</div>
+                        </div>
+                        <div class="panel__body">
+                            <p class="mars">Please send the following message to IPS support:</p>
+                            <p class="mars">{{ error_message }}</p>
+                        </div>
+                    </div>
+                    <!-- End: @panel--error -->
+                </div>
+            </section>
+        {% endif %}
+
+        <br>
+        <section>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <form action="" method="post" class="form" role="form">
+                        {{ form.csrf_token }}
+                        {% for field in form %}
+                            {% if field.type != "SubmitField" %}
+                                {% if field.type != "CSRFTokenField" %}
+                                    <div class="field u-mb-m">
+                                        {{ field.label(class_="label u-fs-r") }}
+                                        {% if field.errors %}
+                                            {{ field(class_="form-control is-invalid") }}
+                                            {% for error in field.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ field(class_="input input--text") }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                    {{ form.submit(class_="btn btn-primary") }}
-                </form>
+                        {% endfor %}
+                        {{ form.submit(class_="btn btn-primary") }}
+                    </form>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
+
 {% endblock %}
 </body>
 </html>
