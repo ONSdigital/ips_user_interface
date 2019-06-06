@@ -393,7 +393,20 @@ def get_all_run_ids():
 def get_error_message(resp):
     resp = json.loads(resp.content.decode('utf-8'))
     resp = resp['description']
-    s = resp.find('(') + 1
-    resp = resp[s:-1]
-    error_message = resp.split(',')[2]
+    print(resp)
+    if "pymysql.err.InternalError" in resp:
+        s = findnth(resp, "(", 1)
+        e = findnth(resp, ")", 1)
+        resp = resp[s:e]
+        error_message = resp.split(',')[1]
+    else:
+        s = resp.find('(') + 1
+        resp = resp[s:-1]
+        error_message = resp.split(',')[2]
     return error_message
+
+def findnth(haystack, needle, n):
+    parts= haystack.split(needle, n+1)
+    if len(parts)<=n+1:
+        return -1
+    return len(haystack)-len(parts[-1])-len(needle)
