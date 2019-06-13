@@ -332,7 +332,7 @@
 
             function cancel_run() {
                 let run_id = '{{ current_run['RUN_ID'] }}';
-
+                $("#cancel_button").hide();
                 console.log("submitting to: " + '/manage_run/stop/' + run_id);
 
                 $.ajax({
@@ -340,10 +340,6 @@
                     url: '/manage_run/stop/' + run_id,
                     async: true,
                     success: function (data) {
-                        $("#run_button").attr("disabled", false);
-                        $("#edit_button").attr("disabled", false);
-                        $("#run_button").attr("class", 'btn btn--loader');
-                        $("#cancel_button").hide();
                     },
 
                     error: function (error) {
