@@ -28,7 +28,7 @@ function setUIStatus(status) {
     main.attr('class', 'status ' + getStepStatusClass(status['status']));
     main.text(getStepText(status['status']));
     $('#progress').text(status['percentage_done'] + "%");
-    cancelButton(status['status']);
+    cancelButton(status['status'], steps, status['steps']);
     for (step of steps) {
         const td = $('.status_column[step_num="' + step + '"]');
         const tr = td.parent();
@@ -126,9 +126,18 @@ function getReportStatus(status) {
     }
 }
 
-function cancelButton(status) {
+function cancelButton(status, steps, stepsArr) {
     console.log(status);
-    if (status != "2") {
+    var ready = true;
+    for (step of steps) {
+        if(stepsArr[step]['Status'] == 2){
+            ready = false;
+        }
+    }
+    if (status == "2") {
+        ready = false;
+    }
+    if(ready){
         $("#run_button").attr("class", 'btn btn--loader');
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();

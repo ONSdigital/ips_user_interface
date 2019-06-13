@@ -62,7 +62,7 @@ def run_step_4(run_id):
 
             # Creates a new set of process variables, then fill the empty set with the edited javascript data
             app_methods.create_process_variables_set(run_id, run_name, user, period, year)
-        log.debug("run_step_4 [POST] Session values: %s, %s, %s, %s, %s, %s.", run_id, run_name, period, year, user)
+        log.debug("run_step_4 [POST] Session values: %s, %s, %s, %s, %s.", run_id, run_name, period, year, user)
 
         return redirect('/new_run_steps/new_run_5/' + run_id)
 
