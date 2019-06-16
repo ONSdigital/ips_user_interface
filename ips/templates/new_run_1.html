@@ -126,13 +126,17 @@
                             Save and continue
                         </button>
                         {% if run_id %}
-                            <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
-                                <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Cancel</a>
-                            </button>
+                            <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">
+                                <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
+                                    Cancel
+                                </button>
+                            </a>
                         {% else %}
-                             <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
-                             </button>
+                            <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">
+                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                    Cancel
+                                </button>
+                            </a>
                         {% endif %}
                     </div>
                     </form>

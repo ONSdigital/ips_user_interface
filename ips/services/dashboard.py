@@ -26,14 +26,14 @@ def dashboard_view():
         return redirect("/")  # return the actual error and display it
 
     header = [
-        'Run_ID',
         'Run_Name',
         'Run_Description',
         'Period',
         'Year',
         'Modified',
         'User',
-        'Status'
+        'Status',
+        'Options'
     ]
 
     if len(records) == 0:

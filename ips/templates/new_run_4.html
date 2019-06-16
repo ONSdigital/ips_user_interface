@@ -150,17 +150,25 @@
                                 <div class="btn-group">
                                     <button class="btn btn-group__btn" autofocus id="savec">Save and continue</button>
 
+                                    <a style="text-decoration: none;"
+                                           href="{{ url_for('.new_run_3', run_id=run_id) }}">
                                     <button class="btn btn-group__btn btn--secondary" type="button">
-                                        <a style="text-decoration: none;"
-                                           href="{{ url_for('.new_run_3') }}">Back
-                                        </a>
-                                    </button>
+                                        Back
+                                    </button></a>
 
-                                    <button class="btn btn-group__btn btn--secondary" type="button">
-                                        <a style="text-decoration: none;"
-                                           href="{{ url_for('dashboard.dashboard_view') }}">Cancel
+                                    {% if run_id %}
+                                        <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">
+                                            <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
+                                                Cancel
+                                            </button>
                                         </a>
-                                    </button>
+                                    {% else %}
+                                        <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">
+                                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                                Cancel
+                                            </button>
+                                        </a>
+                                    {% endif %}
 
                                 </div>
                             </div>

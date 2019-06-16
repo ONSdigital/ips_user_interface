@@ -5,6 +5,8 @@
 <head>
     <!--Styles are imported from the parent template.-->
     {% block styles %}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
         {{ super() }}
     {% endblock %}
     <title></title>
@@ -96,9 +98,6 @@
                                 <!-- for each record, render each data value -->
                                 {% for record in records|reverse %}
                                     <tr class="table--row">
-                                        <td style="width: 30%" class="table--cell"><a
-                                                href="/manage_run/{{ record['RUN_ID'] }}">{{ record['RUN_ID'] }}</a>
-                                        </td>
                                         <td style="width: 10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
                                         <td style="width: 18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
                                         <td style="width: 7%" class="table--cell">{{ record['PERIOD'] }}</td>
@@ -110,10 +109,28 @@
                                             <td style="width: 10%" class="table--cell">
                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                    <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
+                                                </div>
+                                            </td>
                                         {% elif record['RUN_STATUS'] == 'Not Started' %}
                                             <meta http-equiv="refresh" content="10">
+                                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                                             <td style="width: 10%" class="table--cell">
-                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                    <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
+                                                </div>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Running' %}
                                             <meta http-equiv="refresh" content="10">
@@ -123,23 +140,70 @@
                                                          alt="Running">
                                                     {{ record['RUN_STATUS'] }}
                                                 </em>
-                                                {#                                             <em class="status status--busy">{{ record['RUN_STATUS'] }}</em>#}
+                                            </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                    <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Completed' %}
                                             <td style="width: 10%" class="table--cell">
                                                 <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
                                             </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                        <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                        <span class="tooltiptext">Manage Run</span></a>
+                                                    <a class='tooltip' href="/export_data/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                                    <span class="tooltiptext">Export Data</span></a>
+                                                </div>
+                                            </td>
                                         {% elif record['RUN_STATUS'] == 'Cancelled' %}
                                             <td style="width: 10%" class="table--cell">
-                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                    <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
+                                                </div>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Invalid Run' %}
                                             <td style="width: 10%" class="table--cell">
-                                                <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                    <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
+                                                </div>
                                             </td>
                                         {% elif record['RUN_STATUS'] == 'Failed' %}
                                             <td style="width: 10%" class="table--cell">
-                                                <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                                            </td>
+                                            <td style="width: 10%" class="table--cell">
+                                                <div>
+                                                    <span class='tooltip run' run_id="{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/play.svg" alt="Completed">
+                                                    <span class="tooltiptext">Run</span></span>
+                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
+                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
+                                                    <span class="tooltiptext">Manage Run</span></a>
+                                                </div>
                                             </td>
                                         {% endif %}
                                     </tr>

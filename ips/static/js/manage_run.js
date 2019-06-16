@@ -23,10 +23,10 @@ function getStatus() {
 }
 
 function setUIStatus(status) {
+    const run_id = $('#run_id').text();
     const steps = Object.keys(status['steps']);
     const main = $('#current_run_status');
-    main.attr('class', 'status ' + getStepStatusClass(status['status']));
-    main.text(getStepText(status['status']));
+    setMainStatus(status, main, run_id);
     $('#progress').text(status['percentage_done'] + "%");
     cancelButton(status['status'], steps, status['steps']);
     for (step of steps) {
@@ -123,6 +123,18 @@ function getReportStatus(status) {
             return 'WARNING';
         case '3':
             return 'ERROR';
+    }
+}
+
+function setMainStatus(status, main, run_id){
+    statusNum = status['status'];
+    if(statusNum == 3){
+        main.attr('class', '');
+        main.text(getStepText(status['status']));
+        main.prepend("<a class='tooltip' href='/export_data/"+run_id+"'><img style='height: 20px; margin-right: 5px;' src='/static/img/share.svg' alt='Completed'><span class='tooltiptext'>Export Data</span></a>");
+    }else{
+        main.attr('class', 'status ' + getStepStatusClass(status['status']));
+        main.text(getStepText(status['status']));
     }
 }
 
