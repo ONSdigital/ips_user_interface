@@ -29,7 +29,7 @@
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item nav__item--active" role="menuitem">
-                            <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
+                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                     </ul>
                 </nav>
@@ -165,7 +165,7 @@
                             </div>
 
                             <div class="top_50_extra_space">
-                                <button class="btn btn--primary" autofocus  type="submit" name="submit" value="create_run">
+                                <button class="btn btn--primary" id="save_and_continue" autofocus  type="submit" name="submit" value="create_run">
                                     Save and continue
                                 </button>
 
