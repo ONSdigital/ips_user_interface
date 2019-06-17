@@ -30,7 +30,7 @@
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item nav__item--active" role="menuitem">
-                            <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
+                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                     </ul>
                 </nav>
@@ -263,7 +263,7 @@
 
                     <div class="top_50_extra_space">
                         <div class="btn-group">
-                            <button class="btn btn-group__btn" type="submit">Save and continue</button>
+                            <button class="btn btn-group__btn" type="submit" id="savec">Save and continue</button>
 
                             <a style="text-decoration: none;"
                                    href="{{ url_for('.new_run_4', run_id=run_id) }}">

@@ -38,7 +38,7 @@
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
                         <li class="nav__item nav__item--active" role="menuitem">
-                            <a href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
+                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
                         </li>
                     </ul>
                 </nav>
@@ -222,12 +222,19 @@
                                         autofocus
                                         type=button onclick="start_run()">Run
                                 </button>
-
-                                <button style="width: 100px; margin-left: 20px; display: none;" name="run_button"
-                                        id="cancel_button"
-                                        class="btn btn--secondary"
-                                        type=button onclick="cancel_run()">Cancel
-                                </button>
+                                {% if current_run['RUN_STATUS'] == 'Running' %}
+                                    <button style="width: 100px; margin-left: 20px;" name="run_button"
+                                            id="cancel_button"
+                                            class="btn btn--secondary"
+                                            type=button onclick="cancel_run()">Cancel
+                                    </button>
+                                {% else %}
+                                    <button style="width: 100px; margin-left: 20px; display: none;" name="run_button"
+                                            id="cancel_button"
+                                            class="btn btn--secondary"
+                                            type=button onclick="cancel_run()">Cancel
+                                    </button>
+                                {% endif %}
 
                                 {{ form.edit_button(class="btn btn--secondary",
                                    style="width: 100px; margin-left: 20px;", type="submit") }}
