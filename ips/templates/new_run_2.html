@@ -122,18 +122,24 @@
                             Save and continue
                         </button>
 
-                        <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                            <a style="text-decoration: none;" href="{{ url_for('.new_run_1', run_id=run_id) }}">Back</a>
-                        </button>
+                        <a style="text-decoration: none;" href="{{ url_for('.new_run_1', run_id=run_id) }}">
+                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                Back
+                            </button>
+                        </a>
 
                         {% if run_id %}
-                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Cancel</a>
-                            </button>
+                            <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">
+                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                    Cancel
+                                </button>
+                            </a>
                         {% else %}
-                            <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
-                            </button>
+                            <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">
+                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                    Cancel
+                                </button>
+                            </a>
                         {% endif %}
                     </div>
 

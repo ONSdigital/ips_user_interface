@@ -16,7 +16,7 @@ def run_step_3(run_id):
 
         log.debug("run_step_3 [POST] Redirecting to new_run_4 with template_id " + session['template_id'] + "...")
 
-        return redirect('/new_run_steps/new_run_4')
+        return redirect('/new_run_steps/new_run_4/'+run_id)
 
     records = app_methods.get_process_variable_sets()
 
@@ -50,4 +50,4 @@ def run_step_3(run_id):
 
     log.debug("run_step_3 [GET]  Retrieved process variable sets, rendering new_run_3.")
 
-    return render_template('new_run_3.html', table=records, header=header)
+    return render_template('new_run_3.html', table=records, header=header, run_id=run_id)

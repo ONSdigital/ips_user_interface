@@ -75,7 +75,7 @@
                 <div class="col-8 top_40_extra_space">
 
                     <div class="group">
-                        <form id="run" action="{{ url_for('.new_run_3') }}" class="form" method="post">
+                        <form id="run" action="{{ url_for('.new_run_3', run_id=run_id) }}" class="form" method="post">
 
                             <div class="wrapper">
                                 <div class="group">
@@ -169,14 +169,25 @@
                                     Save and continue
                                 </button>
 
-                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                    <a style="text-decoration: none;"
-                                       href="{{ url_for('.new_run_2') }}">Back</a>
-                                </button>
+                                <a style="text-decoration: none;" href="{{ url_for('.new_run_2',run_id=run_id) }}">
+                                    <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                        Back
+                                    </button>
+                                </a>
 
-                                <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
-                                    <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
-                                </button>
+                                {% if run_id %}
+                                    <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">
+                                        <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
+                                            Cancel
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">
+                                        <button class="btn btn--secondary" type="button" style="margin-left: 10px;">
+                                            Cancel
+                                        </button>
+                                    </a>
+                                {% endif %}
 
                             </div>
 
