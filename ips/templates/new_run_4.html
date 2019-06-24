@@ -11,7 +11,10 @@
         {{ super() }}
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/edit-run.js') }}"></script>
-
+        <script type="text/javascript" src="{{ url_for('static', filename='js/pv.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.contextMenu.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery.ui.position.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.contextMenu.min.css') }}">
     {% endblock %}
 </head>
 
@@ -89,33 +92,12 @@
                                         <tbody>
                                         <!-- for each record, render each data value-->
                                         {% for record in table %}
-                                            <tr class="table--row" index="{{ record['PROCESS_VARIABLE_ID'] }}">
+                                            <tr class="table--row" index="{{ record['PROCESS_VARIABLE_ID'] }}" id="pv_{{ record['PROCESS_VARIABLE_ID'] | replace(".0","") }}">
 
                                                 <td style="vertical-align: middle;"
                                                     class="table--cell">{{ record['PV_NAME'] }}</td>
                                                 <td style="vertical-align: middle;"
                                                     class="table--cell">{{ record['PV_DESC'] }} </td>
-
-                                                {% for var in pv_variables %}
-                                                    {% if var['PV_ID'] == record['PROCESS_VARIABLE_ID'] %}
-                                                        <td style="display:none; "
-                                                            class="pv_var">{{ var['Name'] }}</td>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                {% for expression in builds %}
-                                                    {% if expression['pv'] == record['PROCESS_VARIABLE_ID'] %}
-                                                        <td style="display:none; " class="pv_build"
-                                                            block="{{ expression['block'] }}"
-                                                            expression="{{ expression['expression'] }}"
-                                                            const="{{ expression['const'] }}"
-                                                            var='{{ expression["var"] }}'
-                                                            opp="{{ expression['opp'] }}"
-                                                            val="{{ expression['val'] }}"
-                                                            command="{{ expression['command'] }}"></td>
-                                                    {% endif %}
-                                                {% endfor %}
-
-
                                                 <td style="display:none;"
                                                     class="table--cell pv_def">{{ record['PV_DEF'] }}
                                                 </td>
@@ -192,9 +174,6 @@
                 <label for="id_input">Name:</label>
                 <input type="text" class="modal-input" id="id_input" disabled placeholder="">
                 <br>
-                <label for="content_input">Content:</label>
-                <textarea data-maxlength="50000" class="modal-input" disabled id="content_input"></textarea>
-                <br>
                 <label>Builder:</label>
                 <br>
                 <div id="builder"></div>
@@ -205,6 +184,19 @@
 
         </div>
 
+        <div class="pv_cm">
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+            <div class="pv_cm_item"></div>
+        </div>
+
         <section>
             <div class="buttom_70_extra_space buttom_70_extra_space">
                 <table></table>
@@ -213,6 +205,7 @@
                 <table></table>
             </div>
         </section>
+
 
     {% endblock %}
 </section>

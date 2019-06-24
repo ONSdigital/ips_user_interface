@@ -154,18 +154,6 @@ def get_process_variables(run_id):
 
     return json.loads(response.content)
 
-
-def get_process_variables_builds(run_id):
-    log.debug(f"app_methods: get_process_variables_builds: {run_id}")
-    response = requests.get(API_TARGET + r'/builder/' + run_id)
-    return json.loads(response.content)
-
-
-def get_process_variables_variables():
-    response = requests.get(API_TARGET + r'/builder/variables')
-    return json.loads(response.content)
-
-
 def create_process_variables_set(run_id, name, user, period, year):
     log.debug(f"app_methods: create_process_variables_set: {run_id}, {name}, {user}, {period}, {year}")
     response = requests.get(API_TARGET + r'/pv_sets')
