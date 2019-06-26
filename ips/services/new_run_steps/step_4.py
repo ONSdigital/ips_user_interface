@@ -73,8 +73,6 @@ def run_step_4(run_id):
     header = ['PV_NAME', 'PV_REASON', 'PV_CONTENT']
 
     records = app_methods.get_process_variables(template_id)
-    builds = app_methods.get_process_variables_builds(template_id)
-    variables = app_methods.get_process_variables_variables()
 
-    return render_template('new_run_4.html', run_id=run_id, table=records, builds=builds,
-                           header=header, pv_variables=variables, api_target=API_TARGET)
+    return render_template('new_run_4.html', run_id=run_id, table=records,
+                           header=header, api_target=API_TARGET)

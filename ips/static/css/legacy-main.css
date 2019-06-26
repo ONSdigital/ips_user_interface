@@ -107,3 +107,194 @@ a {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+/*-------------------- Will move this to builder.css -----------------*/
+.pv_div{
+    overflow: auto;
+    height: 300px;
+    line-height: 1.2em;
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.pv_txt_div{
+    display: none;
+    overflow: auto;
+    height: 300px;
+    line-height: 1.2em;
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.pv_select{
+    margin-right: 10px;
+    margin-left: 10px;
+    -webkit-appearance: none;
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: white;
+}
+
+.pv_input{
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background-color: white;
+}
+
+.pv_input:focus {
+    outline: none;
+}
+
+.pv_span{
+    min-width: 10px;
+    display: inline-block;
+}
+.pv_tab{
+    min-width: 40px;
+    display: inline-block;
+}
+
+.pv_el{
+    display: inline-block;
+    position: relative;
+}
+
+.pv_line{
+    -webkit-appearance: none;
+    outline: none;
+}
+
+.pv_line_selected, .pv_line_selected > * > *{
+    background-color: #f0f762;
+}
+
+.pv_error, .pv_error > * > *{
+    background-color: #ff6363;
+}
+
+.pv_el_selected, .pv_el_selected > * {
+    background-color: lightblue;
+}
+
+.pv_el:hover > .pv_el_delete{
+    display: inline-block;
+}
+
+.pv_el_delete{
+    display: none;
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top:0px;
+    right:0px;
+}
+
+.pv_header{
+    background-color: #3b7a9e;
+    border-radius: 5px;
+    padding: 3px 3px 3px 15px;
+}
+
+.pv_header_el{
+    font-size: 15px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    color: #ffffff;
+}
+
+.pv_header_button{
+    font-size: 15px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    color: #000000;
+}
+
+.pv_header_span{
+    border-left: 1px solid #ccc;
+    padding-left: 5px;
+    font-size: 15px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    color: #ffffff;
+}
+
+.onoffswitch {
+    position: relative; width: 76px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 5px;
+    padding-bottom: 0 !important;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitchview-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after, .onoffswitchview-inner:before, .onoffswitchview-inner:after{
+    display: block; float: left; width: 50%; height: 18px; padding: 0; line-height: 18px;
+    font-size: 15px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "Left";
+    padding-left: 10px;
+    background-color: #0F8243; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "Right";
+    padding-right: 10px;
+    background-color: #34A7C1; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitchview-inner:before {
+    content: "Build";
+    padding-left: 10px;
+    background-color: #0F8243; color: #FFFFFF;
+}
+.onoffswitchview-inner:after {
+    content: "Text";
+    padding-right: 10px;
+    background-color: #34A7C1; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 18px; margin: 0px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 54px;
+    border: 2px solid #999999; border-radius: 5px;
+    transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitchview-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
