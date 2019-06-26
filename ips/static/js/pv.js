@@ -407,7 +407,7 @@ function andElement(s){
 }
 
 function opElement(s){
-    let arr = ['=', '==', '>', '>=', '<', '<=', '+', '+=', '-', '-=', '*', '%', 'in'];
+    let arr = ['=', '!=', '==', '>', '>=', '<', '<=', '+', '+=', '-', '-=', '*', '%', 'in'];
     let el = "<select class='pv_select pv_op' resized=false>";
     arr.forEach(function(op){
         if(op == s){

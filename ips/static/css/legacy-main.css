@@ -179,6 +179,10 @@ a {
     background-color: #f0f762;
 }
 
+.pv_error, .pv_error > * > *{
+    background-color: #ff6363;
+}
+
 .pv_el_selected, .pv_el_selected > * {
     background-color: lightblue;
 }

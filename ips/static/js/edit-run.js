@@ -13,11 +13,28 @@ $(document).ready(function (e) {
     $("#modal_okay_button").click(function (event) {
         // Get values entered into the inputs by the user
         let pv = $("#builder").txt_val();
-        // Take the contents of the table and put it into the hidden field
-        fillInputFieldForPosting(rowsLength);
-        saveBuildToUI(pv, $("#id_input").attr("pv"));
-        // Fade out 500ms
-        modal.fadeOut(500);
+        $(".pv_error").removeClass("pv_error");
+        $.ajax({
+            type: "POST",
+            url: '/builder/validate',
+            data: {pv: pv},
+            async: false,
+            statusCode: {
+                406: function(data, message) {
+                  let line = data.responseText-1;
+                  let el = $("#builder").children(".pv_div").children(".pv_line").eq(line);
+                  el.addClass("pv_error");
+                  el.focus();
+                },
+                200: function(data) {
+                    console.log(data);
+                    fillInputFieldForPosting(rowsLength);
+                    saveBuildToUI(pv, $("#id_input").attr("pv"));
+                    // Fade out 500ms
+                    modal.fadeOut(500);
+                }
+            }
+        });
     });
 
     $("#savec").click(function () {
@@ -90,6 +107,7 @@ $(document).ready(function (e) {
     // When the edit button is clicked, get the ID from the button attribute
     // Show the modal and change the input fields value to the ID
     $(".pv-edit-button").click(function (event) {
+
         pvid = parseInt($(this).attr("pvid"));
         // Fade in 500ms
         modal.fadeIn(500);
