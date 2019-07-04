@@ -298,3 +298,58 @@ a {
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
 }
+
+.nav--inline .nav__link {
+    display: inline-block;
+    text-align: center;
+    *display: inline;
+    *zoom: 1;
+}
+
+.nav--page .nav__link--current, .nav--page .nav__link:hover {
+    color: #033e58;
+    border-bottom: 4px solid #033e58;
+}
+.nav--page .nav__link {
+    text-decoration: none;
+    padding: 0 0 5.399px;
+    padding: 0 0 .3rem;
+}
+.nav__item--active .nav__link, .nav__link--current {
+    font-weight: 700;
+}
+
+.nav--inline .nav__item:first-child {
+    margin-left: 0;
+}
+@media only screen and (min-width: 740px) {
+    .nav--inline .nav__item {
+        margin: 0 0 0 1rem;
+    }
+}
+.nav--inline .nav__item {
+    font-size: 18px;
+    font-size: 1rem;
+    display: inline-block;
+    margin: 0 0 0 18px;
+    margin: 0 0 0 1rem;
+    position: relative;
+    text-align: center;
+    *display: inline;
+    *zoom: 1;
+}
+
+.nav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav--page {
+    border-bottom: 1px solid #ccc;
+}
+.nav {
+    display: block;
+    padding: 0;
+    margin: 0;
+}

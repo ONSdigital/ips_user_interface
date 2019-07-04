@@ -7,6 +7,7 @@ from ips.services.forms import CreateRunForm
 
 def run_step_1(run_id):
 
+    new_run = True
     form = CreateRunForm()
     # if request is a post
     if request.method == 'POST' and form.validate():
@@ -43,8 +44,9 @@ def run_step_1(run_id):
             run = app_methods.get_run(run_id)
             form.run_name.default = run['RUN_NAME']
             form.run_description.default = run['RUN_DESC']
+            new_run = False
 
     if form.run_name.errors or form.run_description.errors:
         log.warning("run_step_1 [GET] Missing valid run_id or description.")
 
-    return render_template('new_run_1.html', form=form, run_id=run_id)
+    return render_template('new_run_1.html', form=form, run_id=run_id, new_run=new_run)

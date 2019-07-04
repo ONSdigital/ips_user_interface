@@ -37,10 +37,11 @@ def new_run_3(run_id=None):
 
 @bp.route('/new_run_4', methods=['GET', 'POST'])
 @bp.route('/new_run_4/<run_id>', methods=['GET', 'POST'])
+@bp.route('/new_run_4/<run_id>/<template_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_4(run_id=None):
+def new_run_4(run_id=None, template_id=None):
     log.debug(f"new_run_4 called - run_id: {run_id}")
-    return run_step_4(run_id)
+    return run_step_4(run_id, template_id)
 
 
 @bp.route('/new_run_5', methods=['GET', 'POST'])

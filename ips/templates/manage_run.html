@@ -93,7 +93,8 @@
                                 <td role="cell" id="progress" class="table__cell"></td>
                             </tr>
                             <tr class="table__row">
-                                <td role="cell" class="table__cell"><em>Run Status:</em></td>
+                                <td role="cell" class="table__cell"><em>Run Status:</em>
+                                </td>
                                 <td role="cell" class="table__cell">
                                     {% if current_run['RUN_STATUS'] == 'Ready' %}
                                         <span id="current_run_status"
@@ -101,24 +102,48 @@
                                     {% elif current_run['RUN_STATUS'] == 'Not Started' %}
                                         <span id="current_run_status"
                                               class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% elif current_run['RUN_STATUS'] == 'Running' %}
                                         <span id="current_run_status"
                                               class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% elif current_run['RUN_STATUS'] == 'Completed' %}
                                         <span id="current_run_status"
                                               class=""><a class='tooltip' href='/export_data/"+run_id+"'>
                                             <img style='height: 20px; margin-right: 5px;' src='/static/img/share.svg' alt='Completed'>
                                             <span class='tooltiptext'>Export Data</span>
                                             </a>{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% elif current_run['RUN_STATUS'] == 'Cancelled' %}
                                         <span id="current_run_status"
                                               class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% elif current_run['RUN_STATUS'] == 'Invalid Run' %}
                                         <span id="current_run_status"
                                               class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% elif current_run['RUN_STATUS'] == 'Failed' %}
                                         <span id="current_run_status"
                                               class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                                        <a class='tooltip' href="/export_data/{{ current_run['RUN_ID'] }}">
+                                            <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
+                                            <span class="tooltiptext">Export Data</span>
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>
