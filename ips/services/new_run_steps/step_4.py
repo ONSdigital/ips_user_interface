@@ -8,7 +8,7 @@ from ips.services import app_methods, API_TARGET
 from ips.util.ui_configuration import UIConfiguration
 
 
-def run_step_4(run_id):
+def run_step_4(run_id, template_id):
     if request.method == 'POST':
         log.debug("run_step_4 [POST] request")
 
@@ -66,7 +66,8 @@ def run_step_4(run_id):
 
         return redirect('/new_run_steps/new_run_5/' + run_id)
 
-    template_id = session['template_id']
+    if template_id is None:
+        template_id = session['template_id']
 
     run_id = session['id']
 

@@ -10,6 +10,7 @@ from ips.services.forms import DateSelectionForm
 
 def run_step_2(run_id):
     form = DateSelectionForm()
+    new_run = True
 
     # if request is a post
     if request.method == 'POST':
@@ -62,6 +63,7 @@ def run_step_2(run_id):
         last_entry['s_year'] = ""
 
     if run_id:
+        new_run = False
         run = app_methods.get_run(run_id)
         last_entry['s_month'] = run['PERIOD']
         last_entry['s_year'] = run['YEAR']
@@ -73,4 +75,4 @@ def run_step_2(run_id):
     return render_template('new_run_2.html',
                            form=form,
                            last_entry=last_entry,
-                           run_id=run_id)
+                           run_id=run_id, new_run=new_run)

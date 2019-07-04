@@ -148,11 +148,12 @@ def get_display_data_json(table_name, run_id=None, data_source=None):
 
 
 def get_process_variables(run_id):
-    response = requests.get(API_TARGET + r'/process_variables/TEMPLATE')
+    response = requests.get(API_TARGET + r'/process_variables/'+run_id)
 
     log.debug(f"app_methods: get_process_variables: {run_id}")
 
     return json.loads(response.content)
+
 
 def create_process_variables_set(run_id, name, user, period, year):
     log.debug(f"app_methods: create_process_variables_set: {run_id}, {name}, {user}, {period}, {year}")

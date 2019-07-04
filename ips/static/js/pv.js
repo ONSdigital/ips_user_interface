@@ -23,6 +23,8 @@ $(function(){
                 if(key[0].includes("-")){
                     let skey = key[0].split("-");
                     insertStatement($(".pv_el_selected"), skey[0], key[1]);
+                }else if(key[0] === "newline"){
+                    insertNewline(key[1]);
                 }else {
                     insertElement($(".pv_el_selected"), key[0], key[1]);
                 }
@@ -51,7 +53,8 @@ $(function(){
                             "if_left": {"name": "if"},
                             "var_left": {"name": "var"},
                             "opp_left": {"name": "=="},
-                            "val_left": {"name": "val"}
+                            "val_left": {"name": "val"},
+                            "and_left": {"name": "and"}
                         }
                     },
                     "fold1b": {
@@ -81,7 +84,8 @@ $(function(){
                             "if_right": {"name": "if"},
                             "var_right": {"name": "var"},
                             "opp_right": {"name": "=="},
-                            "val_right": {"name": "val"}
+                            "val_right": {"name": "val"},
+                            "and_right": {"name": "and"}
                         }
                     },
                     "fold1b": {
@@ -94,7 +98,10 @@ $(function(){
                         }
                     }
                 }
-            }
+            },
+            "sep2": "---------",
+            "newline_a": {"name": "New Line Above"},
+            "newline_b": {"name": "New Line Below"},
         }
     });
 });
@@ -145,13 +152,6 @@ function setPVListeners(main){
         }else if(e.which == 38){
             $(".pv_line_selected").removeClass("pv_line_selected");
             el = $(this).prev(".pv_line");
-        }else if(e.which === 46){
-            let curline = $(".pv_line_selected");
-            el = curline.next(".pv_line");
-            if(el.length === 0){
-                el = curline.prev(".pv_line");
-            }
-            curline.remove();
         }
         if(el) {
             el.toggleClass("pv_line_selected");
@@ -173,6 +173,7 @@ function setPVListeners(main){
 }
 
 $.fn.pv_builder_v2 = function (content){
+    right = false;
     let header = pvHeader();
     let lines = getLines(content);
     lines = convertLines(lines);
@@ -282,7 +283,7 @@ function headerListeners(){
             insertElement(el, $(this).attr("id"), right ? "right" : "left");
         }else{
             if(type[1] == "statement"){
-
+                insertStatement(el, type[0], right ? "right" : "left");
             }else if(type[1] == "newline"){
                 insertNewline(type[0]);
             }

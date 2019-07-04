@@ -57,10 +57,31 @@
             <div class="wrapper">
                 <div class="group top_40_extra_space">
                     <div>
-                        <h2 class="pluto grey_text ">Step 3 of 5 </h2>
-                    </div>
-                    <div>
-                        <h2 class="saturn">Select process variables set</h2>
+                        <nav class="nav nav--inline nav--page" role="menu">
+                            <div>
+                                <ul class="nav__list" aria-label="Section navigation menu">
+                                    <li class="nav__item u-fs-s">
+                                        <a class="nav__link " href="{{ url_for('.new_run_1', run_id=run_id) }}" role="menuitem">Run Details</a>
+                                        <span style="margin-left: 1rem"> > </span>
+                                    </li>
+                                    <li class="nav__item u-fs-s">
+                                        <a class="nav__link " href="{{ url_for('.new_run_2', run_id=run_id) }}" role="menuitem">Fieldwork Details</a>
+                                        <span style="margin-left: 1rem"> > </span>
+                                    </li>
+                                    <li class="nav__item u-fs-s">
+                                        <a class="nav__link nav__link--current" href="#item1" aria-current="location" role="menuitem">PV Set</a>
+                                        <span style="margin-left: 1rem"> > </span>
+                                    </li>
+                                    <li class="nav__item u-fs-s">
+                                        <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id) }}" role="menuitem">Edit PVs</a>
+                                        <span style="margin-left: 1rem"> > </span>
+                                    </li>
+                                    <li class="nav__item u-fs-s">
+                                        <a class="nav__link " href="{{ url_for('.new_run_5', run_id=run_id) }}" role="menuitem">Data Import</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
                     </div>
                 </div>
 
