@@ -10,5 +10,6 @@ ENV API_PORT=${API_PORT}
 ENV API_PROTOCOL=${API_PTOTOCOL}
 ENV UI_FLASK_APP=ips
 ENV FLASK_ENV=development
+ENV FLASK_APP=${UI_FLASK_APP}
 
 CMD [ "python", "-m", "flask", "run", "--host=0.0.0.0" ]
