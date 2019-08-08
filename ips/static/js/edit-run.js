@@ -104,6 +104,11 @@ $(document).ready(function (e) {
         modal.fadeOut(500);
     });
 
+    $("#cancel").click(function (event) {
+        // Fade out 500ms
+        modal.fadeOut(500);
+    });
+
     // When the edit button is clicked, get the ID from the button attribute
     // Show the modal and change the input fields value to the ID
     $(".pv-edit-button").click(function (event) {
