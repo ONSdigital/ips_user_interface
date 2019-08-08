@@ -132,7 +132,6 @@ function setMainStatus(status, main, run_id){
     if(statusNum == 3){
         main.attr('class', '');
         main.text(getStepText(status['status']));
-        main.prepend("<a class='tooltip' href='/export_data/"+run_id+"'><img style='height: 20px; margin-right: 5px;' src='/static/img/share.svg' alt='Completed'><span class='tooltiptext'>Export Data</span></a>");
     }else{
         main.attr('class', 'status ' + getStepStatusClass(status['status']));
         main.text(getStepText(status['status']));
