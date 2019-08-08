@@ -29,6 +29,7 @@ function setUIStatus(status) {
     setMainStatus(status, main, run_id);
     $('#progress').text(status['percentage_done'] + "%");
     cancelButton(status['status'], steps, status['steps']);
+    exportButton(status['status']);
     for (step of steps) {
         const td = $('.status_column[step_num="' + step + '"]');
         const tr = td.parent();
@@ -131,7 +132,6 @@ function setMainStatus(status, main, run_id){
     if(statusNum == 3){
         main.attr('class', '');
         main.text(getStepText(status['status']));
-        main.prepend("<a class='tooltip' href='/export_data/"+run_id+"'><img style='height: 20px; margin-right: 5px;' src='/static/img/share.svg' alt='Completed'><span class='tooltiptext'>Export Data</span></a>");
     }else{
         main.attr('class', 'status ' + getStepStatusClass(status['status']));
         main.text(getStepText(status['status']));
@@ -139,7 +139,6 @@ function setMainStatus(status, main, run_id){
 }
 
 function cancelButton(status, steps, stepsArr) {
-    console.log(status);
     var ready = true;
     for (step of steps) {
         if(stepsArr[step]['Status'] == 2){
@@ -154,5 +153,13 @@ function cancelButton(status, steps, stepsArr) {
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();
         $("#edit_button").show();
+    }
+}
+
+function exportButton(status){
+    if(status in [0,1,2]){
+        $("#export_button").hide();
+    }else{
+        $("#export_button").show();
     }
 }
