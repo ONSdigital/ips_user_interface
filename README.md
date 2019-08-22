@@ -11,3 +11,4 @@ In order to run UI locally, you need API and DB setup. This can be done by follo
 Wonder if the cd ci is workinnn
 
 now ???????
+how about now ?
