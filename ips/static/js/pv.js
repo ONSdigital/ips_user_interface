@@ -1,6 +1,7 @@
 //globals
 var build = true;
 var right = false;
+var copy = false;
 
 $(function(){
     $('#resizing_select').change(function(){
@@ -15,9 +16,15 @@ $(function(){
                 if($(".pv_el_selected").length > 0){
                     $(".pv_el_selected").remove();
                 }else {
-                    $(this).remove();
+                    $(".pv_line_selected").remove();
                 }
-            }else{
+            }else if(key === "copy_line"){
+                copy = $(".pv_line_selected");
+            }else if(key === "pasteline"){
+                let curLine = $(".context-menu-active");
+                curLine.after(copy.clone().removeClass("pv_line_selected").removeClass("context-menu-active"))
+            }
+            else{
                 key = key.split("_");
 
                 if(key[0].includes("-")){
@@ -36,6 +43,9 @@ $(function(){
         },
         items: {
             "delete": {"name": "Delete"},
+            "sep2": "---------",
+            "copy_line": {"name": "Copy Line(s)"},
+            "pasteline": {"name": "Paste"},
             "sep": "---------",
             "fold1": {
                 "name": "Insert Left",
@@ -128,19 +138,40 @@ function setPVListeners(main){
     $('.pv_div').on('click', '.pv_el_delete', function(){
         $(this).parent().remove()
     });
-    $( ".pv_div").on('click', '.pv_el', function(){
-        $(".pv_el_selected").toggleClass("pv_el_selected");
-        $(this).toggleClass("pv_el_selected");
+    $( ".pv_div").on('click', '.pv_el', function(e){
+        $(".pv_el_selected").removeClass("pv_el_selected");
+        if (!e.shiftKey){
+            e.stopPropagation();
+            $(".pv_line_selected").removeClass("pv_line_selected");
+            $(this).parent().addClass("pv_line_selected")
+            $(this).toggleClass("pv_el_selected");
+        }
     })
     $( ".pv_div").on('contextmenu', '.pv_el', function(){
         $(".pv_el_selected").removeClass("pv_el_selected");
         $(this).addClass("pv_el_selected");
     })
-    $( ".pv_div").on('click', '.pv_line', function(){
-        $(".pv_line_selected").removeClass("pv_line_selected");
+    $( ".pv_div").on('click', '.pv_line', function(e){
+        $(".pv_el_selected").removeClass("pv_el_selected");
+        if (!e.shiftKey) $(".pv_line_selected").removeClass("pv_line_selected");
+        else{
+            let selected, first, last;
+            if($(".pv_line_selected").first().index() < $(this).index()){
+                first = $(".pv_line_selected").first();
+                last = $(this);
+            }else{
+                last = $(".pv_line_selected").last();
+                first = $(this);
+            }
+            first.prevAll().removeClass("pv_line_selected");
+            last.nextAll().removeClass("pv_line_selected");
+            selected = first.nextUntil(last);
+            selected.addClass("pv_line_selected");
+        }
         $(this).toggleClass("pv_line_selected");
     })
     $( ".pv_div").on('contextmenu', '.pv_line', function(){
+        if($(this).hasClass("pv_line_selected")) return;
         $(".pv_line_selected").removeClass("pv_line_selected");
         $(this).toggleClass("pv_line_selected");
     })
