@@ -56,3 +56,9 @@
     width: 20px !important;
     vertical-align: sub;
 }
+
+.pv_div{
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
