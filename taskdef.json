@@ -8,7 +8,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/ips-ui-test-frtt",
+          "awslogs-group": "/ecs/ips-ui",
           "awslogs-region": "eu-west-2",
           "awslogs-stream-prefix": "ecs"
         }
@@ -51,13 +51,18 @@
       "dnsServers": null,
       "mountPoints": [],
       "workingDirectory": null,
-      "secrets": null,
+      "secrets": [
+        {
+          "valueFrom": "/ips/dev/services-host-ip",
+          "name": "API_HOST"
+        }
+      ],
       "dockerSecurityOptions": null,
       "memory": null,
-      "memoryReservation": null,
+      "memoryReservation": 1024,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "<IMAGE_1_NAME>",
+      "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-ui:latest",
       "startTimeout": null,
       "dependsOn": null,
       "disableNetworking": null,
@@ -73,7 +78,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "ips-ui--test-containerrrrrrr"
+      "name": "ips-ui-env-vars"
     }
   ],
   "placementConstraints": [],
@@ -83,8 +88,8 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-west-2:014669633018:task-definition/ips-ui-test-frtt:1",
-  "family": "ips-ui-test-frtt",
+  "taskDefinitionArn": "arn:aws:ecs:eu-west-2:014669633018:task-definition/ips-ui:22",
+  "family": "ips-ui",
   "requiresAttributes": [
     {
       "targetId": null,
@@ -114,6 +119,12 @@
       "targetId": null,
       "targetType": null,
       "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
       "name": "com.amazonaws.ecs.capability.task-iam-role"
     },
     {
@@ -121,6 +132,12 @@
       "targetType": null,
       "value": null,
       "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.secrets.ssm.environment-variables"
     },
     {
       "targetId": null,
@@ -141,7 +158,7 @@
   ],
   "networkMode": "awsvpc",
   "cpu": "512",
-  "revision": 1,
+  "revision": 22,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
