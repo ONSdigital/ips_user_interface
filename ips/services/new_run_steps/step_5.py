@@ -17,7 +17,7 @@ def run_step_5(run_id):
         survey_data = request.files['survey_file']
         resp = app_methods.import_data('survey', session['id'], survey_data, session['period'], session['year'])
         if resp.status_code != 200:
-            error_message = app_methods.get_error_message(resp)
+            error_message = app_methods.get_error_message(resp, "Survey")
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
 
         log.info("run_step_5 Imported survey data...")
@@ -26,7 +26,7 @@ def run_step_5(run_id):
         shift_data = request.files['shift_file']
         resp = app_methods.import_data('shift', session['id'], shift_data, session['period'], session['year'])
         if resp.status_code != 200:
-            error_message = app_methods.get_error_message(resp)
+            error_message = app_methods.get_error_message(resp, "Shift")
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
 
         log.info("run_step_5 Imported shift data...")
@@ -36,7 +36,7 @@ def run_step_5(run_id):
         resp = app_methods.import_data('nonresponse', session['id'], non_response_data, session['period'],
                                        session['year'])
         if resp.status_code != 200:
-            error_message = app_methods.get_error_message(resp)
+            error_message = app_methods.get_error_message(resp, "Non-Response")
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
 
         log.info("run_step_5 Imported non-response data...")
@@ -45,7 +45,7 @@ def run_step_5(run_id):
         unsampled_data = request.files['unsampled_file']
         resp = app_methods.import_data('unsampled', session['id'], unsampled_data, session['period'], session['year'])
         if resp.status_code != 200:
-            error_message = app_methods.get_error_message(resp)
+            error_message = app_methods.get_error_message(resp, "Unsampled")
             return render_template('new_run_5.html', form=form, error=True, error_message=error_message)
 
         log.info("run_step_5 Imported un-sampled data...")

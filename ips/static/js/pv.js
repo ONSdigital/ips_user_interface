@@ -588,6 +588,7 @@ function restoreSelect(sel) {
 function resizeInput(input) {
     $(input).width( $(input).val().length  + 'ch');
 }
+//----------------------------------------------------------
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
