@@ -356,14 +356,15 @@
                         css: {backgroundColor: '#3B7A9E', color: '#fff', 'border-style': 'none;'}
                     });
 
-                    console.log(" cxalling: " + loc);
+                    console.log(" calling: " + url);
                     $.ajax({
                         url: url,
                         method: "POST",
                         data: form,
                         processData: false,
                         contentType: false,
-                        async: true
+                        async: true,
+                        timeout: 600000
 
                     }).done(function (data, textStatus, jqXHR) {
                         $.unblockUI();
@@ -376,6 +377,10 @@
                         }
                     }).fail(function (jqXHR, textStatus, errorThrown) {
                         $.unblockUI();
+                        if(textStatus === 'timeout')
+                        {
+                            alert('Timeout');
+                        }
                     });
                     event.preventDefault();
                 })
