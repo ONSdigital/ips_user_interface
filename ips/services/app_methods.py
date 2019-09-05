@@ -379,7 +379,7 @@ def get_all_run_ids():
     return list_of_run_ids
 
 
-def get_error_message(resp):
+def get_error_message(resp, file=None):
     resp = json.loads(resp.content.decode('utf-8'))
     resp = resp['description']
     print(resp)
@@ -392,6 +392,8 @@ def get_error_message(resp):
         s = resp.find('(') + 1
         resp = resp[s:-1]
         error_message = resp.split(',')[2]
+    if file is not None:
+        error_message = file + ": " + error_message
     return error_message
 
 def findnth(haystack, needle, n):
