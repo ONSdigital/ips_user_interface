@@ -119,7 +119,7 @@ def dashboard_view():
                 records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
     log.debug('dashboard: Rendering dashboard now...')
-
+    print(records)
     return render_template('dashboard.html',
                            header=header,
                            records=records,

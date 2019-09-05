@@ -9,6 +9,7 @@ $(document).ready(function (e) {
     const grb_id = 1;
     let expr = [];
     let data = [];
+    storeAllPVs();
 
     $("#modal_okay_button").click(function (event) {
         // Get values entered into the inputs by the user
