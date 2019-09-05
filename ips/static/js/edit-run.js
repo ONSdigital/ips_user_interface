@@ -51,7 +51,7 @@ $(document).ready(function (e) {
             pv_code = $(this).children(".pv_def").text();
             pv_name = $(this).children().eq(0).text();
             pv_desc = $(this).children().eq(1).text();
-            json[pvid]['pv'] = pv_code;
+            json[pvid]['pv'] = pv_code.trim();
             json[pvid]['pv_name'] = pv_name;
             json[pvid]['pv_desc'] = pv_desc;
         });

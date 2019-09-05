@@ -4,6 +4,9 @@
     {% block styles %}
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
         <title>International Passenger Survey</title>
         <meta content="width=device-width, initial-scale=1" name="viewport">
 
@@ -27,7 +30,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/legacy-main.css') }}"
               media="all">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css') }}" media="all">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css')+"?v1.0.0" }}" media="all">
 
         <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/v2.0.0/css/responsive.css">
 

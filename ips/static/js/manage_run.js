@@ -24,10 +24,13 @@ function getStatus() {
 
 function setUIStatus(status) {
     const run_id = $('#run_id').text();
-    const steps = Object.keys(status['steps']);
+    let steps = [];
+    if(status['steps'] !== undefined) {
+        steps = Object.keys(status['steps']);
+    }
     const main = $('#current_run_status');
     setMainStatus(status, main, run_id);
-    $('#progress').text(status['percentage_done'] + "%");
+    $('#progress').text((status['percentage_done'] === undefined ? "0" : status['percentage_done'])+"%");
     cancelButton(status['status'], steps, status['steps']);
     exportButton(status['status']);
     for (step of steps) {
@@ -133,7 +136,7 @@ function setMainStatus(status, main, run_id){
         main.attr('class', '');
         main.text(getStepText(status['status']));
     }else{
-        main.attr('class', 'status ' + getStepStatusClass(status['status']));
+        main.attr('class', 'status ' + getStepStatusClass(status['status']) === undefined ? "status--info" : getStepStatusClass(status['status']));
         main.text(getStepText(status['status']));
     }
 }

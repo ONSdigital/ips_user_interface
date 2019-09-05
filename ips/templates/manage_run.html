@@ -6,7 +6,7 @@
     <!--Styles are imported from the parent template.-->
     {% block styles %}
         {{ super() }}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/manage_run.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/manage_run.js')+"?v1.0.0" }}"></script>
 
         <style>
             td, th {
