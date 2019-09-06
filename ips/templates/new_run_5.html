@@ -364,7 +364,7 @@
                         processData: false,
                         contentType: false,
                         async: true,
-                        timeout: 600000
+                        timeout: 900000
 
                     }).done(function (data, textStatus, jqXHR) {
                         $.unblockUI();
@@ -379,7 +379,7 @@
                         $.unblockUI();
                         if(textStatus === 'timeout')
                         {
-                            alert('Timeout');
+                            console.log('Timed out');
                         }
                     });
                     event.preventDefault();
