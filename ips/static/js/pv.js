@@ -662,7 +662,7 @@ function insertStatement(el, key, dir){
 }
 
 function insertNewline(dir){
-    let curLine = $(".pv_line_selected");
+    let curLine = $(".context-menu-active");
     if(curLine.length > 0) {
         if (dir === "a") {
             $(curLine).before(getNewlineEl(curLine.prev(".pv_line")));
