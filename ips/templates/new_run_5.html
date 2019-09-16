@@ -341,7 +341,7 @@
                 $("#run_5_form").submit(function (event) {
 
                     let form = new FormData($("#run_5_form")[0]);
-                    let run_id = $("#rid");
+                    let run_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
                     let url = "{{ url_for('.new_run_5') }}";
 
                     if (run_id) {
