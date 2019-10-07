@@ -85,7 +85,7 @@ function getStepStatusClass(status) {
         case '3':
             return 'status--success';
         case '4':
-            return 'status--error';
+            return 'status--dead';
         case '5':
             return 'status--error';
         case '6':
