@@ -216,18 +216,25 @@
 
                                 {{ form.csrf_token }}
 
-                                <button style="width: 100px;" name="run_button" id="run_button"
-                                        class="btn btn--primary btn--border"
-                                        autofocus
-                                        type=button onclick="start_run()">Run
-                                </button>
+                                
                                 {% if current_run['RUN_STATUS'] == 'Running' %}
+                                    <button style="width: 100px;" name="run_button" id="run_button"
+                                        class="btn btn--loader is-loading"
+                                        autofocus
+                                        disabled
+                                        type=button onclick="start_run()">Run
+                                    </button>
                                     <button style="width: 100px; margin-left: 20px;" name="run_button"
                                             id="cancel_button"
                                             class="btn btn--secondary"
                                             type=button onclick="cancel_run()">Cancel
                                     </button>
                                 {% else %}
+                                    <button style="width: 100px;" name="run_button" id="run_button"
+                                            class="btn btn--primary btn--border"
+                                            autofocus
+                                            type=button onclick="start_run()">Run
+                                    </button>
                                     <button style="width: 100px; margin-left: 20px; display: none;" name="run_button"
                                             id="cancel_button"
                                             class="btn btn--secondary"
