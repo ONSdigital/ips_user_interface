@@ -132,13 +132,8 @@ function getReportStatus(status) {
 
 function setMainStatus(status, main, run_id){
     statusNum = status['status'];
-    if(statusNum == 3){
-        main.attr('class', '');
-        main.text(getStepText(status['status']));
-    }else{
-        main.attr('class', 'status ' + getStepStatusClass(status['status']) === undefined ? "status--info" : getStepStatusClass(status['status']));
-        main.text(getStepText(status['status']));
-    }
+    main.attr('class', (getStepStatusClass(status['status']) === undefined ? "status status--info" : 'status ' + getStepStatusClass(status['status'])));
+    main.text(getStepText(status['status']));
 }
 
 function cancelButton(status, steps, stepsArr) {
