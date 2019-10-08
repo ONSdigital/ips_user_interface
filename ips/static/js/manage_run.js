@@ -132,13 +132,8 @@ function getReportStatus(status) {
 
 function setMainStatus(status, main, run_id){
     statusNum = status['status'];
-    if(statusNum == 3){
-        main.attr('class', '');
-        main.text(getStepText(status['status']));
-    }else{
-        main.attr('class', 'status ' + getStepStatusClass(status['status']) === undefined ? "status--info" : getStepStatusClass(status['status']));
-        main.text(getStepText(status['status']));
-    }
+    main.attr('class', (getStepStatusClass(status['status']) === undefined ? "status status--info" : 'status ' + getStepStatusClass(status['status'])));
+    main.text(getStepText(status['status']));
 }
 
 function cancelButton(status, steps, stepsArr) {
@@ -156,6 +151,12 @@ function cancelButton(status, steps, stepsArr) {
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();
         $("#edit_button").show();
+    } 
+    if (status == "2") {
+        $("#cancel_button").show();
+        $("#run_button").attr("disabled", true);
+        $("#edit_button").hide();
+        $("#run_button").attr("class", 'btn btn--loader is-loading');
     }
 }
 

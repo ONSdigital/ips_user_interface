@@ -284,27 +284,10 @@
 
                     <div class="top_50_extra_space">
                         <div class="btn-group">
-                            <button class="btn btn-group__btn" type="submit" id="savec">Save and continue</button>
-
-                            <a style="text-decoration: none;"
-                                   href="{{ url_for('.new_run_4', run_id=run_id) }}">
-                            <button class="btn btn-group__btn btn--secondary" type="button">
-                                Back
-                            </button></a>
-
-                            <button class="btn btn-group__btn btn--secondary" type="button" style="margin-left: 20px;">
-                                <a style="text-decoration: none;"
-                                   href="{{ url_for('dashboard.dashboard_view') }}">
-                                    Cancel
-                                </a>
-                            </button>
-
-                            <button class="btn btn-group__btn btn--secondary" type="button">
-                                <a style="text-decoration: none;"
-                                   href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Skip
-                                </a>
-                            </button>
-
+                            <button class="btn btn-group__btn" style="margin-right: 1rem" type="submit" id="savec">Save and continue</button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_4', run_id=run_id) }}">Back</a>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Skip</a>
                         </div>
                     </div>
 

@@ -151,29 +151,11 @@
 
 
                     <div class="top_60_extra_space">
-                        <button class="btn btn--primary" type="submit" name="submit" value="create_run" id="save_and_continue">
-                            Save and continue
-                        </button>
-
-                        <a style="text-decoration: none;" href="{{ url_for('.new_run_1', run_id=run_id) }}">
-                            <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
-                                Back
-                            </button>
-                        </a>
-
-                        {% if run_id %}
-                            <a style="text-decoration: none;" href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">
-                                <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
-                                    Cancel
-                                </button>
-                            </a>
-                        {% else %}
-                            <a style="text-decoration: none;" href="{{ url_for('dashboard.dashboard_view') }}">
-                                <button class="btn btn--secondary" type="button" style="margin-left: 20px;">
-                                    Cancel
-                                </button>
-                            </a>
-                        {% endif %}
+                        <div class="btn-group">
+                                <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run" id="save_and_continue">Save and continue</button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_1', run_id=run_id) }}">Back</a>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                        </div>
                     </div>
 
                     </form>
