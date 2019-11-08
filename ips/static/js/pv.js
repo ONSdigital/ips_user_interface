@@ -45,7 +45,7 @@ $(function(){
             "delete": {"name": "Delete"},
             "sep2": "---------",
             "copy_line": {"name": "Copy Line(s)"},
-            "pasteline": {"name": "Paste Line(s)"},
+            "pasteline": {"name": "Paste Line(s) Below"},
             "sep": "---------",
             "fold1": {
                 "name": "Insert Left",
