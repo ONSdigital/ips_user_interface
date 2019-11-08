@@ -1,6 +1,6 @@
 //globals
 var build = true;
-var right = false;
+var right = true;
 var copy = false;
 
 $(function(){
@@ -45,7 +45,7 @@ $(function(){
             "delete": {"name": "Delete"},
             "sep2": "---------",
             "copy_line": {"name": "Copy Line(s)"},
-            "pasteline": {"name": "Paste"},
+            "pasteline": {"name": "Paste Line(s)"},
             "sep": "---------",
             "fold1": {
                 "name": "Insert Left",
@@ -118,7 +118,7 @@ $(function(){
 
 function setPVListeners(main){
     main.keydown(function(e){
-        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        if([32, 38, 40].indexOf(e.keyCode) > -1) {
             e.preventDefault();
         }
     });
@@ -204,7 +204,6 @@ function setPVListeners(main){
 }
 
 $.fn.pv_builder_v2 = function (content){
-    right = false;
     let header = pvHeader();
     let lines = getLines(content);
     lines = convertLines(lines);
@@ -293,7 +292,7 @@ function lrSwitch(id, view){
     }else{
         var s = '<div class="onoffswitch pv_header_el">';
     }
-    s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'" checked>';
+    s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'">';
     s += '<label class="onoffswitch-label" for="'+id+'">';
     if(view){
         s += '<span class="onoffswitchview-inner"></span>';
