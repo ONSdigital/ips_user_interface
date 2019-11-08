@@ -669,7 +669,12 @@ function insertNewline(dir){
             $(curLine).after(getNewlineEl(curLine));
         }
     }else{
-        $(".pv_div").prepend(getNewlineEl(curLine.prev(".pv_line")));
+        if (dir === "a") {
+            $(".pv_line_selected").before(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+
+        } else {
+            $(".pv_line_selected").after(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+        }
     }
 }
 
