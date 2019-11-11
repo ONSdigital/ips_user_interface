@@ -267,7 +267,7 @@ function pvHeader(){
     s += headerButton("tab", "tab");
     s += headerButton("bl", "(");
     s += headerButton("br", ")");
-    s += headerButton("col", ":");
+    // s += headerButton("col", ":");
     s += headerSpan("New Line");
     s += headerButton("a_newline", "above");
     s += headerButton("b_newline", "below");
