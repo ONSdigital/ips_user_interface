@@ -287,12 +287,14 @@ function headerSpan(value){
 }
 
 function lrSwitch(id, view){
+    var s;
     if(view) {
-        var s = '<div style="float: right" class="onoffswitch pv_header_el">';
+        s = '<div style="float: right" class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'" checked>';
     }else{
-        var s = '<div class="onoffswitch pv_header_el">';
+        s = '<div class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'">';
     }
-    s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'">';
     s += '<label class="onoffswitch-label" for="'+id+'">';
     if(view){
         s += '<span class="onoffswitchview-inner"></span>';
@@ -641,7 +643,6 @@ function insertElement(el, key, dir){
             $(".pv_line_selected").prepend(getNewEl(key));
         }
     }
-    int ()
 }
 
 function insertStatement(el, key, dir){
