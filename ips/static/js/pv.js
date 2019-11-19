@@ -1,6 +1,6 @@
 //globals
 var build = true;
-var right = false;
+var right = true;
 var copy = false;
 
 $(function(){
@@ -45,7 +45,7 @@ $(function(){
             "delete": {"name": "Delete"},
             "sep2": "---------",
             "copy_line": {"name": "Copy Line(s)"},
-            "pasteline": {"name": "Paste"},
+            "pasteline": {"name": "Paste Line(s) Below"},
             "sep": "---------",
             "fold1": {
                 "name": "Insert Left",
@@ -118,7 +118,7 @@ $(function(){
 
 function setPVListeners(main){
     main.keydown(function(e){
-        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        if([32, 38, 40].indexOf(e.keyCode) > -1) {
             e.preventDefault();
         }
     });
@@ -204,7 +204,6 @@ function setPVListeners(main){
 }
 
 $.fn.pv_builder_v2 = function (content){
-    right = false;
     let header = pvHeader();
     let lines = getLines(content);
     lines = convertLines(lines);
@@ -268,7 +267,7 @@ function pvHeader(){
     s += headerButton("tab", "tab");
     s += headerButton("bl", "(");
     s += headerButton("br", ")");
-    s += headerButton("col", ":");
+    // s += headerButton("col", ":");
     s += headerSpan("New Line");
     s += headerButton("a_newline", "above");
     s += headerButton("b_newline", "below");
@@ -288,12 +287,14 @@ function headerSpan(value){
 }
 
 function lrSwitch(id, view){
+    var s;
     if(view) {
-        var s = '<div style="float: right" class="onoffswitch pv_header_el">';
+        s = '<div style="float: right" class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'" checked>';
     }else{
-        var s = '<div class="onoffswitch pv_header_el">';
+        s = '<div class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'">';
     }
-    s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'" checked>';
     s += '<label class="onoffswitch-label" for="'+id+'">';
     if(view){
         s += '<span class="onoffswitchview-inner"></span>';
@@ -642,7 +643,6 @@ function insertElement(el, key, dir){
             $(".pv_line_selected").prepend(getNewEl(key));
         }
     }
-    int ()
 }
 
 function insertStatement(el, key, dir){
@@ -670,7 +670,12 @@ function insertNewline(dir){
             $(curLine).after(getNewlineEl(curLine));
         }
     }else{
-        $(".pv_div").prepend(getNewlineEl(curLine.prev(".pv_line")));
+        if (dir === "a") {
+            $(".pv_line_selected").before(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+
+        } else {
+            $(".pv_line_selected").after(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+        }
     }
 }
 
