@@ -272,6 +272,9 @@ function pvHeader(){
     s += headerSpan("New Line");
     s += headerButton("a_newline", "above");
     s += headerButton("b_newline", "below");
+    s += headerSpan(" ");
+    s += headerButton("import", "import");
+    s += headerButton("export", "export");
     s += lrSwitch("txtbld", true);
     s += "</div>";
     return s;
@@ -310,7 +313,13 @@ function headerListeners(){
     $(".pv_header_button").click(function(){
         let el = $(".pv_el_selected");
         let type = $(this).attr("id").split("_");
-        if(type.length === 1) {
+        if(type[0] === "import"){
+            //runs the import button
+            importButton()
+
+        }else if (type[0] == "export"){
+            console.log("export")
+        }else if(type.length === 1) {
             insertElement(el, $(this).attr("id"), right ? "right" : "left");
         }else{
             if(type[1] == "statement"){
@@ -745,5 +754,43 @@ function getNewEl(key){
     el += "<img class='pv_el_delete' src='/static/img/close.svg'>";
     el += "</div>";
     return el;
+
+}
+
+function importButton() {
+    let input = document.createElement('input');
+    input.type = 'file';
+
+    input.onchange = e => {
+       let file = e.target.files[0];
+       var reader = new FileReader();
+       reader.readAsText(file,'UTF-8');
+       reader.onload = readerEvent => {
+           content = readerEvent.target.result; // this is the content!
+           console.log(content) //prints out the file in the console
+
+       }
+    }
+
+    input.click()
+
+    return content
+    // creating input on-the-fly
+    // var input = $(document.createElement("input"));
+    // input.attr("type", "file");
+    // input.onchange = e => {
+    //     let file = e.target.files[0];
+    //     console.log(1)
+    //     var reader = new FileReader();
+    //     reader.readAsText(file, 'UTF-8');
+    //     reader.onload = readerEvent => {
+    //         content = readerEvent.target.result; // this is the content!
+    //         console.log(content)
+    //
+    //     }
+    // }
+    // // add onchange handler if you wish to get the file :)
+    // // input.trigger("click"); // opening dialog
+    // input.click()
 
 }
