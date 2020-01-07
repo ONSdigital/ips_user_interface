@@ -1,55 +1,54 @@
 //globals
-var build = true;
-var right = false;
-var copy = false;
+let build = true;
+let right = true;
+let copy = false;
 
-$(function(){
-    $('#resizing_select').change(function(){
+$(function () {
+    $('#resizing_select').change(function () {
         $("#width_tmp_option").html($(' option:selected').text());
         $(this).width($("#width_tmp_select").width());
     });
 
     $.contextMenu({
         selector: '.pv_line',
-        callback: function(key, options) {
-            if(key === "delete"){
-                if($(".pv_el_selected").length > 0){
+        callback: function (key, options) {
+            if (key === "delete") {
+                if ($(".pv_el_selected").length > 0) {
                     $(".pv_el_selected").remove();
-                }else {
+                } else {
                     $(".pv_line_selected").remove();
                 }
-            }else if(key === "copy_line"){
+            } else if (key === "copy_line") {
                 copy = $(".pv_line_selected");
-            }else if(key === "pasteline"){
+            } else if (key === "pasteline") {
                 let curLine = $(".context-menu-active");
                 curLine.after(copy.clone().removeClass("pv_line_selected").removeClass("context-menu-active"))
-            }
-            else{
+            } else {
                 key = key.split("_");
 
-                if(key[0].includes("-")){
+                if (key[0].includes("-")) {
                     let skey = key[0].split("-");
                     insertStatement($(".pv_el_selected"), skey[0], key[1]);
-                }else if(key[0] === "newline"){
+                } else if (key[0] === "newline") {
                     insertNewline(key[1]);
-                }else {
+                } else {
                     insertElement($(".pv_el_selected"), key[0], key[1]);
                 }
             }
-        },events: {
-            hide: function(opt) {
-              $(".pv_el_selected").removeClass("pv_el_selected");
+        }, events: {
+            hide: function (opt) {
+                $(".pv_el_selected").removeClass("pv_el_selected");
             }
         },
         items: {
             "delete": {"name": "Delete"},
             "sep2": "---------",
             "copy_line": {"name": "Copy Line(s)"},
-            "pasteline": {"name": "Paste"},
+            "pasteline": {"name": "Paste Line(s) Below"},
             "sep": "---------",
             "fold1": {
                 "name": "Insert Left",
-                "items" : {
+                "items": {
                     "fold1": {
                         "name": "Statements",
                         "items": {
@@ -80,7 +79,7 @@ $(function(){
             },
             "fold1a": {
                 "name": "Insert Right",
-                "items" : {
+                "items": {
                     "fold1": {
                         "name": "Statements",
                         "items": {
@@ -116,50 +115,58 @@ $(function(){
     });
 });
 
-function setPVListeners(main){
-    main.keydown(function(e){
-        if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+function setPVListeners(main) {
+    main.keydown(function (e) {
+        if ([32, 38, 40].indexOf(e.keyCode) > -1) {
             e.preventDefault();
         }
     });
-    $(".pv_input").each(function(){
+    $(".pv_input").each(function () {
         resizeInput($(this));
     });
-    $( ".pv_input" ).keyup(function(){resizeInput($(this))});
-    $(".pv_input").keydown(function(e) {
+    $(".pv_input").keyup(function () {
+        resizeInput($(this))
+    });
+    $(".pv_input").keydown(function (e) {
         return e.which !== 32;
     });
-    $(".pv_select").each(function(){
+    $(".pv_select").each(function () {
         resizeSelect($(this));
     });
-    $( ".pv_select" ).change(function(){resizeSelect($(this))});
-    $( ".pv_select" ).blur(function(){resizeSelect($(this))});
-    $( ".pv_select" ).focus(function(){restoreSelect($(this))});
-    $('.pv_div').on('click', '.pv_el_delete', function(){
+    $(".pv_select").change(function () {
+        resizeSelect($(this))
+    });
+    $(".pv_select").blur(function () {
+        resizeSelect($(this))
+    });
+    $(".pv_select").focus(function () {
+        restoreSelect($(this))
+    });
+    $('.pv_div').on('click', '.pv_el_delete', function () {
         $(this).parent().remove()
     });
-    $( ".pv_div").on('click', '.pv_el', function(e){
+    $(".pv_div").on('click', '.pv_el', function (e) {
         $(".pv_el_selected").removeClass("pv_el_selected");
-        if (!e.shiftKey){
+        if (!e.shiftKey) {
             e.stopPropagation();
             $(".pv_line_selected").removeClass("pv_line_selected");
             $(this).parent().addClass("pv_line_selected")
             $(this).toggleClass("pv_el_selected");
         }
-    })
-    $( ".pv_div").on('contextmenu', '.pv_el', function(){
+    });
+    $(".pv_div").on('contextmenu', '.pv_el', function () {
         $(".pv_el_selected").removeClass("pv_el_selected");
         $(this).addClass("pv_el_selected");
-    })
-    $( ".pv_div").on('click', '.pv_line', function(e){
+    });
+    $(".pv_div").on('click', '.pv_line', function (e) {
         $(".pv_el_selected").removeClass("pv_el_selected");
         if (!e.shiftKey) $(".pv_line_selected").removeClass("pv_line_selected");
-        else{
+        else {
             let selected, first, last;
-            if($(".pv_line_selected").first().index() < $(this).index()){
+            if ($(".pv_line_selected").first().index() < $(this).index()) {
                 first = $(".pv_line_selected").first();
                 last = $(this);
-            }else{
+            } else {
                 last = $(".pv_line_selected").last();
                 first = $(this);
             }
@@ -169,54 +176,54 @@ function setPVListeners(main){
             selected.addClass("pv_line_selected");
         }
         $(this).toggleClass("pv_line_selected");
-    })
-    $( ".pv_div").on('contextmenu', '.pv_line', function(){
-        if($(this).hasClass("pv_line_selected")) return;
+    });
+    $(".pv_div").on('contextmenu', '.pv_line', function () {
+        if ($(this).hasClass("pv_line_selected")) return;
         $(".pv_line_selected").removeClass("pv_line_selected");
         $(this).toggleClass("pv_line_selected");
-    })
-    $( ".pv_div").on('keyup', '.pv_line', function(e){
+    });
+    $(".pv_div").on('keyup', '.pv_line', function (e) {
         let el = false;
-        if(e.which == 40) {
+        if (e.which == 40) {
             $(".pv_line_selected").removeClass("pv_line_selected");
             el = $(this).next(".pv_line");
-        }else if(e.which == 38){
+        } else if (e.which == 38) {
             $(".pv_line_selected").removeClass("pv_line_selected");
             el = $(this).prev(".pv_line");
         }
-        if(el) {
+        if (el) {
             el.toggleClass("pv_line_selected");
             el.focus();
         }
-    })
-    $('#txtbld').change(function(){
+    });
+    $('#txtbld').change(function () {
         build = !build;
-        if(!build){
-           $(".pv_txt_div").val($("#builder").txt_val());
+        if (!build) {
+            $(".pv_txt_div").val($("#builder").txt_val());
         }
         $(".pv_div").toggle();
         $(".pv_txt_div").toggle();
     });
 
-    $('#lr').change(function(){
+    $('#lr').change(function () {
         right = !right;
     })
 }
 
-$.fn.pv_builder_v2 = function (content){
-    right = false;
+$.fn.pv_builder_v2 = function (content) {
+    right = true;
     let header = pvHeader();
     let lines = getLines(content);
     lines = convertLines(lines);
-    for( var i = 0; i < lines.length; i++){
-        if(i === 0){
-            lines[i] = "<div class='pv_line pv_line_selected' tabindex='"+i+"'>"+lines[i].join("")+"</div>";
-        }else{
-            lines[i] = "<div class='pv_line' tabindex='"+i+"'>"+lines[i].join("")+"</div>";
+    for (let i = 0; i < lines.length; i++) {
+        if (i === 0) {
+            lines[i] = "<div class='pv_line pv_line_selected' tabindex='" + i + "'>" + lines[i].join("") + "</div>";
+        } else {
+            lines[i] = "<div class='pv_line' tabindex='" + i + "'>" + lines[i].join("") + "</div>";
         }
     }
-    lines = "<div class='pv_div'>"+lines.join("")+"</div>";
-    lines += "<textarea disabled class='pv_txt_div'>"+content+"</textarea>";
+    lines = "<div class='pv_div'>" + lines.join("") + "</div>";
+    lines += "<textarea disabled class='pv_txt_div'>" + content + "</textarea>";
     this.empty();
     this.append(header);
     this.append(lines);
@@ -224,23 +231,23 @@ $.fn.pv_builder_v2 = function (content){
     headerListeners();
 };
 
-$.fn.txt_val = function (){
+$.fn.txt_val = function () {
     let container = $(this).children(".pv_div").first();
     let s = "";
-    $(container).children(".pv_line").each(function(){
-        $(this).children(".pv_el").each(function(){
+    $(container).children(".pv_line").each(function () {
+        $(this).children(".pv_el").each(function () {
             let el = $(this).children().first();
-            if(el.is("span")){
+            if (el.is("span")) {
                 s += el.text();
-            }else{
+            } else {
                 let n = $(this).next(".pv_el").children().first();
-                if( n.length > 0){
-                    if((! (el.hasClass("pv_and") || el.hasClass("pv_op"))) && n.is("span")){
+                if (n.length > 0) {
+                    if ((!(el.hasClass("pv_and") || el.hasClass("pv_op"))) && n.is("span")) {
                         s += el.val();
-                    }else{
+                    } else {
                         s += el.val() + " ";
                     }
-                }else{
+                } else {
                     s += el.val() + " ";
                 }
             }
@@ -251,7 +258,7 @@ $.fn.txt_val = function (){
 };
 
 //------------------------ Header Stuff ---------------------------------
-function pvHeader(){
+function pvHeader() {
     let s = "<div class='pv_header'>";
     s += "<span class='pv_header_el'>Insert to</span>"
     s += lrSwitch("lr", false);
@@ -268,7 +275,7 @@ function pvHeader(){
     s += headerButton("tab", "tab");
     s += headerButton("bl", "(");
     s += headerButton("br", ")");
-    s += headerButton("col", ":");
+    // s += headerButton("col", ":");
     s += headerSpan("New Line");
     s += headerButton("a_newline", "above");
     s += headerButton("b_newline", "below");
@@ -280,27 +287,27 @@ function pvHeader(){
     return s;
 }
 
-function headerButton(id, value){
-    let s = "<button class='pv_header_button' id='"+id+"'>"+value+"</button>";
-    return s;
+function headerButton(id, value) {
+    return "<button class='pv_header_button' id='" + id + "'>" + value + "</button>";
 }
 
-function headerSpan(value){
-    let s = "<span class='pv_header_span'>"+value+"</span>";
-    return s;
+function headerSpan(value) {
+    return "<span class='pv_header_span'>" + value + "</span>";
 }
 
-function lrSwitch(id, view){
-    if(view) {
-        var s = '<div style="float: right" class="onoffswitch pv_header_el">';
-    }else{
-        var s = '<div class="onoffswitch pv_header_el">';
+function lrSwitch(id, view) {
+    let s;
+    if (view) {
+        s = '<div style="float: right" class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="' + id + '" checked>';
+    } else {
+        s = '<div class="onoffswitch pv_header_el">';
+        s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="' + id + '">';
     }
-    s += '<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="'+id+'" checked>';
-    s += '<label class="onoffswitch-label" for="'+id+'">';
-    if(view){
+    s += '<label class="onoffswitch-label" for="' + id + '">';
+    if (view) {
         s += '<span class="onoffswitchview-inner"></span>';
-    }else{
+    } else {
         s += '<span class="onoffswitch-inner"></span>';
     }
     s += '<span class="onoffswitch-switch"></span>';
@@ -309,22 +316,22 @@ function lrSwitch(id, view){
     return s;
 }
 
-function headerListeners(){
-    $(".pv_header_button").click(function(){
+function headerListeners() {
+    $(".pv_header_button").click(function () {
+        // console.log(e)
         let el = $(".pv_el_selected");
         let type = $(this).attr("id").split("_");
-        if(type[0] === "import"){
+        if (type[0] === "import") {
             //runs the import button
             importButton()
-
-        }else if (type[0] == "export"){
-            console.log("export")
-        }else if(type.length === 1) {
+        } else if (type[0] === "export") {
+            exportButton();
+        } else if (type.length === 1) {
             insertElement(el, $(this).attr("id"), right ? "right" : "left");
-        }else{
-            if(type[1] == "statement"){
+        } else {
+            if (type[1] === "statement") {
                 insertStatement(el, type[0], right ? "right" : "left");
-            }else if(type[1] == "newline"){
+            } else if (type[1] === "newline") {
                 insertNewline(type[0]);
             }
         }
@@ -333,22 +340,22 @@ function headerListeners(){
 
 //------------------------ Manipulation ---------------------------------
 
-function convertLines(lines){
-    for( var i = 0; i < lines.length; i++){
+function convertLines(lines) {
+    for (var i = 0; i < lines.length; i++) {
         let strs = lines[i];
-        for( var x = 0; x < strs.length; x++){
+        for (var x = 0; x < strs.length; x++) {
             let special = false;
             do {
                 special = specialCase(lines[i][x], x);
-                if(special !== false){
-                    if(Array.isArray(special[0])){
+                if (special !== false) {
+                    if (Array.isArray(special[0])) {
                         lines[i].splice(special[1], 1);
                         let ind = 0;
-                        for( let z = special[1]; z < special[1]+special[0].length; z++) {
+                        for (let z = special[1]; z < special[1] + special[0].length; z++) {
                             lines[i].splice(z, 0, special[0][ind]);
-                            ind ++;
+                            ind++;
                         }
-                    }else {
+                    } else {
                         lines[i][x] = special[2];
                         lines[i].splice(special[1], 0, special[0]);
                     }
@@ -360,21 +367,21 @@ function convertLines(lines){
     return lines;
 }
 
-function convertToElement(s){
+function convertToElement(s) {
     let el = "<div class='pv_el pv_cm'>";
-    if(isIf(s)){
+    if (isIf(s)) {
         el += ifElement(s);
-    }else if(isAnd(s)){
+    } else if (isAnd(s)) {
         el += andElement(s);
-    }else if(isValue(s)){
+    } else if (isValue(s)) {
         el += valueElement(s);
-    }else if(isOpperator(s)){
+    } else if (isOpperator(s)) {
         el += opElement(s);
-    }else if(isSpecialChar(s)){
+    } else if (isSpecialChar(s)) {
         el += charElement(s);
-    }else if(isTab(s)){
+    } else if (isTab(s)) {
         el += tabElement(s);
-    }else{
+    } else {
         el += varElement(s);
     }
     el += "<img class='pv_el_delete' src='/static/img/close.svg'>";
@@ -382,18 +389,18 @@ function convertToElement(s){
     return el;
 }
 
-function getLines(content){
-    let lines = content.replaceAll("    ","TAB ");
+function getLines(content) {
+    let lines = content.replaceAll("    ", "TAB ");
     lines = lines.split("\n");
-    for( var i = 0; i < lines.length; i++){
-       if ( lines[i] != "") {
-           break;
-       }else{
-           lines.splice(i, 1);
-           i--;
-       }
+    for (var i = 0; i < lines.length; i++) {
+        if (lines[i] !== "") {
+            break;
+        } else {
+            lines.splice(i, 1);
+            i--;
+        }
     }
-    for( var i = 0; i < lines.length; i++){
+    for (var i = 0; i < lines.length; i++) {
         lines[i] = lines[i].replaceAll(", ", ",");
         lines[i] = lines[i].split(" ");
     }
@@ -401,79 +408,73 @@ function getLines(content){
 }
 
 
-
 //-------------------------- Element Creation ------------------------------
-function charElement(s){
-    let el = "<span class='pv_span'>"+s+"</span>";
-    return el;
+function charElement(s) {
+    return "<span class='pv_span'>" + s + "</span>";
 }
 
-function tabElement(s){
-    let el = "<span class='pv_tab'>    </span>";
-    return el;
+function tabElement(s) {
+    return "<span class='pv_tab'>    </span>";
 }
 
-function varElement(s){
+function varElement(s) {
     s = s.replaceAll("'", "&#39;");
-    let el = "<input class='pv_input' value='"+s+"'>"
-    return el;
+    return "<input class='pv_input' value='" + s + "'>";
 }
 
-function ifElement(s){
+function ifElement(s) {
     let arr = ['if', 'elif', 'else'];
     let el = "<select class='pv_select' resized=false>";
-    arr.forEach(function(op){
-        if(op == s){
-            el += "<option selected value='"+op+"'>"+op+"</option>";
-        }else{
-            el += "<option value='"+op+"'>"+op+"</option>";
+    arr.forEach(function (op) {
+        if (op === s) {
+            el += "<option selected value='" + op + "'>" + op + "</option>";
+        } else {
+            el += "<option value='" + op + "'>" + op + "</option>";
         }
     });
     el += "</select>";
     return el;
 }
 
-function andElement(s){
+function andElement(s) {
     let arr = ['and', 'or'];
     let el = "<select class='pv_select pv_and' resized=false>";
-    arr.forEach(function(op){
-        if(op == s){
-            el += "<option selected value='"+op+"'>"+op+"</option>";
-        }else{
-            el += "<option value='"+op+"'>"+op+"</option>";
+    arr.forEach(function (op) {
+        if (op == s) {
+            el += "<option selected value='" + op + "'>" + op + "</option>";
+        } else {
+            el += "<option value='" + op + "'>" + op + "</option>";
         }
     });
     el += "</select>";
     return el;
 }
 
-function opElement(s){
+function opElement(s) {
     let arr = ['=', '!=', '==', '>', '>=', '<', '<=', '+', '+=', '-', '-=', '*', '%', 'in'];
     let el = "<select class='pv_select pv_op' resized=false>";
-    arr.forEach(function(op){
-        if(op == s){
-            el += "<option selected value='"+op+"'>"+op+"</option>";
-        }else{
-            el += "<option value='"+op+"'>"+op+"</option>";
+    arr.forEach(function (op) {
+        if (op == s) {
+            el += "<option selected value='" + op + "'>" + op + "</option>";
+        } else {
+            el += "<option value='" + op + "'>" + op + "</option>";
         }
     });
     el += "</select>";
     return el;
 }
 
-function valueElement(s){
-    if(isStringValue(s)){
-        s = s.slice(1,-1);
-        s = "&#39;"+s+"&#39;";
+function valueElement(s) {
+    if (isStringValue(s)) {
+        s = s.slice(1, -1);
+        s = "&#39;" + s + "&#39;";
     }
-    let el = "<input class='pv_input' value='"+s+"'>"
-    return el;
+    return "<input class='pv_input' value='" + s + "'>";
 }
-
 
 
 //-------------------------- Type Checking ---------------------------------
-function isIf(s){
+function isIf(s) {
     switch (s) {
         case "if":
             return true;
@@ -485,7 +486,7 @@ function isIf(s){
     return false;
 }
 
-function isAnd(s){
+function isAnd(s) {
     switch (s) {
         case "and":
             return true;
@@ -495,40 +496,40 @@ function isAnd(s){
     return false;
 }
 
-function isTab(s){
-    if(s === "TAB"){
+function isTab(s) {
+    if (s === "TAB") {
         return true;
     }
     return false;
 }
 
-function isOpperator(s){
+function isOpperator(s) {
     let reg = /^[\+\-\=*&%\\><!]+|in{1}$/;
     return reg.test(s);
 }
 
-function isValue(s){
-    if(isStringValue(s)){
-       return true;
-    }else if(isNumber(s)){
+function isValue(s) {
+    if (isStringValue(s)) {
+        return true;
+    } else if (isNumber(s)) {
         return true;
     }
     return false;
 }
 
-function isNumber(s){
+function isNumber(s) {
     let reg = /^[0-9]$/
     return reg.test(s)
 }
 
-function isStringValue(s){
-    if(s[0] == "'" && s[s.length - 1] == "'"){
-       return true;
+function isStringValue(s) {
+    if (s[0] === "'" && s[s.length - 1] === "'") {
+        return true;
     }
     return false;
 }
 
-function isSpecialChar(s){
+function isSpecialChar(s) {
     switch (s) {
         case ")":
             return true;
@@ -545,59 +546,59 @@ function isSpecialChar(s){
 
 //--------------------------    Misc     ---------------------------------
 
-function colonEnd(s){
-    if(s[s.length - 1] == ":"){
+function colonEnd(s) {
+    if (s[s.length - 1] === ":") {
         return true;
     }
     return false;
 }
 
-function closingBracketEnd(s){
-    if(s[s.length - 1] == ")"){
+function closingBracketEnd(s) {
+    if (s[s.length - 1] === ")") {
         return true;
     }
     return false;
 }
 
-function openingBracketEnd(s){
-    if(s[s.length - 1] == "("){
+function openingBracketEnd(s) {
+    if (s[s.length - 1] === "(") {
         return true;
     }
     return false;
 }
 
-function openingBracketStart(s){
-    if(s[0] == "("){
+function openingBracketStart(s) {
+    if (s[0] === "(") {
         return true;
     }
     return false;
 }
 
-function specialCase(s, index){
-    if(s.length <= 1){
+function specialCase(s, index) {
+    if (s.length <= 1) {
         return false;
     }
-    if(colonEnd(s)){
-        return [":", index+1, s.substring(0, s.length-1)];
-    }else if(closingBracketEnd(s)){
-        return [")", index+1, s.substring(0, s.length-1)];
-    }else if(openingBracketEnd(s)){
-        return ["(", index+1, s.substring(0, s.length-1)];
-    }else if(openingBracketStart(s)){
+    if (colonEnd(s)) {
+        return [":", index + 1, s.substring(0, s.length - 1)];
+    } else if (closingBracketEnd(s)) {
+        return [")", index + 1, s.substring(0, s.length - 1)];
+    } else if (openingBracketEnd(s)) {
+        return ["(", index + 1, s.substring(0, s.length - 1)];
+    } else if (openingBracketStart(s)) {
         return ["(", index, s.substring(1, s.length)];
-    }else if(s.includes("(")){
+    } else if (s.includes("(")) {
         let a = getSplitArr(s, "(");
         return [a, index];
-    }else if(s.includes(")")){
+    } else if (s.includes(")")) {
         let a = getSplitArr(s, ")");
         return [a, index];
     }
     return false;
 }
 
-function getSplitArr(s,del){
+function getSplitArr(s, del) {
     let arr = s.split(del);
-    for( var i = 1; i < arr.length; i+=2) {
+    for (let i = 1; i < arr.length; i += 2) {
         arr.splice(i, 0, del)
     }
     return arr;
@@ -607,10 +608,10 @@ function getSplitArr(s,del){
 function resizeSelect(sel) {
     sel = sel[0];
     let resized = $(sel).attr("resized");
-    if(resized == "true") return;
-    for (var i=0; i<sel.options.length; i++) {
-        sel.options[i].title=sel.options[i].innerHTML;
-        if (i!=sel.options.selectedIndex) sel.options[i].innerHTML='';
+    if (resized === "true") return;
+    for (var i = 0; i < sel.options.length; i++) {
+        sel.options[i].title = sel.options[i].innerHTML;
+        if (i !== sel.options.selectedIndex) sel.options[i].innerHTML = '';
     }
     $(sel).attr("resized", true);
     sel.blur();
@@ -618,25 +619,26 @@ function resizeSelect(sel) {
 
 function restoreSelect(sel) {
     sel = sel[0];
-    if($(sel).attr("resized") == "false") return;
-    for (var i=0; i<sel.options.length; i++) {
-        sel.options[i].innerHTML=sel.options[i].title;
+    if ($(sel).attr("resized") === "false") return;
+    for (var i = 0; i < sel.options.length; i++) {
+        sel.options[i].innerHTML = sel.options[i].title;
     }
     $(sel).attr("resized", false);
 }
 
 function resizeInput(input) {
-    $(input).width( $(input).val().length  + 'ch');
+    $(input).width($(input).val().length + 'ch');
 }
+
 //----------------------------------------------------------
 
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
+String.prototype.replaceAll = function (search, replacement) {
+    let target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-function insertElement(el, key, dir){
-    if(el.length > 0) {
+function insertElement(el, key, dir) {
+    if (el.length > 0) {
         if (dir === "right") {
             el.after(getNewEl(key));
             el.removeClass("pv_el_selected");
@@ -644,24 +646,23 @@ function insertElement(el, key, dir){
         } else if (dir === "left") {
             el.before(getNewEl(key));
         }
-    }else{
+    } else {
         if (dir === "right") {
             $(".pv_line_selected").append(getNewEl(key));
         } else if (dir === "left") {
             $(".pv_line_selected").prepend(getNewEl(key));
         }
     }
-    int ()
 }
 
-function insertStatement(el, key, dir){
-    if(el.length > 0) {
+function insertStatement(el, key, dir) {
+    if (el.length > 0) {
         if (dir === "right") {
             el.after(getInsertStatement(key));
         } else if (dir === "left") {
             el.before(getInsertStatement(key));
         }
-    }else{
+    } else {
         if (dir === "right") {
             $(".pv_line_selected").append(getInsertStatement(key));
         } else if (dir === "left") {
@@ -670,29 +671,34 @@ function insertStatement(el, key, dir){
     }
 }
 
-function insertNewline(dir){
+function insertNewline(dir) {
     let curLine = $(".context-menu-active");
-    if(curLine.length > 0) {
+    if (curLine.length > 0) {
         if (dir === "a") {
             $(curLine).before(getNewlineEl(curLine.prev(".pv_line")));
         } else {
             $(curLine).after(getNewlineEl(curLine));
         }
-    }else{
-        $(".pv_div").prepend(getNewlineEl(curLine.prev(".pv_line")));
+    } else {
+        if (dir === "a") {
+            $(".pv_line_selected").before(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+
+        } else {
+            $(".pv_line_selected").after(getNewlineEl($(".pv_line_selected").prev(".pv_line")));
+        }
     }
 }
 
-function getNewlineEl(curLine){
+function getNewlineEl(curLine) {
     let el = "<div class='pv_line' tabindex='0'>";
-    if(curLine.length > 0) {
-        if (curLine.children().last().children(".pv_span").text() === ":"){
+    if (curLine.length > 0) {
+        if (curLine.children().last().children(".pv_span").text() === ":") {
             el += getNewEl("tab");
         }
-        curLine.children().each(function(){
-            if($(this).children().first().hasClass("pv_tab")){
+        curLine.children().each(function () {
+            if ($(this).children().first().hasClass("pv_tab")) {
                 el += getNewEl("tab");
-            }else{
+            } else {
                 return false;
             }
         })
@@ -702,15 +708,15 @@ function getNewlineEl(curLine){
     return el;
 }
 
-function getInsertStatement(type){
+function getInsertStatement(type) {
     let statement = "";
-    if(type === "if"){
+    if (type === "if") {
         statement += getNewEl("if");
         statement += getNewEl("var");
         statement += getNewEl("opp");
         statement += getNewEl("val");
         statement += getNewEl("colon");
-    }else if(type === "var"){
+    } else if (type === "var") {
         statement += getNewEl("var");
         statement += getNewEl("opp");
         statement += getNewEl("val");
@@ -718,9 +724,9 @@ function getInsertStatement(type){
     return statement;
 }
 
-function getNewEl(key){
+function getNewEl(key) {
     let el = "<div class='pv_el pv_cm'>";
-    switch(key){
+    switch (key) {
         case "if":
             el += ifElement("if");
             break;
@@ -760,37 +766,49 @@ function getNewEl(key){
 function importButton() {
     let input = document.createElement('input');
     input.type = 'file';
+    input.accept = '.py';
 
     input.onchange = e => {
-       let file = e.target.files[0];
-       var reader = new FileReader();
-       reader.readAsText(file,'UTF-8');
-       reader.onload = readerEvent => {
-           content = readerEvent.target.result; // this is the content!
-           console.log(content) //prints out the file in the console
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = readerEvent => {
+            let content = readerEvent.target.result; // this is the content!
 
-       }
-    }
+            let builder = $("#builder");
+            builder.empty();
+            builder.pv_builder_v2(content);
+            // Add Success Panel to Builder
+            builder.prepend('<br/>' +
+                '<div class="panel panel--simple panel--success">\n' +
+                '    <div class="panel__body">\n' +
+                '        <div>PV Imported Successfully from file: ' + file.name + '</div>\n' +
+                '    </div>\n' +
+                '</div>' +
+                '<br/>')
+        }
+    };
 
-    input.click()
+    input.click();
 
     return content
-    // creating input on-the-fly
-    // var input = $(document.createElement("input"));
-    // input.attr("type", "file");
-    // input.onchange = e => {
-    //     let file = e.target.files[0];
-    //     console.log(1)
-    //     var reader = new FileReader();
-    //     reader.readAsText(file, 'UTF-8');
-    //     reader.onload = readerEvent => {
-    //         content = readerEvent.target.result; // this is the content!
-    //         console.log(content)
-    //
-    //     }
-    // }
-    // // add onchange handler if you wish to get the file :)
-    // // input.trigger("click"); // opening dialog
-    // input.click()
+}
 
+function exportButton() {
+    let input = document.createElement('input');
+    input.type = 'file';
+
+    let pv_name = $("#id_input").val();
+    let pv = $("#builder").txt_val();
+
+
+    let textFileAsBlob = new Blob([pv], {type: 'text/x-python-script'});
+
+    let downloadLink = document.createElement('a');
+    downloadLink.download = pv_name + '.py';
+    downloadLink.innerHTML = 'Download File';
+
+    downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+
+    downloadLink.click();
 }
