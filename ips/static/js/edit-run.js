@@ -48,6 +48,15 @@ $(document).ready(function (e) {
     });
 
     function storeAllAndVerifyPVs() {
+        // Get UI elements
+        let pv_validation_panel_success = $('#pv-validation-panel-success');
+        let pv_validation_panel_error = $('#pv-validation-panel-error');
+        let pv_validation_panel_loading = $('#pv-validation-panel-loading');
+        let error_panel_placeholder = $('#error-panel-placeholder');
+        pv_validation_panel_loading.show();
+        pv_validation_panel_success.hide();
+        pv_validation_panel_error.hide();
+
         let json = {};
 
         $("#form_table").children("tbody").children("tr").each(function () {
@@ -66,23 +75,21 @@ $(document).ready(function (e) {
             url: '/builder/' + $("#rid").text(),
             data: {json: json},
             success: function(response){
-                console.log('Validation Complete');
-                console.log(response);
-
                 if (response.status === "successful") {
-                    // Hides the 'Save and Verify Button' and shows the continue button
-                    $('#error-panel-placeholder').empty();
+                    // Shows success panel
                     $('#btn-continue').show();
-                    $('#pv-validation-panel-success').show();
-                    $('#pv-validation-panel-error').hide();
-                    $('#savec').hide()
+                    error_panel_placeholder.empty();
+                    pv_validation_panel_success.show();
+                    pv_validation_panel_error.hide();
+                    pv_validation_panel_loading.hide();
                 } else {
                     // Hides Continue button and Displays error Panel
                     $('#btn-continue').hide();
-                    $('#pv-validation-panel-success').hide();
-                    $('#pv-validation-panel-error').show();
-                    $('#error-panel-placeholder').empty();
-                    $('#error-panel-placeholder').append('' +
+                    pv_validation_panel_success.hide();
+                    pv_validation_panel_error.show();
+                    pv_validation_panel_loading.hide();
+                    error_panel_placeholder.empty();
+                    error_panel_placeholder.append('' +
                         '<div id="error-panel">\n' +
                         '    <div class="panel panel--error">\n' +
                         '        <div class="panel__header">\n' +
@@ -97,7 +104,7 @@ $(document).ready(function (e) {
                 }
             },
             error: function (err) {
-                console.log("Error");
+                console.log("Builder & Validation Call Error");
                 console.log(err)
             }
         });
