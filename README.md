@@ -6,10 +6,3 @@ This is the Legacy Uplift version of the IPS user interface.
 
 In order to run UI locally, you need API and DB setup. This can be done by following instructions here:  
 [ips_db_api](https://github.com/ONSdigital/ips_db_api) 
-
-
-Wonder if the cd ci is workinnn
-
-now ???????
-how about now ?
-how you like me nowwww?
