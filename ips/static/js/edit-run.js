@@ -39,10 +39,6 @@ $(document).ready(function (e) {
         storeAllAndVerifyPVs();
     });
 
-    $("#savec").click(function () {
-        storeAllAndVerifyPVs()
-    });
-
     $("#btn-continue").click(function () {
         storeAllAndVerifyPVs()
     });
@@ -75,7 +71,6 @@ $(document).ready(function (e) {
             url: '/builder/' + $("#rid").text(),
             data: {json: json},
             success: function(response){
-                console.log(response)
                 if (response.status === "successful") {
                     // Shows success panel
                     $('#btn-continue').show();
@@ -83,12 +78,17 @@ $(document).ready(function (e) {
                     pv_validation_panel_success.show();
                     pv_validation_panel_error.hide();
                     pv_validation_panel_loading.hide();
-                } else {
-                    // Hides Continue button and Displays error Panel
+                    // Clear any Errors from Table List
+                    $("tr").removeClass("panel--error");
+                } else if (response.status === "error") {
+                    // Clear any Errors from Table List
+                    $("tr").removeClass("panel--error");
+                    // Hides Continue button and
                     $('#btn-continue').hide();
                     pv_validation_panel_success.hide();
                     pv_validation_panel_error.show();
                     pv_validation_panel_loading.hide();
+                    // Clear Panel Error and Displays new error
                     error_panel_placeholder.empty();
                     error_panel_placeholder.append('' +
                         '<div id="error-panel">\n' +
@@ -97,11 +97,13 @@ $(document).ready(function (e) {
                         '            <div class="u-fs-r--b">Error</div>\n' +
                         '        </div>\n' +
                         '        <div class="panel__body">\n' +
-                        '            <p class="u-fs-r">Error Validating PVs: ' + response.error + '</p>\n' +
-                        '        </div>\n' +
+                        '            <h2>Error Validating PV:  <a href="#' + response.PV + '">' + response.PV + '</a></h2>\n' +
+                        '            <p class="u-fs-r">' + response.errorMessage + '</p>\n' +
+                        '        </h2>\n' +
                         '    </div>' +
                         '</div>');
                     window.scrollTo(0,0);
+                    $("tr:contains(" + response.PV + ")").addClass("panel--error")
                 }
             },
             error: function (err) {

@@ -766,7 +766,7 @@ function getNewEl(key) {
 function importButton() {
     let input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.txt';
+    input.accept = '.py';
 
     input.onchange = e => {
         let file = e.target.files[0];
@@ -805,7 +805,7 @@ function exportButton() {
     let textFileAsBlob = new Blob([pv], {type: 'text/x-python-script'});
 
     let downloadLink = document.createElement('a');
-    downloadLink.download = pv_name + '.txt';
+    downloadLink.download = pv_name + '.pv';
     downloadLink.innerHTML = 'Download File';
 
     downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
