@@ -23,8 +23,6 @@ def create(run_id):
     log.debug(f"builder: validate_process_variables: {run_id}")
     response = requests.get(API_TARGET + r'/process_variables/test/' + run_id)
 
-    print(response)
-
     # Get error message from response
     response_message = json.loads(response.text)
     print(response_message)

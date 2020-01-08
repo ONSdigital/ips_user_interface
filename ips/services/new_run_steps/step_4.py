@@ -70,30 +70,6 @@ def run_step_4(run_id, template_id):
 
         return redirect('/new_run_steps/new_run_5/' + run_id)
 
-        # # Validate PVs
-        # response = app_methods.validate_process_variables(run_id)
-        # if response.status_code == 200:
-        #     return redirect('/new_run_steps/new_run_5/' + run_id)
-        # else:
-        #     # If error is returned from validation, reload page with Error Panel
-        #
-        #     if template_id is None:
-        #         template_id = session['template_id']
-        #
-        #     run_id = session['id']
-        #
-        #     header = ['PV_NAME', 'PV_REASON', 'PV_CONTENT']
-        #
-        #     records = app_methods.get_process_variables(template_id)
-        #
-        #     # Get error message from response
-        #     response_message = json.loads(response.text)
-        #
-        #     error_message = 'PVs Failed Verification: ' + response_message['error']
-        #
-        #     return render_template('new_run_4.html', run_id=run_id, table=records,
-        #                            header=header, api_target=API_TARGET, error=error_message)
-
     if template_id is None:
         template_id = session['template_id']
 
