@@ -75,6 +75,7 @@ $(document).ready(function (e) {
             url: '/builder/' + $("#rid").text(),
             data: {json: json},
             success: function(response){
+                console.log(response)
                 if (response.status === "successful") {
                     // Shows success panel
                     $('#btn-continue').show();
