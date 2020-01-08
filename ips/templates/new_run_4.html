@@ -1,6 +1,4 @@
 {% extends "layout.html" %}
-
-<!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
 
 <head>
@@ -29,7 +27,6 @@
             <div class="container">
                 <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
                      id="main-nav">
-                    <
                     <ul class="nav__list" aria-label="Navigation menu" role="menubar">
                         <li class="nav__item " role="menuitem" aria-current="page">
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
@@ -93,6 +90,12 @@
 
             <div class="wrapper">
                 <div class="group top_40_extra_space">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-8" id="error-panel-placeholder"></div>
+
                     <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
 
                         <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
@@ -149,18 +152,47 @@
                                 </div>
                             </div>
 
-                            <div class="top_50_extra_space">
-                                    <div class="btn-group">
-                                        <button class="btn btn-group__btn" style="margin-right: 1rem" autofocus id="savec">Save and continue</button>
-                                        <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_3', run_id=run_id) }}">Back</a>
-                                        <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                            <div class="col-8">
+                                <div class="top_50_extra_space">
+
+                                    <!-- Validation Loading Panel -->
+                                    <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">
+                                        <div class="panel__body">
+                                            <div>PV Validation In Progress...
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Successful Validation Panel -->
+                                    <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                                        <div class="panel__body">
+                                            <div>PV Validation Successful
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Failed Validation Panel -->
+                                    <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">
+                                        <div class="panel__body">
+                                            <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+
+                                    <div class="btn-group" id="form-button-group">
+                                        <button hidden class="btn btn-group__btn" id="btn-continue"
+                                                style="margin-right: 1rem">Continue
+                                        </button>
+                                        <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; "
+                                           href="{{ url_for('.new_run_3', run_id=run_id) }}">Back</a>
+                                        <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; "
+                                           href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </form>
-
                 </div>
             </div>
 
@@ -181,9 +213,10 @@
                 <br>
                 <div id="builder"></div>
                 <br><br>
-                <button type="button" class="btn btn--primary" id="modal_okay_button">Ok</button>
-                <button type="button" class="btn btn--secondary" id="cancel">Cancel</button>
-
+                <div class="btn-group">
+                    <button type="button" class="btn btn-group__btn btn--primary" id="modal_okay_button">Save</button>
+                    <button type="button" class="btn btn-group__btn btn--secondary" id="cancel">Cancel</button>
+                </div>
             </div>
 
         </div>

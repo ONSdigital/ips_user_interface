@@ -1,6 +1,8 @@
+import json
+
 import requests
 import ast
-from flask import request, Blueprint
+from flask import request, Blueprint, jsonify
 import sys
 
 from ips.services import API_TARGET
@@ -14,8 +16,18 @@ def create(run_id):
     log.debug("builder: create_run")
     headers = {'Content-type': 'application/x-www-form-urlencoded'}
     data = {"json": request.form['json'].strip()}
+    # Send PVs
     response = requests.post(API_TARGET + r'/builder/' + run_id, headers=headers, data=data)
-    return '', 204
+
+    # Validate PVs
+    log.debug(f"builder: validate_process_variables: {run_id}")
+    response = requests.get(API_TARGET + r'/process_variables/test/' + run_id)
+
+    # Get error message from response
+    response_message = json.loads(response.text)
+    print(response_message)
+
+    return jsonify(response_message)
 
 
 @bp.route('/validate', methods=['GET', 'POST'])

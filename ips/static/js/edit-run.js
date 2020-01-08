@@ -9,7 +9,7 @@ $(document).ready(function (e) {
     const grb_id = 1;
     let expr = [];
     let data = [];
-    storeAllPVs();
+    storeAllAndVerifyPVs();
 
     $("#modal_okay_button").click(function (event) {
         // Get values entered into the inputs by the user
@@ -36,13 +36,23 @@ $(document).ready(function (e) {
                 }
             }
         });
+        storeAllAndVerifyPVs();
     });
 
-    $("#savec").click(function () {
-        storeAllPVs()
+    $("#btn-continue").click(function () {
+        storeAllAndVerifyPVs()
     });
 
-    function storeAllPVs() {
+    function storeAllAndVerifyPVs() {
+        // Get UI elements
+        let pv_validation_panel_success = $('#pv-validation-panel-success');
+        let pv_validation_panel_error = $('#pv-validation-panel-error');
+        let pv_validation_panel_loading = $('#pv-validation-panel-loading');
+        let error_panel_placeholder = $('#error-panel-placeholder');
+        pv_validation_panel_loading.show();
+        pv_validation_panel_success.hide();
+        pv_validation_panel_error.hide();
+
         let json = {};
 
         $("#form_table").children("tbody").children("tr").each(function () {
@@ -60,8 +70,45 @@ $(document).ready(function (e) {
             type: "POST",
             url: '/builder/' + $("#rid").text(),
             data: {json: json},
-            success: function () {
-
+            success: function(response){
+                if (response.status === "successful") {
+                    // Shows success panel
+                    $('#btn-continue').show();
+                    error_panel_placeholder.empty();
+                    pv_validation_panel_success.show();
+                    pv_validation_panel_error.hide();
+                    pv_validation_panel_loading.hide();
+                    // Clear any Errors from Table List
+                    $("tr").removeClass("panel--error");
+                } else if (response.status === "error") {
+                    // Clear any Errors from Table List
+                    $("tr").removeClass("panel--error");
+                    // Hides Continue button and
+                    $('#btn-continue').hide();
+                    pv_validation_panel_success.hide();
+                    pv_validation_panel_error.show();
+                    pv_validation_panel_loading.hide();
+                    // Clear Panel Error and Displays new error
+                    error_panel_placeholder.empty();
+                    error_panel_placeholder.append('' +
+                        '<div id="error-panel">\n' +
+                        '    <div class="panel panel--error">\n' +
+                        '        <div class="panel__header">\n' +
+                        '            <div class="u-fs-r--b">Error</div>\n' +
+                        '        </div>\n' +
+                        '        <div class="panel__body">\n' +
+                        '            <h2>Error Validating PV:  <a href="#' + response.PV + '">' + response.PV + '</a></h2>\n' +
+                        '            <p class="u-fs-r">' + response.errorMessage + '</p>\n' +
+                        '        </h2>\n' +
+                        '    </div>' +
+                        '</div>');
+                    window.scrollTo(0,0);
+                    $("tr:contains(" + response.PV + ")").addClass("panel--error")
+                }
+            },
+            error: function (err) {
+                console.log("Builder & Validation Call Error");
+                console.log(err)
             }
         });
     }
@@ -91,7 +138,7 @@ $(document).ready(function (e) {
     });
 
     // Get length of dictionary so it can be iterated over
-    rowsLength = tableRows.length
+    rowsLength = tableRows.length;
 
     // Take the contents of the table and put it into the hidden field
     fillInputFieldForPosting(rowsLength);
@@ -121,7 +168,7 @@ $(document).ready(function (e) {
         variableId = this.id;
 
         // Length of the rows in the table
-        rowsLength = tableRows.length
+        rowsLength = tableRows.length;
         // Array we will append rows to
         data = [];
 
@@ -146,7 +193,7 @@ $(document).ready(function (e) {
         }
 
         // Set the inputs values to that in the data array
-        $("#id_input").attr("pv", pvid)
+        $("#id_input").attr("pv", pvid);
         $("#id_input").val(data[0].innerHTML);
         $("#reason_input").val(data[1].innerHTML);
 
@@ -188,7 +235,7 @@ $(document).ready(function (e) {
         dataToSend = "";
         // Put the data array into the input
         for (i = 0; i < dataLength; i++) {
-            row = data[i]
+            row = data[i];
             dataToSend += row['name'] + '^';
             dataToSend += row['reason'] + '^';
             dataToSend += row['content'] + '^';
