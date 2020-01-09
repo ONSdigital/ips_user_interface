@@ -805,7 +805,7 @@ function exportButton() {
     let textFileAsBlob = new Blob([pv], {type: 'text/x-python-script'});
 
     let downloadLink = document.createElement('a');
-    downloadLink.download = pv_name + '.pv';
+    downloadLink.download = pv_name + '.py';
     downloadLink.innerHTML = 'Download File';
 
     downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
