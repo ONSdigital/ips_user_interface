@@ -32,13 +32,11 @@ def export_data(run_id):
     current_run = run
 
     log.debug(f"export_data for run_id {run_id}")
-    print("firsts")
+
     if request.method == 'POST' and form.validate():
-        print("yes yes")
         if 'cancel_button' in request.form:
             return redirect('/manage_run/' + current_run['RUN_ID'], code=302)
         sql_table = request.values['data_selection']
-        print(sql_table)
         csv = create_export_data_download(run_id, sql_table)
         if not csv:
             return render_template('export_data.html', form=form,

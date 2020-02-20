@@ -108,11 +108,6 @@
                                     disabled="true">Export
                             </button>
 
-{#                            sorry I had to hack for tha spinna...#}
-                            <div hidden="true" id="run_id">
-                                <p>{{ current_run['RUN_ID'] }}</p>
-                            </div>
-
                             &nbsp;&nbsp;
                             {{ form.cancel_button(style="width: 100px;", class="btn btn--secondary", type="submit") }}
                         </div>
@@ -142,43 +137,24 @@
         {{ super() }}
             <script>
                 function start_export() {
-                    console.log("start export");
-                    {#console.log(response)#}
                     $("#loading-button").show();
                     $("#export-button").hide();
-                    getstatus();
-
                 }
 
-                function getstatus(){
-                    console.log("Ajax");
-
-                    const run_id = $('#run_id').text().trim();
-                    {#const url =  'http://0.0.0.0:5000/export/' + run_id + '/' + $('#data_selection').val();#}
-                    const url = run_id
-                    console.log(url)
+                $("#run").submit(function() {
+                    const form = $(this);
+                    const url = form.attr('action');
                     $.ajax({
-                        url: url,
-                        type: "POST",
-                        {#dataType: 'json',#}
-                        success: function(data) {
-                            console.log("Success");
-                            console.log(data);
-                            console.log(data.message);
-                            $('#statusmessage').html(data.message);
-                            if(data.status=="pending")
-                              setTimeout('getstatus()', 1000);
-                            else
-                                console.log("hehehe");
-                              $('#wait').hide();
-                        },
-                        error: function(xhr, status, thrownError) {
-                            console.log("ajax error");
-                            console.log(status);
-                            console.log(thrownError);
-                        }
-                  });
-                };
+                           type: "POST",
+                           url: url,
+                           data: form.serialize(), // serializes the form's elements.
+                           success: function()
+                           {
+                               $("#export-button").show();
+                               $("#loading-button").hide();
+                           }
+                    });
+                });
             </script>
     {% endblock %}
 </footer>
