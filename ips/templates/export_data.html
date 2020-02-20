@@ -95,13 +95,26 @@
                             {% endif %}
 
                         </div>
-
-
                         <div class="top_50_extra_space">
                             {{ form.csrf_token }}
-                            {{ form.display_data(class="btn btn--primary", type="submit") }}
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ form.cancel_button(class="btn btn--secondary", type="submit") }}
+                            <button style="width: 100px;" name="run_button" id="export-button"
+                                    class="btn"
+                                    type=button"
+                                    onclick="start_export()">Export
+                            </button>
+                            <button style="width: 100px; display: none;" name="run_button" id="loading-button"
+                                    class="btn btn btn--loader is-loading"
+                                    type=button"
+                                    disabled="true">Export
+                            </button>
+
+{#                            sorry I had to hack for tha spinna...#}
+                            <div hidden="true" id="run_id">
+                                <p>{{ current_run['RUN_ID'] }}</p>
+                            </div>
+
+                            &nbsp;&nbsp;
+                            {{ form.cancel_button(style="width: 100px;", class="btn btn--secondary", type="submit") }}
                         </div>
 
                     </form>
@@ -127,6 +140,46 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+            <script>
+                function start_export() {
+                    console.log("start export");
+                    {#console.log(response)#}
+                    $("#loading-button").show();
+                    $("#export-button").hide();
+                    getstatus();
+
+                }
+
+                function getstatus(){
+                    console.log("Ajax");
+
+                    const run_id = $('#run_id').text().trim();
+                    {#const url =  'http://0.0.0.0:5000/export/' + run_id + '/' + $('#data_selection').val();#}
+                    const url = run_id
+                    console.log(url)
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        {#dataType: 'json',#}
+                        success: function(data) {
+                            console.log("Success");
+                            console.log(data);
+                            console.log(data.message);
+                            $('#statusmessage').html(data.message);
+                            if(data.status=="pending")
+                              setTimeout('getstatus()', 1000);
+                            else
+                                console.log("hehehe");
+                              $('#wait').hide();
+                        },
+                        error: function(xhr, status, thrownError) {
+                            console.log("ajax error");
+                            console.log(status);
+                            console.log(thrownError);
+                        }
+                  });
+                };
+            </script>
     {% endblock %}
 </footer>
 
