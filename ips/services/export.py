@@ -46,7 +46,7 @@ def export_data(run_id):
             return Response(
                 csv,
                 mimetype="text/csv",
-                headers={"Content-disposition": "attachment; filename=" + sql_table})
+                headers={"Content-disposition": "attachment; filename=" + sql_table + ".csv"})
 
     elif request.method == 'POST':
         if 'cancel_button' in request.form:
