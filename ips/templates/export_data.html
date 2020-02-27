@@ -95,13 +95,21 @@
                             {% endif %}
 
                         </div>
-
-
                         <div class="top_50_extra_space">
                             {{ form.csrf_token }}
-                            {{ form.display_data(class="btn btn--primary", type="submit") }}
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ form.cancel_button(class="btn btn--secondary", type="submit") }}
+                            <button style="width: 100px;" name="run_button" id="export-button"
+                                    class="btn"
+                                    type=button"
+                                    onclick="start_export()">Export
+                            </button>
+                            <button style="width: 100px; display: none;" name="run_button" id="loading-button"
+                                    class="btn btn btn--loader is-loading"
+                                    type=button"
+                                    disabled="true">Export
+                            </button>
+
+                            &nbsp;&nbsp;
+                            {{ form.cancel_button(style="width: 100px;", class="btn btn--secondary", type="submit") }}
                         </div>
 
                     </form>
@@ -127,6 +135,27 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+            <script>
+                function start_export() {
+                    $("#loading-button").show();
+                    $("#export-button").hide();
+                }
+
+                $("#run").submit(function() {
+                    const form = $(this);
+                    const url = form.attr('action');
+                    $.ajax({
+                           type: "POST",
+                           url: url,
+                           data: form.serialize(), // serializes the form's elements.
+                           success: function()
+                           {
+                               $("#export-button").show();
+                               $("#loading-button").hide();
+                           }
+                    });
+                });
+            </script>
     {% endblock %}
 </footer>
 
