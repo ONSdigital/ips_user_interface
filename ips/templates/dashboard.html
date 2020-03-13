@@ -29,9 +29,9 @@
                         <li class="nav__item nav__item--active" role="menuitem" aria-current="page">
                             <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
                         </li>
-                        <li class="nav__item " role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Runs</a>
-                        </li>
+{#                        <li class="nav__item " role="menuitem">#}
+{#                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Runs</a>#}
+{#                        </li>#}
                     </ul>
                 </nav>
             </div>
@@ -46,153 +46,107 @@
 
         <!--Search bar and filter-->
         <section class="wrapper">
-            <div class="col-12 top_50_extra_space">
-                <div class="panel panel--search u-mb-l">
-                    <div class="group panel__body">
-                        <form id="form-search" action="/dashboard/" class="form" method="post">
 
-                            {{ form.csrf_token }}
-
-                            <div class="col-12">
-                                <div class="col-5">
-                                    {{ form.search_activity(class="input input--textarea js-charlimit-input",
-                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
-                                </div>
-                                <div class="col-5">
-                                    {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
-                                </div>
-                                <div class="col-2">
-                                    {{ form.search_button(class="btn ", id="search_button", style="width:100%; padding:10px;", type="submit") }}
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!--Run table-->
         <section>
             <div>
-                <div class="wrapper">
-                    <div class="group top_50_extra_space">
-                        <div class="col-8">
-                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>
-                        </div>
-                    </div>
-                </div>
+{#                <div class="wrapper">#}
+{#                    <div class="group top_50_extra_space">#}
+{#                        <div class="col-8">#}
+{#                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
 
             <div class="buttom_70_extra_space buttom_70_extra_space">
                 <div class="wrapper">
                     <div class="group">
-                        <div class="col-12">
-                            <table class="table table__dense">
-                                <thead class="table--head">
-                                {% for column in header %}
-                                    <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
-                                {% endfor %}
-                                </thead>
-                                <tbody>
-                                <!-- for each record, render each data value -->
-                                {% for record in records|reverse %}
-                                    <tr class="table--row">
-                                        <td style="width: 10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
-                                        <td style="width: 18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
-                                        <td style="width: 7%" class="table--cell">{{ record['PERIOD'] }}</td>
-                                        <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                        <td style="width: 15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
-                                        <td style="width: 5%" class="table--cell">{{ record['USER_ID'] }}</td>
+                    <form id="form-search" action="/dashboard/" class="form" method="post">
 
+                            {{ form.csrf_token }}
+
+                                <div class="">
+                                    {{ form.search_activity(class="input input--textarea js-charlimit-input",
+                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
+                                </div>
+                                <div class="">
+                                    {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
+                                </div>
+                                <div class="">
+                                    {{ form.search_button(class="btn ", id="search_button", style="width:100%; padding:10px;", type="submit") }}
+                                </div>
+
+                        </form>
+{#                            <div class="column1">#}
+{#                                <p>hello</p>#}
+{#                                <button> yoyoyo</button>#}
+{#                            </div>#}
+                                <p>
+                                    <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
+                                </p>
+                                <hr>
+                                <tbody>
+                                    <!-- for each record, render each data value -->
+                                    {% for record in records|reverse %}
+                                        <p><h1 class="saturn sml-margin buttom_10_extra_space">{{ record['RUN_NAME'] }}</h1></p>
+                                        <p> {{ record['RUN_DESC'] }}
+                                            <br>
+                                            {{ record['PERIOD'] }}
+                                            <br>
+                                            {{ record['YEAR'] }}
+                                            <br>
+                                            {{ record['LAST_MODIFIED'] }}
+                                            <br>
+                                            {{ record['USER_ID'] }}
+                                        </p>
                                         {% if record['RUN_STATUS'] == 'Ready' %}
-                                            <td style="width: 10%" class="table--cell">
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
+                                            <p>
                                                 <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
+                                            </p>
                                         {% elif record['RUN_STATUS'] == 'Not Started' %}
                                             <meta http-equiv="refresh" content="10">
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
                                             <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
                                         {% elif record['RUN_STATUS'] == 'Running' %}
                                             <meta http-equiv="refresh" content="10">
-                                            <td class="table--cell">
-                                                <em>
-                                                    <img style="height:20px;" src="/static/img/loader.gif"
-                                                         alt="Running">
-                                                    {{ record['RUN_STATUS'] }}
-                                                </em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                    <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                            </td>
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
+                                            <em>{{ record['RUN_STATUS'] }}</em>
                                         {% elif record['RUN_STATUS'] == 'Completed' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                        <span class="tooltiptext">Manage Run</span></a>
-                                                    <a class='tooltip' href="/export_data/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
-                                                    <span class="tooltiptext">Export Data</span></a>
-                                                </div>
-                                            </td>
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                                <a href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
+                                            </p>
+                                            <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
                                         {% elif record['RUN_STATUS'] == 'Cancelled' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
+                                            <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
                                         {% elif record['RUN_STATUS'] == 'Invalid Run' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
+                                            <p>
+                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
+                                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                         {% elif record['RUN_STATUS'] == 'Failed' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
+                                            <p>
+                                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                            </p>
+                                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                         {% endif %}
-                                    </tr>
-                                {% endfor %}
+                                        <hr/>
+                                    {% endfor %}
                                 </tbody>
-                            </table>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
