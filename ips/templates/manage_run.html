@@ -28,23 +28,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     {% endblock %}
 </header>
@@ -55,7 +38,7 @@
         <section>
 
             <div class="wrapper">
-                <div class="col-12 top_50_extra_space">
+                <div class="top_50_extra_space">
                     <div>
                         <table>
                             <tbody>
@@ -139,7 +122,7 @@
 
                         {{ form.csrf_token }}
 
-                        <div class="col-7 top_40_extra_space">
+                        <div class="top_40_extra_space">
                             <ul class="nav-tabs clearfix u-mb-l" data-tabgroup="first-tab-group">
                                 <li class="nav-tabs__tab--active">
                                     <a class="tab-label" href="/manage_run/{{ current_run['RUN_ID'] }}">Manage Run</a>
@@ -202,10 +185,7 @@
                         </div>
 
                     </div>
-                    <div class="col-12 top_50_extra_space"></div>
-
                 </div>
-
 
                 <div class="wrapper">
                     <div class="group">

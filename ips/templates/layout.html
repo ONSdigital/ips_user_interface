@@ -29,7 +29,7 @@
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css')+"?v1.0.0" }}" media="all">
 
-        <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/v2.0.0/css/responsive.css">
+        <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/design-system/17.0.0/css/main.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
@@ -41,13 +41,10 @@
     {% block header %}
         <section>
             <div class="header__top" role="banner">
-                <div class="container">
-                    <div class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
+                <div class="wrapper">
+                    <div class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
                         <div class="grid__col col-auto">
                             <div class="logo">
-                                <img src="https://cdn.ons.gov.uk/sdc/v1.5.0/img/ons-logo-black-en.svg"
-                                     alt="Office for National Statistics logo" class="logo__img header__logo--print">
-
                                 <a href="{{ url_for('dashboard.dashboard_view') }}">
                                     <img src="https://cdn.ons.gov.uk/sdc/v1.5.0/img/ons-logo-white.svg"
                                          alt="Office for National Statistics logo"
@@ -60,7 +57,7 @@
             </div>
 
             <div class="header__main header__main--border">
-                <div class="container">
+                <div class="wrapper">
                     <div class="grid grid--gutterless grid--align-mid u-cf">
                         <div class="grid__col col-10@xs col-6@s col-8@m">
                             <h1 class="header__title header__title--nav-adj">International Passenger Survey</h1>
@@ -69,16 +66,30 @@
                                 aria-expanded="false" aria-controls="main-nav" aria-label="Toggle main navigation"
                                 aria-haspopup="true"><span class="btn--mobile__label"></span></button>
                         {% if current_user.is_authenticated %}
-                            <div class="u-fr u-d-no--@xs@s">
-                            <button id="sign_out" class="btn btn--ghost print__hidden">Sign out</button>
+                            <div class="grid__col col-auto u-flex-no-shrink">
+                                <button id="sign_out" class="btn btn--ghost">
+                                    <span class="btn__inner">Sign out</span>
+                                </button>
+                            </div>
                         {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>
 
+            <div class="header__bottom">
+                <div class="wrapper">
+                    <nav class="header-nav__list" aria-label="Main menu"
+                         id="main-nav" data-analytics="header-navigation">
+                        <ul class="section-nav__list" aria-label="Navigation menu" role="menubar">
+                            <li class="header-nav__item header-nav__item--active" role="menuitem" aria-current="page">
+                                <a href="{{ url_for('dashboard.dashboard_view') }}" class="header-nav__link">Dashboard</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <br>
         </section>
-
     {% endblock %}
 </header>
 
@@ -90,9 +101,12 @@
     <!--Footer content-->
     {% block footer %}
         <div class="wrapper">
-            <div class="group">
+            <div class="">
+                <div class="grid__col col-auto u-flex-no-grow">
+                    <h3 class="phase-banner__badge">In Dev</h3>
+                </div>
                 <div class="col-12">
-                    <span class="new">This release is in development. Your <a
+                    <span class="new">This is a new service. Your <a
                             href="mailto:ramon.delgado@ext.ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>
                 </div>
             </div>

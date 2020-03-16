@@ -20,23 +20,6 @@
 <header class="page__header">
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item nav__item--active" role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-{#                        <li class="nav__item " role="menuitem">#}
-{#                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Runs</a>#}
-{#                        </li>#}
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
@@ -66,20 +49,65 @@
                     <div class="group">
                     <form id="form-search" action="/dashboard/" class="form" method="post">
 
-                            {{ form.csrf_token }}
+                        {{ form.csrf_token }}
+                            <div class="grid--flex ">
+                              <p class="field">
+                                <label class="label  label--placeholder " for="search-field">Keywords</label>
+                                <input type="text" id="search-field" class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10" required />
+                              </p>
+                              <button type="submit" class="btn btn--small u-flex-align-bottom u-mb-xs">
+                                <span class="btn__inner">Search</span>
+                              </button>
+                            </div>
+                            <div class="">
+                                {{ form.search_activity(class="input input--textarea js-charlimit-input",
+                                cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
 
-                                <div class="">
-                                    {{ form.search_activity(class="input input--textarea js-charlimit-input",
-                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
-                                </div>
-                                <div class="">
-                                    {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
-                                </div>
-                                <div class="">
-                                    {{ form.search_button(class="btn ", id="search_button", style="width:100%; padding:10px;", type="submit") }}
-                                </div>
+                            </div>
+                    <div class="">
+                                {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
+                            </div>
+                            <br>
+
+                            <fieldset class="fieldset">
+                              <legend class="fieldset__legend">What are your favourite pizza toppings?
+                              </legend>
+                              <p class="checkboxes__label">Status</p>
+                              <div class="checkboxes__items">
+                                <p class="checkboxes__item">
+                                  <span class="checkbox ">
+                                    <input
+                                        type="checkbox"
+                                        id="ready"
+                                        class="checkbox__input js-checkbox "
+                                        value="ready"
+                                    >
+                                    <label id="ready-label" class="checkbox__label " for="ready">
+                                        Ready
+                                    </label>
+                                </span>
+                                </p>
+                                <br>
+                                <p class="checkboxes__item">
+                                  <span class="checkbox ">
+                                    <input
+                                        type="checkbox"
+                                        id="not ready"
+                                        class="checkbox__input js-checkbox "
+                                        value="not ready"
+                                    >
+                                    <label id="not ready-label" class="checkbox__label " for="not ready">
+                                        Not Ready
+                                    </label>
+                                </span>
+                                </p>
+                              </div>
+                            </fieldset>
+
 
                         </form>
+
+<br>
 {#                            <div class="column1">#}
 {#                                <p>hello</p>#}
 {#                                <button> yoyoyo</button>#}
@@ -91,7 +119,10 @@
                                 <tbody>
                                     <!-- for each record, render each data value -->
                                     {% for record in records|reverse %}
-                                        <p><h1 class="saturn sml-margin buttom_10_extra_space">{{ record['RUN_NAME'] }}</h1></p>
+                                        <hr>
+                                        <p>
+                                            <h1 class="saturn sml-margin buttom_10_extra_space">{{ record['RUN_NAME'] }}</h1>
+                                        </p>
                                         <p> {{ record['RUN_DESC'] }}
                                             <br>
                                             {{ record['PERIOD'] }}
@@ -143,8 +174,9 @@
                                             </p>
                                             <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                                         {% endif %}
-                                        <hr/>
+
                                     {% endfor %}
+                                    <hr>
                                 </tbody>
                             </div>
                     </div>
