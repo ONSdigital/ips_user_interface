@@ -353,3 +353,28 @@ a {
     padding: 0;
     margin: 0;
 }
+
+
+.column-l {
+    display: flex;
+    float: left;
+    width: 30%;
+}
+
+.column-r {
+    display: flex;
+    width: 65%;
+
+    float: right;
+    /*width: 779px;*/
+}
+
+.column-l1 {
+  float: left;
+  width: 60%;
+}
+
+.column-r1 {
+  float: left;
+  width: 35%;
+}

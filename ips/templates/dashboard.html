@@ -28,90 +28,138 @@
         <!--Dashboard page content-->
 
         <!--Search bar and filter-->
-        <section class="wrapper">
+        <br>
+        <div class="row" style="margin-bottom: 10px">
+            <div class="wrapper" >
 
-        </section>
+            <div class="column-l">
+                <section class="wrapper">
+                     <form id="form-search" action="/dashboard/" class="form" method="post">
+                         <label>Results Filter</label>
+                         <br>
+                         <br>
+{#                         <div class="grid--flex ">#}
+{#                             <p class="field">#}
+{#                                 <label class="label  label--placeholder " for="search-field">Keywords</label>#}
+{#                                 <input type="text" id="search-field" class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10" required />#}
+{#                             </p>#}
+{#                             <button type="submit" class="btn btn--small u-flex-align-bottom u-mb-xs">#}
+{#                                 <span class="btn__inner">Search</span>#}
+{#                             </button>#}
+{#                         </div>#}
+                         {{ form.csrf_token }}
+                         <p>
+                             <div class="column-l1">
+                                {{ form.search_activity(class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10",
+                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
+                             </div>
+                             <div class="column-r1">
+                                 <span class="btn_inner">
+                                {{ form.search_button(class="btn btn--small u-flex-align-bottom u-mb-xs", id="search_button", style="width:100%; padding:10px;", type="submit") }}
+                                 </span>
+                             </div>
+                         </p>
+                         <div class="">
+                             {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
+                         </div>
 
-        <!--Run table-->
-        <section>
-            <div>
-{#                <div class="wrapper">#}
-{#                    <div class="group top_50_extra_space">#}
-{#                        <div class="col-8">#}
-{#                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
+                          <br>
+                     </form>
+                     <fieldset class="fieldset">
+                         <legend class="fieldset__legend"/>
+                         <p class="checkboxes__label">Status</p>
+                         <div class="checkboxes__items">
+                             <p class="checkboxes__item">
+                                 <span class="checkbox ">
+                                     <input type="checkbox"
+                                             id="ready"
+                                             class="checkbox__input js-checkbox "
+                                             value="ready"
+                                      >
+                                      <label id="ready-label" class="checkbox__label " for="ready">Ready</label>
+                                  </span>
+                             </p>
+                             <br>
+                             <p class="checkboxes__item">
+                                 <span class="checkbox ">
+                                     <input type="checkbox"
+                                            id="not ready"
+                                            class="checkbox__input js-checkbox "
+                                            value="not ready"
+                                     >
+                                     <label id="not ready-label" class="checkbox__label " for="not ready">Not Ready</label>
+                                 </span>
+                             </p>
+                             <p class="checkboxes__item">
+                                 <span class="checkbox ">
+                                     <input type="checkbox"
+                                            id="running"
+                                            class="checkbox__input js-checkbox "
+                                            value="running"
+                                     >
+                                     <label id="running-label" class="checkbox__label " for="running">Running</label>
+                                 </span>
+                             </p>
+                             <p class="checkboxes__item">
+                                 <span class="checkbox ">
+                                     <input type="checkbox"
+                                            id="completed"
+                                            class="checkbox__input js-checkbox "
+                                            value="completed"
+                                     >
+                            <label id="completed-label" class="checkbox__label " for="completed">
+                                Completed
+                            </label>
+                        </span>
+                        </p>
+                        <p class="checkboxes__item">
+                          <span class="checkbox ">
+                            <input
+                                type="checkbox"
+                                id="invalid"
+                                class="checkbox__input js-checkbox "
+                                value="invalid"
+                            >
+                            <label id="invalid-label" class="checkbox__label " for="invalid">
+                                Invalid
+                            </label>
+                        </span>
+                        </p>
+                        <p class="checkboxes__item">
+                          <span class="checkbox ">
+                            <input
+                                type="checkbox"
+                                id="failed"
+                                class="checkbox__input js-checkbox "
+                                value="failed"
+                            >
+                            <label id="failed-label" class="checkbox__label " for="failed">
+                                Failed
+                            </label>
+                        </span>
+                        </p>
+                      </div>
+                    </fieldset>
+                </section>
             </div>
 
-            <div class="buttom_70_extra_space buttom_70_extra_space">
-                <div class="wrapper">
-                    <div class="group">
-                    <form id="form-search" action="/dashboard/" class="form" method="post">
+            <!--Run table-->
+            <div class="column-r" style="margin: 10px">
+                <section>
+                    <div>
+        {#                <div class="wrapper">#}
+        {#                    <div class="group top_50_extra_space">#}
+        {#                        <div class="col-8">#}
+        {#                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                </div>#}
+                    </div>
 
-                        {{ form.csrf_token }}
-                            <div class="grid--flex ">
-                              <p class="field">
-                                <label class="label  label--placeholder " for="search-field">Keywords</label>
-                                <input type="text" id="search-field" class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10" required />
-                              </p>
-                              <button type="submit" class="btn btn--small u-flex-align-bottom u-mb-xs">
-                                <span class="btn__inner">Search</span>
-                              </button>
-                            </div>
-                            <div class="">
-                                {{ form.search_activity(class="input input--textarea js-charlimit-input",
-                                cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
-
-                            </div>
-                    <div class="">
-                                {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
-                            </div>
-                            <br>
-
-                            <fieldset class="fieldset">
-                              <legend class="fieldset__legend">What are your favourite pizza toppings?
-                              </legend>
-                              <p class="checkboxes__label">Status</p>
-                              <div class="checkboxes__items">
-                                <p class="checkboxes__item">
-                                  <span class="checkbox ">
-                                    <input
-                                        type="checkbox"
-                                        id="ready"
-                                        class="checkbox__input js-checkbox "
-                                        value="ready"
-                                    >
-                                    <label id="ready-label" class="checkbox__label " for="ready">
-                                        Ready
-                                    </label>
-                                </span>
-                                </p>
+                    <div class="buttom_70_extra_space buttom_70_extra_space">
+                        <div class="wrapper">
+                            <div class="group">
                                 <br>
-                                <p class="checkboxes__item">
-                                  <span class="checkbox ">
-                                    <input
-                                        type="checkbox"
-                                        id="not ready"
-                                        class="checkbox__input js-checkbox "
-                                        value="not ready"
-                                    >
-                                    <label id="not ready-label" class="checkbox__label " for="not ready">
-                                        Not Ready
-                                    </label>
-                                </span>
-                                </p>
-                              </div>
-                            </fieldset>
-
-
-                        </form>
-
-<br>
-{#                            <div class="column1">#}
-{#                                <p>hello</p>#}
-{#                                <button> yoyoyo</button>#}
-{#                            </div>#}
                                 <p>
                                     <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
                                 </p>
@@ -179,11 +227,13 @@
                                     <hr>
                                 </tbody>
                             </div>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
-
-        </section>
+        </div>
+        </div>
+        <div class="row" style="margin: 10px"></div>
     {% endblock %}
 </section>
 

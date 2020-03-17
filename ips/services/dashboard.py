@@ -95,9 +95,12 @@ def dashboard_view():
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
         log.debug("dashboard [POST] request")
+        print("1")
+        print(request.form)
         # If the search button is selected filter the results on the run status and the searched word.
         if 'search_button' in request.form:
-
+            print("here")
+            print(request)
             search_activity = request.form['search_activity']
             filter_value = request.form['run_type_filter']
             log.debug(f"dashboard search request, search term {search_activity}, filter: {filter_value}")
