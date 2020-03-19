@@ -37,10 +37,12 @@ class SearchActivityForm(FlaskForm):
 
 
 class CreateRunForm(FlaskForm):
-    run_name = StringField(label='Name',
+    run_name = StringField(label='Enter Name',
                            validators=[InputRequired()])
-    run_description = StringField(label='Description',
+    run_description = StringField(label='Enter Description',
                                   validators=[InputRequired()])
+    run_year = StringField(label='Enter Year',
+                           validators=[InputRequired])
 
 
 class DateSelectionForm(FlaskForm):

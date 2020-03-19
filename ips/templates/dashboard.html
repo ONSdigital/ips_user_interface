@@ -23,234 +23,201 @@
     {% endblock %}
 </header>
 
+<!--Dashboard page content-->
 <section id="content">
     {% block content %}
-        <!--Dashboard page content-->
-
-        <!--Search bar and filter-->
         <br>
-        <div class="row" style="margin-bottom: 10px">
-            <div class="wrapper" >
-
-            <div class="column-l">
-                <section class="wrapper">
-                     <form id="form-search" action="/dashboard/" class="form" method="post">
-                         <label>Results Filter</label>
-                         <br>
-                         <br>
-{#                         <div class="grid--flex ">#}
-{#                             <p class="field">#}
-{#                                 <label class="label  label--placeholder " for="search-field">Keywords</label>#}
-{#                                 <input type="text" id="search-field" class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10" required />#}
-{#                             </p>#}
-{#                             <button type="submit" class="btn btn--small u-flex-align-bottom u-mb-xs">#}
-{#                                 <span class="btn__inner">Search</span>#}
-{#                             </button>#}
-{#                         </div>#}
-                         {{ form.csrf_token }}
-                         <p>
-                             <div class="column-l1">
-                                {{ form.search_activity(class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10",
-                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
-                             </div>
-                             <div class="column-r1">
-                                 <span class="btn_inner">
-                                {{ form.search_button(class="btn btn--small u-flex-align-bottom u-mb-xs", id="search_button", style="width:100%; padding:10px;", type="submit") }}
-                                 </span>
-                             </div>
-                         </p>
-                         <div class="">
-                             {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
-                         </div>
-
-                          <br>
-                     </form>
-                     <fieldset class="fieldset">
-                         <legend class="fieldset__legend"/>
-                         <p class="checkboxes__label">Status</p>
-                         <div class="checkboxes__items">
-                             <p class="checkboxes__item">
-                                 <span class="checkbox ">
-                                     <input type="checkbox"
-                                             id="ready"
-                                             class="checkbox__input js-checkbox "
-                                             value="ready"
-                                      >
-                                      <label id="ready-label" class="checkbox__label " for="ready">Ready</label>
-                                  </span>
-                             </p>
-                             <br>
-                             <p class="checkboxes__item">
-                                 <span class="checkbox ">
-                                     <input type="checkbox"
-                                            id="not ready"
-                                            class="checkbox__input js-checkbox "
-                                            value="not ready"
-                                     >
-                                     <label id="not ready-label" class="checkbox__label " for="not ready">Not Ready</label>
-                                 </span>
-                             </p>
-                             <p class="checkboxes__item">
-                                 <span class="checkbox ">
-                                     <input type="checkbox"
-                                            id="running"
-                                            class="checkbox__input js-checkbox "
-                                            value="running"
-                                     >
-                                     <label id="running-label" class="checkbox__label " for="running">Running</label>
-                                 </span>
-                             </p>
-                             <p class="checkboxes__item">
-                                 <span class="checkbox ">
-                                     <input type="checkbox"
-                                            id="completed"
-                                            class="checkbox__input js-checkbox "
-                                            value="completed"
-                                     >
-                            <label id="completed-label" class="checkbox__label " for="completed">
-                                Completed
-                            </label>
-                        </span>
-                        </p>
-                        <p class="checkboxes__item">
-                          <span class="checkbox ">
-                            <input
-                                type="checkbox"
-                                id="invalid"
-                                class="checkbox__input js-checkbox "
-                                value="invalid"
-                            >
-                            <label id="invalid-label" class="checkbox__label " for="invalid">
-                                Invalid
-                            </label>
-                        </span>
-                        </p>
-                        <p class="checkboxes__item">
-                          <span class="checkbox ">
-                            <input
-                                type="checkbox"
-                                id="failed"
-                                class="checkbox__input js-checkbox "
-                                value="failed"
-                            >
-                            <label id="failed-label" class="checkbox__label " for="failed">
-                                Failed
-                            </label>
-                        </span>
-                        </p>
-                      </div>
-                    </fieldset>
-                </section>
-            </div>
-
-            <!--Run table-->
-            <div class="column-r" style="margin: 10px">
-                <section>
-                    <div>
-        {#                <div class="wrapper">#}
-        {#                    <div class="group top_50_extra_space">#}
-        {#                        <div class="col-8">#}
-        {#                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>#}
-        {#                        </div>#}
-        {#                    </div>#}
-        {#                </div>#}
-                    </div>
-
-                    <div class="buttom_70_extra_space buttom_70_extra_space">
-                        <div class="wrapper">
-                            <div class="group">
-                                <br>
-                                <p>
-                                    <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
-                                </p>
-                                <hr>
-                                <tbody>
-                                    <!-- for each record, render each data value -->
-                                    {% for record in records|reverse %}
-                                        <hr>
-                                        <p>
-                                            <h1 class="saturn sml-margin buttom_10_extra_space">{{ record['RUN_NAME'] }}</h1>
-                                        </p>
-                                        <p> {{ record['RUN_DESC'] }}
-                                            <br>
-                                            {{ record['PERIOD'] }}
-                                            <br>
-                                            {{ record['YEAR'] }}
-                                            <br>
-                                            {{ record['LAST_MODIFIED'] }}
-                                            <br>
-                                            {{ record['USER_ID'] }}
-                                        </p>
-                                        {% if record['RUN_STATUS'] == 'Ready' %}
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <p>
-                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                            </p>
-                                        {% elif record['RUN_STATUS'] == 'Not Started' %}
-                                            <meta http-equiv="refresh" content="10">
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                        {% elif record['RUN_STATUS'] == 'Running' %}
-                                            <meta http-equiv="refresh" content="10">
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <em>{{ record['RUN_STATUS'] }}</em>
-                                        {% elif record['RUN_STATUS'] == 'Completed' %}
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                                <a href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
-                                            </p>
-                                            <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
-                                        {% elif record['RUN_STATUS'] == 'Cancelled' %}
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
-                                        {% elif record['RUN_STATUS'] == 'Invalid Run' %}
-                                            <p>
-                                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                        {% elif record['RUN_STATUS'] == 'Failed' %}
-                                            <p>
-                                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                            </p>
-                                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                        {% endif %}
-
-                                    {% endfor %}
-                                    <hr>
-                                </tbody>
-                            </div>
+                <!--Search bar and filter-->
+        <div class="wrapper">
+            <section class="wrapper column-l">
+                <form id="form-search" action="/dashboard/" class="form" method="post">
+                    <label class="label">Results Filter</label>
+                    <br>
+                    {{ form.csrf_token }}
+                    <p class="field"><label for="text-input" class="">Keywords</label>
+                        <div class="grid--flex">
+                            {{ form.search_activity(class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10",
+                                        cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
+                            <span>
+                                {{ form.search_button(class="btn__inner  btn--small u-flex-align-bottom u-mb-xs", id="search_button", style="width:100%; padding:10px 10px 8px 10px;", type="submit") }}
+                            </span>
                         </div>
-                    </div>
-                </section>
-            </div>
+                    </p>
+                    <p class="field">
+                        <label for="filter_dropdown">Status</label>
+                        <div>
+                            {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
+                        </div>
+                    </p>
+                </form>
+
+                <div hidden="true">
+                    <fieldset class="fieldset">
+                        <legend class="fieldset__legend"/>
+                        <p class="checkboxes__label">Status</p>
+                        <div class="checkboxes__items">
+                            <p class="checkboxes__item">
+                                     <span class="checkbox ">
+                                         <input type="checkbox"
+                                                id="ready"
+                                                class="checkbox__input js-checkbox "
+                                                value="ready"
+                                         >
+                                          <label id="ready-label" class="checkbox__label " for="ready">Ready</label>
+                                      </span>
+                            </p>
+                            <br>
+                            <p class="checkboxes__item">
+                                     <span class="checkbox ">
+                                         <input type="checkbox"
+                                                id="not ready"
+                                                class="checkbox__input js-checkbox "
+                                                value="not ready"
+                                         >
+                                         <label id="not ready-label" class="checkbox__label " for="not ready">Not Ready</label>
+                                     </span>
+                            </p>
+                            <p class="checkboxes__item">
+                                     <span class="checkbox ">
+                                         <input type="checkbox"
+                                                id="running"
+                                                class="checkbox__input js-checkbox "
+                                                value="running"
+                                         >
+                                         <label id="running-label" class="checkbox__label " for="running">Running</label>
+                                     </span>
+                            </p>
+                            <p class="checkboxes__item">
+                                     <span class="checkbox ">
+                                         <input type="checkbox"
+                                                id="completed"
+                                                class="checkbox__input js-checkbox "
+                                                value="completed"
+                                         >
+                                <label id="completed-label" class="checkbox__label " for="completed">
+                                    Completed
+                                </label>
+                            </span>
+                            </p>
+                            <p class="checkboxes__item">
+                              <span class="checkbox ">
+                                <input
+                                        type="checkbox"
+                                        id="invalid"
+                                        class="checkbox__input js-checkbox "
+                                        value="invalid"
+                                >
+                                <label id="invalid-label" class="checkbox__label " for="invalid">
+                                    Invalid
+                                </label>
+                            </span>
+                            </p>
+                            <p class="checkboxes__item">
+                              <span class="checkbox ">
+                                <input
+                                        type="checkbox"
+                                        id="failed"
+                                        class="checkbox__input js-checkbox "
+                                        value="failed"
+                                >
+                                <label id="failed-label" class="checkbox__label " for="failed">
+                                    Failed
+                                </label>
+                            </span>
+                            </p>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </section>
+            <!--Run table-->
+            <section class="column-r " style="margin-left: 5%">
+                <div class="group-table">
+                    <p>
+                        <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
+                    </p>
+                    <tbody>
+                    <!-- for each record, render each data value -->
+                    {% for record in records|reverse %}
+                        <hr/>
+                        <br>
+                        <h3>
+                        <span class="u-fs-r">{{ record['RUN_NAME'] }}</span>
+                        </h3>
+                        <p class="u-fs-s"> {{ record['RUN_DESC'] }}
+                            <br>
+                            {{ record['PERIOD'] }}
+                            <br>
+                            {{ record['YEAR'] }}
+                            <br>
+                            {{ record['LAST_MODIFIED'] }}
+                            <br>
+                            {{ record['USER_ID'] }}
+                        </p>
+                        {% if record['RUN_STATUS'] == 'Ready' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <p>
+                                <em class="status status--info"><span class="u-fs-r">{{ record['RUN_STATUS'] }}</span></em>
+                            </p>
+                        {% elif record['RUN_STATUS'] == 'Not Started' %}
+                            <meta http-equiv="refresh" content="10">
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Running' %}
+                            <meta http-equiv="refresh" content="10">
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em>{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Completed' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                <a href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
+                            </p>
+                            <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Cancelled' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Invalid Run' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Failed' %}
+                            <p>
+                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </div>
+            </section>
         </div>
-        </div>
-        <div class="row" style="margin: 10px"></div>
     {% endblock %}
 </section>
 
+
 <!--Generic footer is imported from the parent template.-->
-<footer class="page__footer">
-    {% block footer %}
-        {{ super() }}
-
-        <script type='text/javascript'>
-            $(document).ready(function () {
-                $('#filter_dropdown').change(function () {
-                    $('#search_button').click();
-                });
-            });
-        </script>
-
-    {% endblock %}
-</footer>
+{#<footer class="page__footer">#}
+{#    {% block footer %}#}
+{#        {{ super() }}#}
+{##}
+{#        <script type='text/javascript'>#}
+{#            $(document).ready(function () {#}
+{#                $('#filter_dropdown').change(function () {#}
+{#                    $('#search_button').click();#}
+{#                });#}
+{#            });#}
+{#        </script>#}
+{##}
+{#    {% endblock %}#}
+{#</footer>#}
 </body>
 </html>

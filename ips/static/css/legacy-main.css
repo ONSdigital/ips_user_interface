@@ -365,7 +365,7 @@ a {
     display: flex;
     width: 65%;
 
-    float: right;
+    float: left;
     /*width: 779px;*/
 }
 

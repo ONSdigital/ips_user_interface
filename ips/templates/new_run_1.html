@@ -16,23 +16,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__bottom">
-            <div class="container">
-                <nav class="header-nav js-header-nav u-d-no@xs@m" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
@@ -42,77 +25,75 @@
 
         <section>
 
-            <div class="wrapper">
-                <div class="col-8">
-                    {% if form.run_name.errors or form.run_description.errors %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">Please enter a valid run name and description.</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="group top_40_extra_space">
-                        <div>
-                            <nav class="nav nav--inline nav--page" role="menu">
-                                <div>
-                                    <ul class="nav__list" aria-label="Section navigation menu">
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link nav__link--current" disabled="true" aria-current="location" role="menuitem">Run Details</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>Fieldwork Details</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_2', run_id=run_id) }}" role="menuitem">Fieldwork Details</a>
-                                            {% endif %}
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>PV Set</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_3', run_id=run_id) }}" role="menuitem">PV Set</a>
-                                            {% endif %}
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>Edit PVs</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id, template_id=run_id) }}" role="menuitem">Edit PVs</a>
-                                            {% endif %}
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>Data Import</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_5', run_id=run_id) }}" role="menuitem">Data Import</a>
-                                            {% endif %}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+{#            <div class="wrapper">#}
+{#                {% if form.run_name.errors or form.run_description.errors %}#}
+{#                    <div class="collator-item">#}
+{#                        <h2 class="collator-title"></h2>#}
+{#                        <!-- Start: @panel--error -->#}
+{#                        <div class="panel panel--error">#}
+{#                            <div class="panel__header">#}
+{#                                <div class="venus">Error</div>#}
+{#                            </div>#}
+{#                            <div class="panel__body">#}
+{#                                <p class="mars">Please enter a valid run name and description.</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#                <div class="group top_40_extra_space">#}
+{#                    <div>#}
+{#                        <nav class="nav nav--inline nav--page" role="menu">#}
+{#                            <div>#}
+{#                                <ul class="nav__list" aria-label="Section navigation menu">#}
+{#                                    <li class="nav__item u-fs-s">#}
+{#                                        <a class="nav__link nav__link--current" disabled="true" aria-current="location" role="menuitem">Run Details</a>#}
+{#                                        <span style="margin-left: 1rem"> > </span>#}
+{#                                    </li>#}
+{#                                    <li class="nav__item u-fs-s">#}
+{#                                        {% if new_run %}#}
+{#                                            <span>Fieldwork Details</span>#}
+{#                                        {% else %}#}
+{#                                            <a class="nav__link " href="{{ url_for('.new_run_2', run_id=run_id) }}" role="menuitem">Fieldwork Details</a>#}
+{#                                        {% endif %}#}
+{#                                        <span style="margin-left: 1rem"> > </span>#}
+{#                                    </li>#}
+{#                                    <li class="nav__item u-fs-s">#}
+{#                                        {% if new_run %}#}
+{#                                            <span>PV Set</span>#}
+{#                                        {% else %}#}
+{#                                            <a class="nav__link " href="{{ url_for('.new_run_3', run_id=run_id) }}" role="menuitem">PV Set</a>#}
+{#                                        {% endif %}#}
+{#                                        <span style="margin-left: 1rem"> > </span>#}
+{#                                    </li>#}
+{#                                    <li class="nav__item u-fs-s">#}
+{#                                        {% if new_run %}#}
+{#                                            <span>Edit PVs</span>#}
+{#                                        {% else %}#}
+{#                                            <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id, template_id=run_id) }}" role="menuitem">Edit PVs</a>#}
+{#                                        {% endif %}#}
+{#                                        <span style="margin-left: 1rem"> > </span>#}
+{#                                    </li>#}
+{#                                    <li class="nav__item u-fs-s">#}
+{#                                        {% if new_run %}#}
+{#                                            <span>Data Import</span>#}
+{#                                        {% else %}#}
+{#                                            <a class="nav__link " href="{{ url_for('.new_run_5', run_id=run_id) }}" role="menuitem">Data Import</a>#}
+{#                                        {% endif %}#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </nav>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#            </div>#}
 
         </section>
 
         <section>
 
             <div class="wrapper">
-                <div class="col-8 top_40_extra_space">
+                <div class="top_40_extra_space">
                     {% if run_id %}
                         <form id="run" action="{{ url_for('.new_run_1', run_id=run_id) }}" class="form" method="post">
                     {% else %}
@@ -122,9 +103,9 @@
                         {{ form.csrf_token }}
                         {{ form.run_name.label(class="label venus ", for="text-input") }}
                         {% if form.run_name.default %}
-                            {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="Enter run name", maxlength="30", value=form.run_name.default) }}
+                            {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="", maxlength="30", value=form.run_name.default) }}
                         {% else %}
-                            {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="Enter run name", maxlength="30") }}
+                            {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="", maxlength="30") }}
                         {% endif %}
                         {% if form.run_name.errors %}
                             <ul>
@@ -139,12 +120,15 @@
                     <br>
 
                     <div class="answer__fields js-fields">
-                        {{ form.run_description.label(class="label venus ", for="text-input") }}
+                        <p>
+                            {{ form.run_description.label(class="label venus ", for="text-input") }}
+                            <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>
                         {% if form.run_description.default %}
                             {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-answer",maxlength="200",value=form.run_description.default) }}
                         {% else %}
-                            {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-answer",maxlength="200", placeholder="Enter run description...") }}
+                            {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-answer",maxlength="200", placeholder="") }}
                         {% endif %}
+                        </p>
                         {% if form.run_description.errors %}
                             <ul>
                                 {% for error_message in form.run_description.errors %}
@@ -154,14 +138,18 @@
                         {% endif %}
 
                         <div class="input__limit u-mt-xs mercury" data-qa="textarea-with-limit"
-                             id="textarea-answer-remaining" aria-live="polite">You have <span>40</span>.
+                             id="textarea-answer-remaining" aria-live="polite">You have <span>100</span>.
                         </div>
                     </div>
 
                     <div class="top_50_extra_space">
                             <div class="btn-group">
-                                <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run">Save and continue</button>
-                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                                <button class="btn" style="margin-right: 1rem" type="submit" name="submit" value="create_run">
+                                    <span class="btn__inner">Save and continue</span>
+                                </button>
+                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">
+                                    <span class="btn__inner">Cancel</span>
+                                </a>
                             </div>
                     </div>
                     </form>

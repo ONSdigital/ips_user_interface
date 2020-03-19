@@ -66,8 +66,8 @@
                                 aria-expanded="false" aria-controls="main-nav" aria-label="Toggle main navigation"
                                 aria-haspopup="true"><span class="btn--mobile__label"></span></button>
                         {% if current_user.is_authenticated %}
-                            <div class="grid__col col-auto u-flex-no-shrink">
-                                <button id="sign_out" class="btn btn--ghost">
+                            <div class="grid__col col-auto u-flex-no-shrink" style="float: right;">
+                                <button id="sign_out" class="btn btn--ghost" >
                                     <span class="btn__inner">Sign out</span>
                                 </button>
                             </div>
