@@ -26,10 +26,10 @@
 <!--Dashboard page content-->
 <section id="content">
     {% block content %}
-        <br>
                 <!--Search bar and filter-->
-        <div class="wrapper">
-            <section class="wrapper column-l">
+    <div class="page__content container">
+        <div class="grid">
+            <div class="grid__col col-4@m">
                 <form id="form-search" action="/dashboard/" class="form" method="post">
                     <label class="label">Results Filter</label>
                     <br>
@@ -129,14 +129,14 @@
                     </fieldset>
                 </div>
 
-            </section>
+            </div>
             <!--Run table-->
-            <section class="column-r " style="margin-left: 5%">
+            <div class="grid__col col-7@m  push-1@m">
                 <div class="group-table">
                     <p>
                         <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
                     </p>
-                    <tbody>
+                    <div>
                     <!-- for each record, render each data value -->
                     {% for record in records|reverse %}
                         <hr/>
@@ -196,28 +196,29 @@
                             <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
                         {% endif %}
                     {% endfor %}
-                    </tbody>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
-    {% endblock %}
+
+    </div>
+{% endblock %}
+
 </section>
 
 
 <!--Generic footer is imported from the parent template.-->
-{#<footer class="page__footer">#}
-{#    {% block footer %}#}
-{#        {{ super() }}#}
-{##}
-{#        <script type='text/javascript'>#}
-{#            $(document).ready(function () {#}
-{#                $('#filter_dropdown').change(function () {#}
-{#                    $('#search_button').click();#}
-{#                });#}
-{#            });#}
-{#        </script>#}
-{##}
-{#    {% endblock %}#}
-{#</footer>#}
+    {% block footer %}
+        {{ super() }}
+
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $('#filter_dropdown').change(function () {
+                    $('#search_button').click();
+                });
+            });
+        </script>
+
+    {% endblock %}
 </body>
 </html>

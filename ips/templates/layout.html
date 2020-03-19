@@ -22,7 +22,7 @@
               color="#5bbad5">
 
         <meta name="theme-color" content="#ffffff">
-        <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>
+<!--        <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>-->
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/legacy-main.css') }}"
               media="all">
@@ -97,18 +97,21 @@
     {% block content %}{% endblock %}
 </section>
 
-<footer class="page__footer">
+<section>
     <!--Footer content-->
     {% block footer %}
-{#        <div class="wrapper">#}
-{#                <div class="grid__col col-auto u-flex-no-grow">#}
-{#                    <h3 class="phase-banner__badge">In Dev</h3>#}
-{#                </div>#}
-{#                <div class="col-12">#}
-{#                    <span class="new">This is a new service. Your <a#}
-{#                            href="mailto:ramon.delgado@ext.ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>#}
-{#                </div>#}
-{#        </div>#}
+
+    <footer class="footer " data-analytics="footer">
+        <div class="footer__body">
+            <div class="container ">
+                <div class="grid">
+                    <div class="grid__col grid__col--flex u-ml-s u-mb-s u-p-no">
+                        <img src="{{ url_for('static', filename='img/ons-logo-black-en.svg') }}" alt="Office for National Statistics" class="footer__poweredby-img ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
         <script>
             jQuery(document).ready(function ($) {
@@ -225,7 +228,7 @@
         </script>​
     {% endblock %}
 
-</footer>
+</section>
 
 </body>
 
