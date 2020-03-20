@@ -93,7 +93,7 @@
         <section>
 
             <div class="container">
-                <div class="top_40_extra_space">
+                <fieldset class="top_40_extra_space">
                     <p><a id="dashboard-link" href="{{ url_for('dashboard.dashboard_view') }}">Previous</a></p>
 
                     <h2>Add new run details</h2>
@@ -103,79 +103,118 @@
                     {% else %}
                         <form id="run" action="{{ url_for('.new_run_1') }}" class="form" method="post">
                     {% endif %}
-                    <div class="field">
-                        {{ form.csrf_token }}
-                        {{ form.run_name.label(class="label venus ", for="text-input") }}
-                        {% if form.run_name.default %}
-                            {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="", maxlength="30", value=form.run_name.default) }}
-                        {% else %}
-                            {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="", maxlength="30") }}
-                        {% endif %}
-                        {% if form.run_name.errors %}
-                            <ul>
-                                {% for error_message in form.run_name.errors %}
-                                    <li style="color:red;">{{ error_message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
+                        <div class="field">
+                            {{ form.csrf_token }}
+                            {{ form.run_name.label(class="label venus ", for="text-input") }}
+                            {% if form.run_name.default %}
+                                {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="", maxlength="30", value=form.run_name.default) }}
+                            {% else %}
+                                {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="", maxlength="30") }}
+                            {% endif %}
+                            {% if form.run_name.errors %}
+                                <ul>
+                                    {% for error_message in form.run_name.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
 
-                    </div>
-
-                    <div class="field">
-                        {{ form.run_year.label(class="label venus ", for="year-input") }}
-                        <span class="label__description">For example 2020</span>
-
-                        {% if form.run_name.default %}
-                            {{ form.run_year(class="input input--text", autofocus=true, type="text", id="year-input", placeholder="", maxlength="4", value=form.run_year.default) }}
-                        {% else %}
-                            {{ form.run_year(class="input input--text",  autofocus=true, type="text", id="year-input", placeholder="", maxlength="4") }}
-                        {% endif %}
-                        {% if form.run_name.errors %}
-                            <ul>
-                                {% for error_message in form.run_name.errors %}
-                                    <li style="color:red;">{{ error_message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-
-                    </div>
-
-
-                    <br>
-
-                    <div class="answer__fields js-fields">
-                        <p>
-                            {{ form.run_description.label(class="label venus ", for="text-input") }}
-                            <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>
-                        {% if form.run_description.default %}
-                            {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-answer",maxlength="200",value=form.run_description.default) }}
-                        {% else %}
-                            {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-answer",maxlength="200", placeholder="") }}
-                        {% endif %}
-                        </p>
-                        {% if form.run_description.errors %}
-                            <ul>
-                                {% for error_message in form.run_description.errors %}
-                                    <li style="color:red;">{{ error_message }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-
-                        <div class="input__limit u-mt-xs mercury" data-qa="textarea-with-limit"
-                             id="textarea-answer-remaining" aria-live="polite">You have <span>100</span>.
                         </div>
-                    </div>
 
-                    <div class="top_50_extra_space">
-                            <div class="btn-group">
-                                <button class="btn" style="margin-right: 1rem" type="submit" name="submit" value="create_run">
-                                    <span class="btn__inner">Save and continue</span>
-                                </button>
-                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">
-                                    <span class="btn__inner">Cancel</span>
-                                </a>
+                        <br>
+
+                        <div class="radios__items">
+                            {{ form.run_period.label(class="label venus ", for="period-input") }}
+                            <span class="label__description">Please choose quarter or month</span>
+
+                            {% if form.run_name.default %}
+                                    {{ form.run_period(class="", type="radio", id="period-input", value=form.run_year.default) }}
+                            {% else %}
+                                {% for period in form.run_period %}
+                                    <div>
+                                        <p class="radios__item">
+                                            <span class="radio">
+                                                <tr>
+                                                    <td>{{ period(class="radio__input js-radio ") }}</td>
+                                                    <td>{{ period.label(class="radio__label") }}</td>
+                                                </tr>
+                                            </span>
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% if form.run_name.errors %}
+                                <ul>
+                                    {% for error_message in form.run_name.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <br>
+
+                        <div class="field">
+                            {{ form.run_year.label(class="label venus ", for="year-input") }}
+                            <span class="label__description">For example 2020</span>
+
+                            {% if form.run_name.default %}
+                                {{ form.run_year(class="input input--text", autofocus=true, type="text", id="year-input", placeholder="", maxlength="4", value=form.run_year.default) }}
+                            {% else %}
+                                {{ form.run_year(class="input input--text",  autofocus=true, type="text", id="year-input", placeholder="", maxlength="4", cols="100", rows="1") }}
+                            {% endif %}
+                            {% if form.run_name.errors %}
+                                <ul>
+                                    {% for error_message in form.run_name.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                        </div>
+
+
+                        <br>
+
+                        <div class="answer__fields js-fields">
+                            <p class=""field>
+                                {{ form.run_description.label(class="label venus ", for="teztarea-char-limit") }}
+                                <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>
+                                {% if form.run_description.default %}
+                                    {{ form.run_description(class="input input--textarea js-charlimit-input",cols="60",rows="6",id="textarea-char-limit",maxlength="100",value=form.run_description.default) }}
+                                {% else %}
+                                    {{ form.run_description(class="input input--textarea  js-charlimit-input input--w-30",cols="80",rows="2",id="textarea-char-limit",maxlength="100") }}
+                                {% endif %}
+                                {% if form.run_description.errors %}
+                                    <ul>
+                                        {% for error_message in form.run_description.errors %}
+                                            <li style="color:red;">{{ error_message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <span
+                                    id="textarea-char-limit-lim-remaining"
+                                    class="input__limit u-mt-xs u-fs-s--b u-d-no"
+                                    data-charcount-singular="You have {x} character remaining"
+                                    data-charcount-plural="You have {x} characters remaining">
+                                </span>
+                            </p>
+
+                            <div class="input__limit u-mt-xs mercury" data-qa="textarea-with-limit"
+                                 id="textarea-answer-remaining" aria-live="polite">You have <span>100</span>.
                             </div>
-                    </div>
+                        </div>
+
+                        <div class="top_50_extra_space">
+                                <div class="btn-group">
+                                    <button class="btn" style="margin-right: 1rem" type="submit" name="submit" value="create_run">
+                                        <span class="btn__inner">Save and continue</span>
+                                    </button>
+                                    <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">
+                                        <span class="btn__inner">Cancel</span>
+                                    </a>
+                                </div>
+                        </div>
                     </form>
 
                 </div>

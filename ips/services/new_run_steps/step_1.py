@@ -15,6 +15,8 @@ def run_step_1(run_id):
             log.debug("run_step_1 [POST] request")
             session['run_name'] = request.form['run_name']
             session['run_description'] = request.form['run_description']
+            session['run_year'] = request.form['run_year']
+            session['run_period'] = request.form['run_period']
 
             if run_id:
                 log.debug("run_step_1 [POST] Run_id given, editing existing run.")
@@ -22,6 +24,8 @@ def run_step_1(run_id):
 
                 run['RUN_NAME'] = request.form['run_name']
                 run['RUN_DESC'] = request.form['run_description']
+                run['YEAR'] = request.form['run_year']
+                run['PERIOD'] = request.form['run_period']
                 # Update run name and description
                 app_methods.edit_run(run_id=run_id, run_name=run['RUN_NAME'], run_description=run['RUN_DESC'],
                                      period=run['PERIOD'], year=run['YEAR'], run_type=run['RUN_TYPE_ID'],
@@ -44,6 +48,8 @@ def run_step_1(run_id):
             run = app_methods.get_run(run_id)
             form.run_name.default = run['RUN_NAME']
             form.run_description.default = run['RUN_DESC']
+            form.run_year.default = run['YEAR']
+            form.run_period.default = run['PERIOD']
             new_run = False
 
     if form.run_name.errors or form.run_description.errors:

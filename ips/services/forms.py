@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SelectField, SubmitField, PasswordField, validators
+from wtforms import StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, TextField, validators
 from wtforms.validators import InputRequired
 
 
@@ -39,10 +39,12 @@ class SearchActivityForm(FlaskForm):
 class CreateRunForm(FlaskForm):
     run_name = StringField(label='Enter Name',
                            validators=[InputRequired()])
-    run_description = StringField(label='Enter Description',
-                                  validators=[InputRequired()])
-    run_year = StringField(label='Enter Year',
-                           validators=[InputRequired])
+    run_description = TextAreaField(label='Enter Description', render_kw={"rows": 7, "cols": 11},
+                                    validators=[InputRequired()])
+    run_year = TextAreaField(label='Enter Year', render_kw={"rows": 1, "cols": 1},
+                             validators=[InputRequired()])
+    run_period = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
+                            validators=[InputRequired()])
 
 
 class DateSelectionForm(FlaskForm):
