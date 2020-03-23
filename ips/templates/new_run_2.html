@@ -16,23 +16,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
@@ -40,75 +23,11 @@
     {% block content %}
         <!--New run 2 page content-->
         <section>
-
             <div class="container">
-                <div class="col-8">
+                <div class="top_40_extra_space">
+                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
 
-                    {% if form.s_month.errors or form.s_year.errors %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">Please enter valid fieldwork start and end dates.</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-
-                    <div class="group top_40_extra_space">
-                        <div>
-                            <nav class="nav nav--inline nav--page" role="menu">
-                                <div>
-                                    <ul class="nav__list" aria-label="Section navigation menu">
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link " href="{{ url_for('.new_run_1', run_id=run_id) }}" role="menuitem">Run Details</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link nav__link--current" disabled="true" aria-current="location" role="menuitem">Fieldwork Details</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>PV Set</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_3', run_id=run_id) }}" role="menuitem">PV Set</a>
-                                            {% endif %}
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>Edit PVs</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id, template_id=run_id) }}" role="menuitem">Edit PVs</a>
-                                            {% endif %}
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            {% if new_run %}
-                                                <span>Data Import</span>
-                                            {% else %}
-                                                <a class="nav__link " href="{{ url_for('.new_run_5', run_id=run_id) }}" role="menuitem">Data Import</a>
-                                            {% endif %}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <section>
-
-            <div class="container">
-                <div class="col-8 top_40_extra_space">
+                    <h1>Fieldwork Details</h1>
                     {% if run_id %}
                         <form id="run" action="{{ url_for('.new_run_2', run_id=run_id) }}" class="form" method="post">
                     {% else %}
@@ -120,8 +39,22 @@
 
                         <div class="field field--select field--month">
                             {{ form.csrf_token }}
-                            {{ form.s_month.label(class="label mercury", for="input-date-range-from-month") }}
-                            {{ form.s_month(class="input input--select", autofocus=true, value = last_entry['s_month']) }}
+
+                            {{ form.s_month.label(class="label venus ", for="month-input") }}
+                            <span class="label__description">Choose a month</span>
+                            <br>
+                            {% for month in form.s_month %}
+                                <div>
+                                    <p class="radios__item">
+                                        <span class="radio">
+                                            <tr>
+                                                <td>{{ month(class="radio__input js-radio ") }}</td>
+                                                <td>{{ month.label(class="radio__label") }}</td>
+                                            </tr>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% endfor %}
                             {% if form.s_month.errors %}
                                 <ul>
                                     {% for error_message in form.s_month.errors %}
@@ -134,9 +67,22 @@
                         <div class="field field--input field--month">
 
                             {{ form.csrf_token }}
-                            {{ form.s_year.label(class="label mercury", for="input-date-range-from-year") }}
-                            {{ form.s_year(class="input input--select", value = last_entry['s_year']) }}
 
+                            {{ form.s_year.label(class="label mercury", for="input-date-range-from-year") }}
+                            <span class="label__description">Choose a quarter</span>
+                            <br>
+                            {% for quarter in form.s_year %}
+                                <div>
+                                    <p class="radios__item">
+                                        <span class="radio">
+                                            <tr>
+                                                <td>{{ quarter(class="radio__input js-radio ") }}</td>
+                                                <td>{{ quarter.label(class="radio__label") }}</td>
+                                            </tr>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% endfor %}
                             {% if form.s_year.errors %}
                                 <ul>
                                     {% for error_message in form.s_year.errors %}
@@ -145,6 +91,7 @@
                                 </ul>
                             {% endif %}
 
+
                         </div>
 
                     </fieldset>
@@ -152,9 +99,8 @@
 
                     <div class="top_60_extra_space">
                         <div class="btn-group">
-                                <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run" id="save_and_continue">Save and continue</button>
-                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_1', run_id=run_id) }}">Back</a>
-                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
+                            <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run" id="save_and_continue"><span class="btn__inner">Save and continue</span></button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
                         </div>
                     </div>
 

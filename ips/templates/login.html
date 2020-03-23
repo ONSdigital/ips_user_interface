@@ -11,7 +11,6 @@
     {% endblock %}
 </head>
 
-<body>
 <header class="page__header">
     {% block header %}
         {{ super() }}
@@ -23,36 +22,38 @@
 
     {% endblock %}
 </header>
-{% block content %}
-    {{ super() }}
 
-    <div class="container">
-        {% if error %}
-            <section>
-                <div class="collator-item">
-                    <h2 class="collator-title"></h2>
-                    <!-- Start: @panel--error -->
-                    <div class="panel panel--error">
-                        <div class="panel__header">
-                            <div class="venus">Error</div>
+<body>
+<section id="content">
+    {% block content %}
+        {{ super() }}
+
+        <div class="page__content container">
+            {% if error %}
+                <div>
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Please send the following message to IPS support:</p>
+                                <p class="mars">{{ error_message }}</p>
+                            </div>
                         </div>
-                        <div class="panel__body">
-                            <p class="mars">Please send the following message to IPS support:</p>
-                            <p class="mars">{{ error_message }}</p>
-                        </div>
+                        <!-- End: @panel--error -->
                     </div>
-                    <!-- End: @panel--error -->
                 </div>
-            </section>
-        {% endif %}
+            {% endif %}
 
-        <br>
-        <section>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-4">
-                    <form action="" method="post" class="form" role="form">
-                        {{ form.csrf_token }}
+            <br>
+            <div>
+                <form action="" method="post" class="form" role="form">
+                    {{ form.csrf_token }}
+                    <p class="field">
+                        <div>
                         {% for field in form %}
                             {% if field.type != "SubmitField" %}
                                 {% if field.type != "CSRFTokenField" %}
@@ -69,14 +70,17 @@
                                     </div>
                                 {% endif %}
                             {% endif %}
-                        {% endfor %}
-                        {{ form.submit(class_="btn btn-primary") }}
-                    </form>
-                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn">
+                              <span class="btn__inner">Submit</span>
+                            </button>
+                        </div>
+                    </p>
+                </form>
             </div>
-        </section>
-    </div>
+        </div>
+    {% endblock %}
+</section>
 
-{% endblock %}
 </body>
 </html>

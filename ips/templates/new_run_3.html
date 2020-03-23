@@ -19,23 +19,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
@@ -53,148 +36,79 @@
         </style>
         <!--New run 4 content-->
         <section>
-
             <div class="container">
-                <div class="group top_40_extra_space">
-                    <div>
-                        <nav class="nav nav--inline nav--page" role="menu">
-                            <div>
-                                <ul class="nav__list" aria-label="Section navigation menu">
-                                    <li class="nav__item u-fs-s">
-                                        <a class="nav__link " href="{{ url_for('.new_run_1', run_id=run_id) }}" role="menuitem">Run Details</a>
-                                        <span style="margin-left: 1rem"> > </span>
-                                    </li>
-                                    <li class="nav__item u-fs-s">
-                                        <a class="nav__link " href="{{ url_for('.new_run_2', run_id=run_id) }}" role="menuitem">Fieldwork Details</a>
-                                        <span style="margin-left: 1rem"> > </span>
-                                    </li>
-                                    <li class="nav__item u-fs-s">
-                                        <a class="nav__link nav__link--current" href="#item1" aria-current="location" role="menuitem">PV Set</a>
-                                        <span style="margin-left: 1rem"> > </span>
-                                    </li>
-                                    <li class="nav__item u-fs-s">
-                                        <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id) }}" role="menuitem">Edit PVs</a>
-                                        <span style="margin-left: 1rem"> > </span>
-                                    </li>
-                                    <li class="nav__item u-fs-s">
-                                        <a class="nav__link " href="{{ url_for('.new_run_5', run_id=run_id) }}" role="menuitem">Data Import</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
+                <div class="top_40_extra_space">
+                    <h1>PV Set</h1>
+                    <form id="run" action="{{ url_for('.new_run_3', run_id=run_id) }}" class="form" method="post">
+                        <table class="table">
+                            {% if table %}
+                                <caption class="table__caption">Choose a PV set from the table below</caption>
+                                <thead class="table__head">
+                                {% for column in header %}
+                                    <th class="table__header"> {{ column | replace('_', ' ') | title }} </th>
+                                {% endfor %}
+                                <th class="table__header">Select</th>
+                                </thead>
+                                <tbody>
+                                <!-- for each record, render each data value -->
+                                {% for record in table %}
+                                    <tr class="table__row">
+                                        <td style="width: 45%"
+                                            class="table__cell">{{ record['RUN_ID'] }} </td>
+                                        <td style="width: 20%"
+                                            class="table__cell">{{ record['NAME'] }} </td>
+                                        <td style="width: 15%" class="table__cell">{{ record['USER'] }}</td>
+                                        <td style="width: 10%"
+                                            class="table__cell">{{ record['PERIOD'] }}</td>
+                                        <td style="width: 5%" class="table__cell">{{ record['YEAR'] }}</td>
+                                        <td class="table__cell field__item2">
+                                            {% if pv_set_id %}
+                                                <label>
+                                                {% if record['RUN_ID'] == pv_set_id %}
+                                                    <input class="input--radio2" type="radio"
+                                                           name="selected" checked
+                                                           value={{ record['RUN_ID'] }}>
+                                                {% else %}
+                                                    <input class="input--radio2" type="radio"
+                                                           name="selected" value={{ record['RUN_ID'] }}>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if record['RUN_ID'] == "TEMPLATE" %}
+                                                    <input class="input--radio2" type="radio"
+                                                           name="selected" checked
+                                                           value={{ record['RUN_ID'] }}>
+                                                {% else %}
 
+                                                    <input class="input--radio2" type="radio"
+                                                           name="selected" value={{ record['RUN_ID'] }}>
 
-            </div>
-
-        </section>
-
-
-        <section>
-            <div class="container">
-                <div class="col-8 top_40_extra_space">
-
-                    <div class="group">
-                        <form id="run" action="{{ url_for('.new_run_3', run_id=run_id) }}" class="form" method="post">
-
-                            <div class="container">
-                                <div class="group">
-
-                                    <table class="table table__dense paginate" paginate="w_p">
-                                        {% if table %}
-                                            <thead class="table--head">
-                                            {% for column in header %}
-                                                <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
-                                            {% endfor %}
-                                            <th class="table--header--cell">Select</th>
-                                            </thead>
-                                            <tbody>
-                                            <!-- for each record, render each data value -->
-                                            {% for record in table %}
-                                                <tr class="table--row">
-                                                    <td style="width: 45%"
-                                                        class="table--cell">{{ record['RUN_ID'] }} </td>
-                                                    <td style="width: 20%"
-                                                        class="table--cell">{{ record['NAME'] }} </td>
-                                                    <td style="width: 15%" class="table--cell">{{ record['USER'] }}</td>
-                                                    <td style="width: 10%"
-                                                        class="table--cell">{{ record['PERIOD'] }}</td>
-                                                    <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                                    <td class="table--cell field__item2">
-                                                        {% if pv_set_id %}
-                                                            <label>
-                                                            {% if record['RUN_ID'] == pv_set_id %}
-                                                                <input class="input--radio2" type="radio"
-                                                                       name="selected" checked
-                                                                       value={{ record['RUN_ID'] }}>
-                                                            {% else %}
-                                                                <input class="input--radio2" type="radio"
-                                                                       name="selected" value={{ record['RUN_ID'] }}>
-                                                            {% endif %}
-                                                        {% else %}
-                                                            {% if record['RUN_ID'] == "TEMPLATE" %}
-                                                                <input class="input--radio2" type="radio"
-                                                                       name="selected" checked
-                                                                       value={{ record['RUN_ID'] }}>
-                                                            {% else %}
-
-                                                                <input class="input--radio2" type="radio"
-                                                                       name="selected" value={{ record['RUN_ID'] }}>
-
-                                                            {% endif %}
-                                                        {% endif %}
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        {% else %}
-                                            <div class="top_50_extra_space">
-                                                <div class="panel panel--simple panel--info">
-                                                    <div class="panel__body">
-                                                        <p class="mars">No records available... </p>
-                                                        <p></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                    </table>
-                                </div>
-
-
-                                <div class="container">
-                                    <div class="group">
-                                        <div class="col-6 table-pagination-extra-padding">
-                                                <span id="w_p">
-                                                    1 to 10 of 267 &nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;
-                                                    <a href="#">2</a>&nbsp;
-                                                    <a href="#">3</a>&nbsp;
-                                                    <a href="#">4</a>&nbsp;
-                                                    <a href="#">5</a>&nbsp;
-                                                    <a href="#">6</a>&nbsp;
-                                                    <a href="#">7</a>&nbsp;
-                                                    <a href="#">8</a>&nbsp;
-                                                    <a href="#">9</a>&nbsp;
-                                                    <a href="#">10</a>&nbsp;
-                                                    <a href="#">Next</a>&nbsp;
-                                                </span>
+                                                {% endif %}
+                                            {% endif %}
+                                            </label>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            {% else %}
+                                <div class="top_50_extra_space">
+                                    <div class="panel panel--simple panel--info">
+                                        <div class="panel__body">
+                                            <p class="mars">No records available... </p>
+                                            <p></p>
                                         </div>
                                     </div>
                                 </div>
+                            {% endif %}
+                        </table>
 
+                        <div class="top_50_extra_space">
+                            <div class="btn-group">
+                                <button class="btn btn--primary" style="margin-right: 1rem" id="save_and_continue" autofocus  type="submit" name="submit" value="create_run"><span class="btn__inner">Save and continue</span></button>
+                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
                             </div>
+                        </div>
 
-                            <div class="top_50_extra_space">
-                                <div class="btn-group">
-                                        <button class="btn btn--primary" style="margin-right: 1rem" id="save_and_continue" autofocus  type="submit" name="submit" value="create_run">Save and continue</button>
-                                    <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_2',run_id=run_id) }}">Back</a>
-                                    <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                    </form>
 
                 </div>
             </div>

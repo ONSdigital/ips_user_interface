@@ -7,7 +7,6 @@ from wtforms.validators import InputRequired
 class LoginForm(FlaskForm):
     username = StringField(u'Username', render_kw={'autofocus': True}, validators=[validators.required()])
     password = PasswordField(u'Password', validators=[validators.required()])
-    submit = SubmitField('Login', id="login_submit_button")
 
     def validate(self):
         check_validate = super(LoginForm, self).validate()
@@ -41,8 +40,8 @@ class CreateRunForm(FlaskForm):
                            validators=[InputRequired()])
     run_description = TextAreaField(label='Enter Description', render_kw={"rows": 7, "cols": 11},
                                     validators=[InputRequired()])
-    run_year = TextAreaField(label='Enter Year', render_kw={"rows": 1, "cols": 1},
-                             validators=[InputRequired()])
+    run_year = StringField(label='Enter Year',
+                            validators=[InputRequired()])
     run_period = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
                             validators=[InputRequired()])
 
@@ -51,25 +50,19 @@ class DateSelectionForm(FlaskForm):
     import datetime
     now = datetime.datetime.now()
 
-    months = [
-        ('', 'Select Period'), ('', '---------'),
+    quarters = [
         ('Q1', 'Quarter 1'), ('Q2', 'Quarter 2'), ('Q3', 'Quarter 3'), ('Q4', 'Quarter 4'),
-        ('', '---------'),
+
+    ]
+
+    months = [
         ('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
         ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'),
         ('09', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')
     ]
 
-    years = [
-        ('', 'Select Year'), ('', '---------'),
-        (str(now.year - 10), now.year - 10), (str(now.year - 9), now.year - 9), (str(now.year - 8), now.year - 8),
-        (str(now.year - 7), now.year - 7), (str(now.year - 6), now.year - 6), (str(now.year - 5), now.year - 5),
-        (str(now.year - 4), now.year - 4), (str(now.year - 3), now.year - 3), (str(now.year - 2), now.year - 2),
-        (str(now.year - 1), now.year - 1), (str(now.year), now.year),
-    ]
-
-    s_month = SelectField(label='Month or Period', choices=months, validators=[InputRequired()])
-    s_year = SelectField(label='Year', choices=years, validators=[InputRequired()])
+    s_month = RadioField(label='Month', choices=months, validators=[InputRequired()])
+    s_year = RadioField(label='Quarter', choices=quarters, validators=[InputRequired()])
 
 
 class ExportSelectionForm(FlaskForm):
