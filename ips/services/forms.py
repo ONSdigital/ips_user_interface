@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, TextField, validators
+from wtforms import StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
 from wtforms.validators import InputRequired
+
+from wtforms.widgets.core import HTMLString, html_params, escape
 
 
 class LoginForm(FlaskForm):
@@ -20,7 +22,7 @@ class LoginForm(FlaskForm):
 
 class SearchActivityForm(FlaskForm):
     search_activity = StringField(label='Search runs')
-    search_button = SubmitField(label='Search')
+    search_button = SubmitField(label="search")
     advanced_search = SubmitField(label='Advanced search')
     run_type_list = [
         ('-1', 'All Runs'),
@@ -79,7 +81,7 @@ class ExportSelectionForm(FlaskForm):
         ("PS_IMBALANCE", "Imbalance Weight Summary")
     ]
 
-    data_selection = SelectField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
+    data_selection = RadioField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
     display_data = SubmitField(label='Export')
     cancel_button = SubmitField(label='Cancel')
 
@@ -123,3 +125,5 @@ class ManageRunForm(FlaskForm):
     display_button = SubmitField(label='Display Weights')
     export_button = SubmitField(label='Export')
     manage_run_button = SubmitField(label='Manage Run')
+
+

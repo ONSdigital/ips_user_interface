@@ -11,7 +11,8 @@ from ips.services.forms import DateSelectionForm
 def run_step_2(run_id):
     form = DateSelectionForm()
     new_run = True
-
+    # x = app_methods.get_run()
+    # print(x)
     # if request is a post
     if request.method == 'POST':
         log.debug("run_step_2 [POST] request")

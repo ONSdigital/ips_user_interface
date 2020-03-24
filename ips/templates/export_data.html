@@ -17,22 +17,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
     {% endblock %}
 </header>
 
@@ -41,7 +25,6 @@
         <!--Export data page content-->
         <section>
             <div class="container">
-                <div class="col-8">
                     <div class="group top_40_extra_space">
                         <div>
                             {% if data == "0" %}
@@ -60,13 +43,12 @@
 
                         </div>
                     </div>
+                    <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
 
-
-                    <div class="group top_40_extra_space">
-                        <div>
-                            <h2 class="saturn">Export Data for <i>'{{ current_run['RUN_NAME'] }}'</i></h2>
-                        </div>
+                    <div>
+                        <h2 class="saturn">Export Data for <i>'{{ current_run['RUN_NAME'] }}'</i></h2>
                     </div>
+                    <br>
 
                 </div>
             </div>
@@ -77,36 +59,48 @@
         <section>
 
             <div class="container">
-                <div class="col-8 top_40_extra_space">
 
-                    <form id="run" action="/export_data/{{ current_run['RUN_ID'] }}" class="form" method="post">
+                <form id="run" action="/export_data/{{ current_run['RUN_ID'] }}" class="form" method="post">
 
-                        <div class="field">
-                            {{ form.csrf_token }}
-                            {{ form.data_selection.label(class="label venus ", for="text-input") }}
-                            {{ form.data_selection(class="input input--select", type="submit") }}
+                    <div class="field">
+                        {{ form.csrf_token }}
+                        {% for export in form.data_selection %}
+                            <div>
+                                <p class="radios__item">
+                                    <span class="radio" style="width:380px">
+                                        <tr >
+                                            <td>{{ export(class="radio__input js-radio ") }}</td>
+                                            <td>{{ export.label(class="radio__label") }}</td>
+                                        </tr>
+                                    </span>
+                                </p>
+                            </div>
+                        {% endfor %}
+                        {% if form.data_selection.errors %}
+                            <ul>
+                                {% for error_message in form.data_selection.errors %}
+                                    <li>{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
 
-                            {% if form.data_selection.errors %}
-                                <ul>
-                                    {% for error_message in form.data_selection.errors %}
-                                        <li>{{ error_message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-
-                        </div>
+                    </div>
 
 
-                        <div class="top_50_extra_space">
-                            {{ form.csrf_token }}
-                            {{ form.display_data(class="btn btn--primary", type="submit") }}
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {{ form.cancel_button(class="btn btn--secondary", type="submit") }}
-                        </div>
+                    <div class="top_50_extra_space">
+                        {{ form.csrf_token }}
+{#                            {{ form.display_data(class="btn btn--primary", type="submit") }}#}
+                        <button type="submit" class="btn">
+                            <span class="btn__inner">Export</span>
+                        </button>
+{#                            {{ form.cancel_button(class="btn btn--secondary", type="submit") }}#}
+                        <button type="submit" class="btn btn--secondary">
+                            <span class="btn__inner">Cancel</span>
+                        </button>
+                    </div>
 
-                    </form>
+                </form>
 
-                </div>
             </div>
 
         </section>
