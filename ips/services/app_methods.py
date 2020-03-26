@@ -64,7 +64,6 @@ def edit_run(run_id, run_name, run_description, period, year, run_type='0', run_
     requests.put(API_TARGET + r'/runs/' + run_id, json=run)
 
 
-
 def get_runs():
     """
     Purpose: Gets all of the runs to put in the list
@@ -395,6 +394,7 @@ def get_error_message(resp, file=None):
     if file is not None:
         error_message = file + ": " + error_message
     return error_message
+
 
 def findnth(haystack, needle, n):
     parts= haystack.split(needle, n+1)

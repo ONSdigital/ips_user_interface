@@ -20,23 +20,6 @@
     <!--Header content is imported from the parent template.-->
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item " role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item nav__item--active" role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Run</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
@@ -46,48 +29,10 @@
         <section>
 
             <div class="container">
-                <div class="col-8">
-
-                    <div class="group top_40_extra_space">
-                        <div>
-                            <nav class="nav nav--inline nav--page" role="menu">
-                                <div>
-                                    <ul class="nav__list" aria-label="Section navigation menu">
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link " href="{{ url_for('.new_run_1', run_id=run_id) }}" role="menuitem">Run Details</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link " href="{{ url_for('.new_run_2', run_id=run_id) }}" role="menuitem">Fieldwork Details</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link " href="{{ url_for('.new_run_3', run_id=run_id) }}" role="menuitem">PV Set</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link " href="{{ url_for('.new_run_4', run_id=run_id) }}" role="menuitem">Edit PVs</a>
-                                            <span style="margin-left: 1rem"> > </span>
-                                        </li>
-                                        <li class="nav__item u-fs-s">
-                                            <a class="nav__link nav__link--current" aria-current="location" role="menuitem" disabled="true">Data Import</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </section>
-
-        <section>
-
-            <div class="container">
-                <div class="col-8 top_40_extra_space">
-
+                <div class="top_40_extra_space">
+                    <p><a id="previous-link" href="{{ url_for('.new_run_4') }}/{{ run_id }}">Previous</a></p>
+                    <h2>Data Import</h2>
+                    <br>
                     {% if error %}
                         <div class="collator-item">
                             <h2 class="collator-title"></h2>
@@ -167,10 +112,10 @@
 
                     <label id="rid" style="display:none;">{{ run_id }}</label>
 
-                    <div>
+                    <p class="field">
                         <label class="label venus" for="survey_file" id="upload">Survey</label>
                         <input type="file" accept=".csv" id="survey_file" name="survey_file"
-                               class="input input--upload"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
                         {{ form.csrf_token }}
 
@@ -181,12 +126,12 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
-                    </div>
+                    </p>
 
                     <div>
                         <label class="u-mt-m label venus" for="shift_file" id="upload">Shift</label>
                         <input type="file" accept=".csv" id="shift_file" name="shift_file"
-                               class="input input--upload"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
 
                         {{ form.csrf_token }}
@@ -203,7 +148,7 @@
                     <div>
                         <label class="u-mt-m label venus" for="nr_file" id="upload">Non-Response</label>
                         <input type="file" accept=".csv" id="nr_file" name="non_response_file"
-                               class="input input--upload" aria-describedby="upload">
+                               class="input input--text input-type__input  input--upload" aria-describedby="upload">
                         {{ form.csrf_token }}
 
                         {% if form.non_response_file.errors %}
@@ -219,7 +164,7 @@
                     <div>
                         <label class="u-mt-m label venus" for="us_file" id="upload">Unsampled</label>
                         <input type="file" accept=".csv" id="us_file" name="unsampled_file"
-                               class="input input--upload"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
                         {{ form.csrf_token }}
 
@@ -236,7 +181,7 @@
                     <div>
                         <label class="u-mt-m label venus" for="tunnel_file" id="upload">Tunnel</label>
                         <input type="file" accept=".csv" id="tunnel_file" name="tunnel_file"
-                               class="input input--upload"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
                         {{ form.csrf_token }}
 
@@ -252,7 +197,8 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="sea_file" id="upload">Sea</label>
-                        <input type="file" accept=".csv" id="sea_file" name="sea_file" class="input input--upload"
+                        <input type="file" accept=".csv" id="sea_file" name="sea_file"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
                         {{ form.csrf_token }}
 
@@ -268,7 +214,8 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="air_file" id="upload">Air</label>
-                        <input type="file" accept=".csv" id="air_file" name="air_file" class="input input--upload"
+                        <input type="file" accept=".csv" id="air_file" name="air_file"
+                               class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
                         {{ form.csrf_token }}
 
@@ -284,10 +231,9 @@
 
                     <div class="top_50_extra_space">
                         <div class="btn-group">
-                            <button class="btn btn-group__btn" style="margin-right: 1rem" type="submit" id="savec">Save and continue</button>
-                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('.new_run_4', run_id=run_id) }}">Back</a>
-                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">Cancel</a>
-                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('manage_run.manage_run', run_id=run_id) }}">Skip</a>
+                            <button class="btn btn-group__btn" style="margin-right: 1rem" type="submit" id="savec"><span class="btn__inner">Save and continue</span></button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; margin-right: 1rem;" href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('manage_run.manage_run', run_id=run_id) }}"><span class="btn__inner">Skip</span></a>
                         </div>
                     </div>
 

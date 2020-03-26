@@ -29,9 +29,9 @@
 
                     <h1>Fieldwork Details</h1>
                     {% if run_id %}
-                        <form id="run" action="{{ url_for('.new_run_2', run_id=run_id) }}" class="form" method="post">
+                        <form id="run" action="{{ url_for('.new_run_2_m', run_id=run_id) }}" class="form" method="post">
                     {% else %}
-                        <form id="run" action="{{ url_for('.new_run_2') }}" class="form" method="post">
+                        <form id="run" action="{{ url_for('.new_run_2_m') }}" class="form" method="post">
                     {% endif %}
 
                     <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
@@ -63,37 +63,6 @@
                                 </ul>
                             {% endif %}
                         </div>
-                        <br>
-                        <div class="field field--input field--month">
-
-                            {{ form.csrf_token }}
-
-                            {{ form.s_year.label(class="label mercury", for="input-date-range-from-year") }}
-                            <span class="label__description">Choose a quarter</span>
-                            <br>
-                            {% for quarter in form.s_year %}
-                                <div>
-                                    <p class="radios__item">
-                                        <span class="radio">
-                                            <tr>
-                                                <td>{{ quarter(class="radio__input js-radio ") }}</td>
-                                                <td>{{ quarter.label(class="radio__label") }}</td>
-                                            </tr>
-                                        </span>
-                                    </p>
-                                </div>
-                            {% endfor %}
-                            {% if form.s_year.errors %}
-                                <ul>
-                                    {% for error_message in form.s_year.errors %}
-                                        <li style="color:red;">{{ error_message }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-
-
-                        </div>
-
                     </fieldset>
 
 

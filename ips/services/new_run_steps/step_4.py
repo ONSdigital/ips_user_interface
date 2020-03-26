@@ -79,5 +79,6 @@ def run_step_4(run_id, template_id):
 
     records = app_methods.get_process_variables(template_id)
 
+    print('render new run 4 now')
     return render_template('new_run_4.html', run_id=run_id, table=records,
                            header=header, api_target=API_TARGET)

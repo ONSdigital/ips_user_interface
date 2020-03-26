@@ -44,19 +44,11 @@ class CreateRunForm(FlaskForm):
                                     validators=[InputRequired()])
     run_year = StringField(label='Enter Year',
                             validators=[InputRequired()])
-    run_period = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
+    run_period_type = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
                             validators=[InputRequired()])
 
 
-class DateSelectionForm(FlaskForm):
-    import datetime
-    now = datetime.datetime.now()
-
-    quarters = [
-        ('Q1', 'Quarter 1'), ('Q2', 'Quarter 2'), ('Q3', 'Quarter 3'), ('Q4', 'Quarter 4'),
-
-    ]
-
+class MonthSelectionForm(FlaskForm):
     months = [
         ('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
         ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'),
@@ -64,7 +56,15 @@ class DateSelectionForm(FlaskForm):
     ]
 
     s_month = RadioField(label='Month', choices=months, validators=[InputRequired()])
-    s_year = RadioField(label='Quarter', choices=quarters, validators=[InputRequired()])
+
+
+class QuarterSelectionForm(FlaskForm):
+    quarters = [
+        ('Q1', 'Quarter 1'), ('Q2', 'Quarter 2'), ('Q3', 'Quarter 3'), ('Q4', 'Quarter 4'),
+
+    ]
+    s_quarter = RadioField(label='Quarter', choices=quarters, validators=[InputRequired()])
+
 
 
 class ExportSelectionForm(FlaskForm):

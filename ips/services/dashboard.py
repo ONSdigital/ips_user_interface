@@ -83,6 +83,7 @@ def dashboard_view():
         "Q3": "Quarter 3",
         "Q4": "Quarter 4"
     }
+    print("here")
 
     # Reformat values to be displayed on the UI
     for record in records:
