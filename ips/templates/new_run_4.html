@@ -73,7 +73,7 @@
                                     <th class="table__header">PV Name</th>
                                     <th class="table__header">PV Reason</th>
                                     <th class="table__header">&nbsp;</th>
-                                    <th class="table__header">&nbsp;</th>
+{#                                    <th class="table__header">&nbsp;</th>#}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -82,24 +82,24 @@
                                     <tr class="table__row" index="{{ record['PROCESS_VARIABLE_ID'] }}" id="pv_{{ record['PROCESS_VARIABLE_ID'] | replace(".0","") }}">
 
                                         <td style="vertical-align: middle;"
-                                            class="table--cell">{{ record['PV_NAME'] }}</td>
+                                            class="table__cell">{{ record['PV_NAME'] }}</td>
                                         <td style="vertical-align: middle;"
-                                            class="table--cell">{{ record['PV_DESC'] }} </td>
+                                            class="table__cell">{{ record['PV_DESC'] }} </td>
                                         <td style="display:none;"
-                                            class="table--cell pv_def">{{ record['PV_DEF'] }}
+                                            class="table__cell pv_def">{{ record['PV_DEF'] }}
                                         </td>
                                         <!--<td name="{{record['PV_CONTENT']}}" value="{{record['PV_CONTENT']}}" class="table&#45;&#45;cell">{{record['PV_CONTENT']}}</td>-->
 
                                         <!--Give the button a class so that we can call it via javascript, attach ID attribute-->
-                                        <td class="table--cell">
-                                            <a id={{ record['PV_NAME'] }} href="/edit_pv/{{ run_id }}" pvid={{ record['PROCESS_VARIABLE_ID'] }}>Change</a>
+                                        <td class="table__cell" style="text-align: right">
+                                            <a id={{ record['PV_NAME'] }} href="/edit_pv/{{ run_id }}/{{ record['PV_NAME'] }}" pvid={{ record['PROCESS_VARIABLE_ID'] }}>Change</a>
                                         </td>
-                                        <td class="table--cell" style="text-align: right">
-                                            <button class="btn btn--small pv-edit-button"
-                                                    id={{ record['PV_NAME'] }} pvid={{ record['PROCESS_VARIABLE_ID'] }}>
-                                                Edit
-                                            </button>
-                                        </td>
+{#                                        <td class="table__cell" style="text-align: right">#}
+{#                                            <button class="btn btn--small pv-edit-button"#}
+{#                                                    id={{ record['PV_NAME'] }} pvid={{ record['PROCESS_VARIABLE_ID'] }}>#}
+{#                                                Edit#}
+{#                                            </button>#}
+{#                                        </td>#}
                                     </tr>
                                 {% endfor %}
 

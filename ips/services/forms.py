@@ -3,8 +3,6 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
 from wtforms.validators import InputRequired
 
-from wtforms.widgets.core import HTMLString, html_params, escape
-
 
 class LoginForm(FlaskForm):
     username = StringField(u'Username', render_kw={'autofocus': True}, validators=[validators.required()])
@@ -43,9 +41,9 @@ class CreateRunForm(FlaskForm):
     run_description = TextAreaField(label='Enter Description', render_kw={"rows": 7, "cols": 11},
                                     validators=[InputRequired()])
     run_year = StringField(label='Enter Year',
-                            validators=[InputRequired()])
+                           validators=[InputRequired()])
     run_period_type = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
-                            validators=[InputRequired()])
+                                 validators=[InputRequired()])
 
 
 class MonthSelectionForm(FlaskForm):
@@ -64,7 +62,6 @@ class QuarterSelectionForm(FlaskForm):
 
     ]
     s_quarter = RadioField(label='Quarter', choices=quarters, validators=[InputRequired()])
-
 
 
 class ExportSelectionForm(FlaskForm):
@@ -107,6 +104,10 @@ class DataSelectionForm(FlaskForm):
 
     display_data = SubmitField(label='Display data')
     data_selection = SelectField(label='Select Data', choices=data_list, validators=[InputRequired()])
+
+
+class ImportPVForm(FlaskForm):
+    pv_file = FileField(validators=[FileRequired()])
 
 
 class LoadDataForm(FlaskForm):

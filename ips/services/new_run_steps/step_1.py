@@ -9,10 +9,7 @@ def run_step_1(run_id):
     new_run = True
     form = CreateRunForm()
     # if request is a post
-    print(request.form)
-    print(form.validate())
     if request.method == 'POST' and form.validate():
-        print(1)
         if request.form['submit'] == 'create_run':
             log.debug("run_step_1 [POST] request")
 
@@ -35,7 +32,7 @@ def run_step_1(run_id):
 
                 # Update run name and description
                 app_methods.edit_run(run_id=run_id, run_name=run['RUN_NAME'], run_description=run['RUN_DESC'],
-                                     period='', year=run['YEAR'], run_type=run['RUN_TYPE_ID'],
+                                     period=run['PERIOD'], year=run['YEAR'], run_type=run['RUN_TYPE_ID'],
                                      run_status='0')
 
                 log.debug("run_step_1 [POST] Updated existing run details.")

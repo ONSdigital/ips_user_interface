@@ -25,8 +25,11 @@
         <section>
             <div class="container">
                 <div class="top_40_extra_space">
-                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
-
+                    {% if run_id %}
+                        <p><a id="previous-link" href="{{ url_for('.new_run_1') }}/{{ run_id }}">Previous</a></p>
+                    {%  else %}
+                        <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
+                    {% endif %}
                     <h1>Fieldwork Details</h1>
                     {% if run_id %}
                         <form id="run" action="{{ url_for('.new_run_2_q', run_id=run_id) }}" class="form" method="post">

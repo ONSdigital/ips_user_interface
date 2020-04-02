@@ -263,6 +263,12 @@ def edit_process_variables(run_id, json_dictionary):
     create_process_variables(run_id, json_dictionary)
 
 
+def edit_single_process_variable(run_id, pv_name, pv_json):
+    log.debug(f"app_methods: edit_process_variables: {run_id}")
+
+    requests.post(API_TARGET + r'/single_process_variable/' + run_id, json=pv_json)
+
+
 def import_data(table_name, run_id, file, month=None, year=None):
     log.debug(f"app_methods: import_data: {table_name}, {run_id}, {file}")
     return requests.post(f"{API_TARGET}/import/{table_name}/{run_id}",
