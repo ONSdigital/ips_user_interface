@@ -94,7 +94,11 @@
 
             <div class="container">
                 <fieldset class="top_40_extra_space">
-                    <p><a id="dashboard-link" href="{{ url_for('dashboard.dashboard_view') }}">Previous</a></p>
+                    {% if run_id %}
+                         <p><a id="dashboard-link" href="/manage_run/{{ run_id }}">Previous</a></p>
+                    {% else %}
+                         <p><a id="dashboard-link" href="{{ url_for('dashboard.dashboard_view') }}">Previous</a></p>
+                    {% endif %}
 
                     <h2>Add new run details</h2>
 
