@@ -31,7 +31,7 @@
             }
 
             .input--radio2 {
-                top: 0.35rem;
+                margin-left: .95rem;
             }
         </style>
         <!--New run 4 content-->
@@ -55,15 +55,15 @@
                                 <!-- for each record, render each data value -->
                                 {% for record in table %}
                                     <tr class="table__row">
-                                        <td style="width: 45%"
+                                        <td style="width: 38%"
                                             class="table__cell">{{ record['RUN_ID'] }} </td>
-                                        <td style="width: 20%"
+                                        <td style="width: 15%"
                                             class="table__cell">{{ record['NAME'] }} </td>
-                                        <td style="width: 15%" class="table__cell">{{ record['USER'] }}</td>
-                                        <td style="width: 10%"
+                                        <td style="width: 17%" class="table__cell">{{ record['USER'] }}</td>
+                                        <td style="width: 12%"
                                             class="table__cell">{{ record['PERIOD'] }}</td>
                                         <td style="width: 5%" class="table__cell">{{ record['YEAR'] }}</td>
-                                        <td class="table__cell field__item2">
+                                        <td style="width: 10%" class="table__cell field__item2">
                                             {% if pv_set_id %}
                                                 <label>
                                                 {% if record['RUN_ID'] == pv_set_id %}
@@ -80,7 +80,6 @@
                                                            name="selected" checked
                                                            value={{ record['RUN_ID'] }}>
                                                 {% else %}
-
                                                     <input class="input--radio2" type="radio"
                                                            name="selected" value={{ record['RUN_ID'] }}>
 
