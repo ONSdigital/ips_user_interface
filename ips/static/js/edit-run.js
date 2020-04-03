@@ -39,10 +39,6 @@ $(document).ready(function (e) {
         storeAllAndVerifyPVs();
     });
 
-    $("#btn-continue").click(function () {
-        storeAllAndVerifyPVs()
-    });
-
     function storeAllAndVerifyPVs() {
         // Get UI elements
         let pv_validation_panel_success = $('#pv-validation-panel-success');
