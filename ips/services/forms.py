@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
-from wtforms.validators import InputRequired
+from wtforms import IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
+from wtforms.validators import InputRequired, NumberRange
+
+import datetime
 
 
 class LoginForm(FlaskForm):
@@ -33,15 +35,18 @@ class SearchActivityForm(FlaskForm):
         ('6', 'Failed')
     ]
     run_type_filter = SelectField(label='RunType', choices=run_type_list)
+    run_type_filter1 = MultiCheckboxField(label='Run Type', choices=run_type_list)
 
 
 class CreateRunForm(FlaskForm):
+    now = datetime.datetime.now()
+
     run_name = StringField(label='Enter Name',
                            validators=[InputRequired()])
     run_description = TextAreaField(label='Enter Description', render_kw={"rows": 7, "cols": 11},
                                     validators=[InputRequired()])
-    run_year = StringField(label='Enter Year',
-                           validators=[InputRequired()])
+    run_year = IntegerField(label='Enter Year', validators=[InputRequired(),
+                            NumberRange(min=2000, max=now.year, message='Please enter a valid year.')])
     run_period_type = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
                                  validators=[InputRequired()])
 
@@ -126,5 +131,3 @@ class ManageRunForm(FlaskForm):
     display_button = SubmitField(label='Display Weights')
     export_button = SubmitField(label='Export')
     manage_run_button = SubmitField(label='Manage Run')
-
-

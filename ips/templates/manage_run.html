@@ -35,8 +35,6 @@
     <section id="content">
         {% block content %}
         <!--Manage run page content-->
-
-
         <div class="container">
             <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_5') }}/{{ current_run['RUN_ID'] }}">Previous</a></p>
             <h2>Manage Run</h2>
@@ -44,22 +42,22 @@
 
             <dl class="metadata metadata__list grid grid--gutterless u-cf u-mb-l">
                 <dt class="metadata__term grid__col col-2@m"><strong>Run Name:</strong></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_NAME'] }}</dd>
+                <dd id="run_name" class="metadata__value grid__col col-10@m">{{ current_run['RUN_NAME'] }} </dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>Run ID:</em></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_ID'] }}</dd>
+                <dd id="run_id" class="metadata__value grid__col col-10@m">{{ current_run['RUN_ID'] }}</dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>Description:</em></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_DESC'] }}</dd>
+                <dd id="run_desc" class="metadata__value grid__col col-10@m">{{ current_run['RUN_DESC'] }}</dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>Fieldwork Period:</em></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['PERIOD'] }} {{ current_run['YEAR'] }}</dd>
+                <dd id="run_period" class="metadata__value grid__col col-10@m">{{ current_run['PERIOD'] }} {{ current_run['YEAR'] }}</dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>User:</em></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['USER_ID'] }}</dd>
+                <dd id="user_id" class="metadata__value grid__col col-10@m">{{ current_run['USER_ID'] }}</dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>Execution Date:</em></dt>
-                <dd class="metadata__value grid__col col-10@m">{{ current_run['LAST_MODIFIED'] }}</dd>
+                <dd id="run_date" class="metadata__value grid__col col-10@m">{{ current_run['LAST_MODIFIED'] }}</dd>
 
                 <dt class="metadata__term grid__col col-2@m"><em>Progress:</em></dt>
                 <dd class="metadata__value grid__col col-10@m" id="progress"></dd>
@@ -203,7 +201,6 @@
             </form>
         </div>
 
-
         {% for step in run_status %}
         <!-- The Modal Object defined by the step number-->
         <div id="myModal{{ step['STEP_NUMBER'] }}" class="modal">
@@ -243,11 +240,11 @@
                         {% endfor %}
                         {% endif %}
                     </table>
+                    <br><br>
+                    <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">
+                        <span class="btn__inner">Close</span>
+                    </button>
                 </div>
-
-                <br><br>
-                <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close
-                </button>
             </div>
 
         </div>

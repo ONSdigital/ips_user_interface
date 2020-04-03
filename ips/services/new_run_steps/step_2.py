@@ -114,14 +114,14 @@ def run_step_2_q(run_id):
     if 's_day' in session:
         last_entry['s_quarter'] = session['s_quarter']
     else:
-        last_entry['s_month'] = ""
+        last_entry['s_quarter'] = ""
 
     if run_id:
         new_run = False
         run = app_methods.get_run(run_id)
-        last_entry['s_month'] = run['PERIOD']
+        last_entry['s_quarter'] = run['PERIOD']
 
-        form.s_month.default = run['PERIOD']
+        form.s_quarter.default = run['PERIOD']
         form.process()
 
     print('render step 2 quarter')
