@@ -27,30 +27,27 @@
             <div class="container">
                 <div class="group top_40_extra_space">
                     <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">Previous</a></p>
-{#                    <div>#}
-{#                        <!-- Validation Loading Panel -->#}
-{#                        <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">#}
-{#                            <div class="panel__body">#}
-{#                                <div>PV Validation In Progress...#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{##}
-{#                        <!-- Successful Validation Panel -->#}
-{#                        <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">#}
-{#                            <div class="panel__body">#}
-{#                                <div>PV Validation Successful#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{##}
-{#                        <!-- Failed Validation Panel -->#}
-{#                        <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">#}
-{#                            <div class="panel__body">#}
-{#                                <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <div>
+
+                        {% if request.args.get('import') == 'success' %}
+                        <!-- Successful import Panel -->
+                        <div id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                            <div class="panel__body">
+                                <div>PV import successful
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if request.args.get('import') == 'failed' %}
+                        <!-- Failed import Panel -->
+                        <div id="pv-validation-panel-error" class="panel panel--simple panel--error">
+                            <div class="panel__body">
+                                <p>PV import failed</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
                     <br>
                     <h1>Edit a Process Variable</h1>
                     <p class="field">
