@@ -47,92 +47,12 @@
                     <p class="field">
                         <label for="filter_dropdown">Status</label>
                         <div>
-                            {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
+                            {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:90%;", type="submit") }}
                         </div>
-                    </p>
                 </form>
-
-                <div hidden="true">
-                    <fieldset class="fieldset">
-                        <legend class="fieldset__legend"/>
-                        <p class="checkboxes__label">Status</p>
-                        <div class="checkboxes__items">
-                            <p class="checkboxes__item">
-                                     <span class="checkbox ">
-                                         <input type="checkbox"
-                                                id="ready"
-                                                class="checkbox__input js-checkbox "
-                                                value="ready"
-                                         >
-                                          <label id="ready-label" class="checkbox__label " for="ready">Ready</label>
-                                      </span>
-                            </p>
-                            <br>
-                            <p class="checkboxes__item">
-                                     <span class="checkbox ">
-                                         <input type="checkbox"
-                                                id="not ready"
-                                                class="checkbox__input js-checkbox "
-                                                value="not ready"
-                                         >
-                                         <label id="not ready-label" class="checkbox__label " for="not ready">Not Ready</label>
-                                     </span>
-                            </p>
-                            <p class="checkboxes__item">
-                                     <span class="checkbox ">
-                                         <input type="checkbox"
-                                                id="running"
-                                                class="checkbox__input js-checkbox "
-                                                value="running"
-                                         >
-                                         <label id="running-label" class="checkbox__label " for="running">Running</label>
-                                     </span>
-                            </p>
-                            <p class="checkboxes__item">
-                                     <span class="checkbox ">
-                                         <input type="checkbox"
-                                                id="completed"
-                                                class="checkbox__input js-checkbox "
-                                                value="completed"
-                                         >
-                                <label id="completed-label" class="checkbox__label " for="completed">
-                                    Completed
-                                </label>
-                            </span>
-                            </p>
-                            <p class="checkboxes__item">
-                              <span class="checkbox ">
-                                <input
-                                        type="checkbox"
-                                        id="invalid"
-                                        class="checkbox__input js-checkbox "
-                                        value="invalid"
-                                >
-                                <label id="invalid-label" class="checkbox__label " for="invalid">
-                                    Invalid
-                                </label>
-                            </span>
-                            </p>
-                            <p class="checkboxes__item">
-                              <span class="checkbox ">
-                                <input
-                                        type="checkbox"
-                                        id="failed"
-                                        class="checkbox__input js-checkbox "
-                                        value="failed"
-                                >
-                                <label id="failed-label" class="checkbox__label " for="failed">
-                                    Failed
-                                </label>
-                            </span>
-                            </p>
-                        </div>
-                    </fieldset>
-                </div>
-
             </div>
             <!--Run table-->
-            <div class="grid__col col-7@m  push-1@m">
+            <div class="grid__col column-run  push-lil-bit">
                 <div class="group-table">
                     <p>
                         <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
