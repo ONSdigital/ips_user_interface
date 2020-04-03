@@ -156,7 +156,6 @@
                     {% if current_run['RUN_STATUS'] == 'Running' %}
                     <button style="width: 100px;" name="run_button" id="run_button"
                             class="btn btn--loader is-loading"
-                            autofocus
                             disabled
                             type=button onclick="start_run()">
                         <span class="btn__inner" style="width: 100px; ">Run</span>
@@ -170,7 +169,6 @@
                     {% else %}
                     <button name="run_button" id="run_button"
                             class="btn btn--primary"
-                            autofocus
                             type=button onclick="start_run()">
                         <span class="btn__inner" style="width: 100px; ">Run</span>
                     </button>

@@ -38,63 +38,69 @@
 
 <body>
 <div class="page-container">
-    <header class="header header--internal">
-        {% block header %}
-        <section>
-            <div class="header__top" role="banner">
-                <div class="container">
-                    <div class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
-                        <div class="grid__col col-auto">
-                            <div class="logo">
-                                <a href="{{ url_for('dashboard.dashboard_view') }}">
-                                    <img src="https://cdn.ons.gov.uk/sdc/v1.5.0/img/ons-logo-white.svg"
-                                         alt="Office for National Statistics logo"
-                                         class="logo__img header__logo print__hidden">
-                                </a>
-                            </div>
+    {% block header %}
+    <header class="header header--internal header--thin">
+        <div class="header__top" role="banner">
+            <div class="container">
+                <div class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
+                    <div class="grid__col col-auto">
+                        <img class="header__logo" src="/static/img/ons-logo-white.svg" alt="Office for National Statistics logo">
+                    </div>
+                    <div class="header__links grid__col col-auto">
+                        <div class="grid__col col-auto u-d-no@xs@m">
+                            <nav class="header-service-nav header-service-nav--internal" aria-label="Site services menu">
+                                <ul class="header-service-nav__list" aria-label="Navigation menu">
+                                    <li class="header-service-nav__item">
+                                        <p class="header-service-nav__link"></p>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="header__main header__main--border">
-                <div class="container">
-                    <div class="grid grid--gutterless grid--align-mid u-cf">
-                        <div class="grid__col col-10@xs col-6@s col-8@m">
-                            <h1 class="header__title header__title--nav-adj">International Passenger Survey</h1>
-                        </div>
-                        <button class="btn btn--mobile js-nav-btn u-fr u-d-no--@s" type="button" id="menu-btn"
-                                aria-expanded="false" aria-controls="main-nav" aria-label="Toggle main navigation"
-                                aria-haspopup="true"><span class="btn--mobile__label"></span></button>
+        </div>
+        <div class="header__main">
+            <div class="container">
+                <div class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
+                    <div class="grid__col col-auto u-flex-shrink">
+                        <div class="header__title">International Passenger Survey</div>
+                    </div>
+                    <div class="grid__col col-auto u-flex-no-shrink u-d-no@xs@m">
                         {% if current_user.is_authenticated %}
-                        <div class="grid__col col-auto u-flex-no-shrink" style="float: right;">
-                            <a class="btn btn--ghost u-d-no@xs@m" href="/logout">
-                                <span class="btn__inner">Sign Out</span>
-                            </a>
-                        </div>
+                        <a class="btn btn--ghost u-d-no@xs@m" href="/logout">
+                            <span class="btn__inner">Sign Out</span>
+                        </a>
                         {% endif %}
                     </div>
                 </div>
             </div>
-
-            <div class="header__bottom">
-                <div class="container">
-                    <nav class="header-nav__list" aria-label="Main menu"
-                         id="main-nav" data-analytics="header-navigation">
-                        <ul class="section-nav__list" aria-label="Navigation menu" role="menubar">
-                            <li class="header-nav__item header-nav__item--active" role="menuitem" aria-current="page">
-                                <a href="{{ url_for('dashboard.dashboard_view') }}" class="header-nav__link">Dashboard</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+        </div>
+        <div class="header__bottom">
+            <div class="container container--gutterless@xs@m">
+                <nav class="header-nav js-header-nav" id="main-nav" aria-label="Main menu" data-analytics="header-navigation">
+                    <ul class="header-nav__list" aria-label="" role="menubar">
+                        {% if current_user.is_authenticated %}
+                          <li {% if 'dashboard' in request.path %} class='header-nav__item header-nav__item--active' {% endif %}class="header-nav__item " role="menuitem" aria-current="page">
+                              <a href="{{ url_for('dashboard.dashboard_view') }}" class="header-nav__link">Dashboard</a>
+                          </li>
+                        {% endif %}
+                        {% if not current_user.is_authenticated %}
+                            {% if request.endpoint == 'auth.login' %}
+                                <li class="header-nav__item header-nav__item--active" role="menuitem">
+                                    <a class="header-nav__link" href="{{ url_for('auth.login') }}">Sign in</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
-            <br>
-        </section>
-        {% endblock %}
-    </header>
+        </div>
 
-    <section id="main-content">
+    </header>
+    {% endblock %}
+
+    <section id="main-content" class="page__main">
         <div id="content-wrap">
             {% block content %}{% endblock %}
         </div>
