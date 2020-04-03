@@ -17,7 +17,7 @@ def create(run_id):
     headers = {'Content-type': 'application/x-www-form-urlencoded'}
     data = {"json": request.form['json'].strip()}
     # Send PVs
-    response = requests.post(API_TARGET + r'/builder/' + run_id, headers=headers, data=data)
+    # response = requests.post(API_TARGET + r'/builder/' + run_id, headers=headers, data=data)
 
     # Validate PVs
     log.debug(f"builder: validate_process_variables: {run_id}")
