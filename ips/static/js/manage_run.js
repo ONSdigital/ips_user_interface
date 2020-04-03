@@ -55,7 +55,7 @@ function setUIStatus(status) {
 function setReports(tr, td, step_num, reports, response_data) {
     const responses = Object.keys(response_data);
     if (!td.children('a').length) {
-        td.append("<a class='info_img'>Information</a>");
+        td.append("<a>Report</a>");
     }
     for (response of responses) {
         appendToReport(reports, response_data[response]);

@@ -2,20 +2,20 @@
 
 /* Components that aren't from SDC */
 @import "components/registers-grid.css";
-@import "components/typography.css";
-@import "components/header.css";
-@import "components/badges.css";
-@import "components/footer.css";
+/*@import "components/typography.css";*/
+/*@import "components/header.css";*/
+/*@import "components/badges.css";*/
+/*@import "components/footer.css";*/
 @import "components/login.css";
-@import "components/search.css";
-@import "components/table.css";
-@import "components/nav2.css";
+/*@import "components/search.css";*/
+/*@import "components/table.css";*/
+/*@import "components/nav2.css";*/
 @import "components/dialog.css";
-@import "components/upload-file.css";
+/*@import "components/upload-file.css";*/
 @import "components/own.css";
-@import "components/multiple-select.css";
-@import "components/breadcrumb.css";
-@import "components/style.css";
+/*@import "components/multiple-select.css";*/
+/*@import "components/breadcrumb.css";*/
+/*@import "components/style.css";*/
 @import "components/edit-pv.css";
 
 .panel--simple {
@@ -96,7 +96,7 @@ a {
   background-color: black;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
+  boinformationrder-radius: 6px;
   padding: 5px 0;
 
   /* Position the tooltip */
@@ -389,7 +389,6 @@ a {
 }
 
 .main-footer {
-
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -405,3 +404,9 @@ a {
     width: 60%;
     max-width: 64%;
 }
+
+.table__cell{
+    vertical-align: middle;
+}
+
+
