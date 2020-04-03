@@ -62,9 +62,7 @@
                     {% for record in records|reverse %}
                         <hr/>
                         <br>
-                        <h3>
-                        <span class="u-fs-r">{{ record['RUN_NAME'] }}</span>
-                        </h3>
+                        <h3>{{ record['RUN_NAME'] }}</h3>
                         <p class="u-fs-s"> {{ record['RUN_DESC'] }}
                             <br>
                             {{ record['PERIOD'] }}
