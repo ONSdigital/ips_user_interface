@@ -27,6 +27,8 @@ def run_step_3(run_id):
 
         app_methods.create_process_variables_set(run_id, run_name, user, period, year)
 
+        session['send'] = 0
+
         return redirect('/new_run_steps/new_run_4/'+run_id)
 
     records = app_methods.get_process_variable_sets()

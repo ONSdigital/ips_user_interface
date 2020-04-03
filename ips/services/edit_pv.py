@@ -1,4 +1,4 @@
-from flask import request, render_template, Blueprint, jsonify
+from flask import request, render_template, Blueprint, jsonify, session
 from flask_login import login_required
 
 from ips.services import app_methods
@@ -16,7 +16,9 @@ bp = Blueprint('edit pv', __name__, url_prefix='', static_folder='static')
 def edit_pv(run_id, pv_id):
     log.debug(f"edit_pv called - run_id: {run_id}")
 
-    records = app_methods.get_process_variables(run_id)
+    template_id = session['id']
+    records = app_methods.get_process_variables(template_id)
+
     pv = [row['PV_DEF'] for row in records if row['PV_NAME'] == pv_id][0]
 
     return render_template('edit_pv.html', run_id=run_id, pv_name=pv_id, pv=pv)

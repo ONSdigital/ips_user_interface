@@ -67,11 +67,12 @@ def run_step_1(run_id):
             form.process()
             new_run = False
         else:
-            form.run_name.default = session['run_name']
-            form.run_description.default = session['run_description']
-            form.run_period_type.default = session['run_period_type']
-            form.run_year.default = session['year']
-            form.process()
+            if session.get('run_name', None):
+                form.run_name.default = session['run_name']
+                form.run_description.default = session['run_description']
+                form.run_period_type.default = session['run_period_type']
+                form.run_year.default = session['year']
+                form.process()
 
     if form.run_name.errors or form.run_description.errors:
         log.warning("run_step_1 [GET] Missing valid run_id or description.")
