@@ -5,18 +5,18 @@
 
     <!--Styles are imported from the parent template.-->
     {% block styles %}
-        {{ super() }}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/manage_run.js')+"?v1.0.0" }}"></script>
+    {{ super() }}
+            <script type="text/javascript" src="{{ url_for('static', filename='js/manage_run.js')+"?v1.0.0" }}"></script>
 
-        <style>
-            td, th {
-                padding: 6px 0;
-                word-wrap: normal;
-                line-height: 1;
-                vertical-align: top;
-                border-bottom: none;
-            }
-        </style>
+    <style>
+        td, th {
+            padding: 6px 0;
+            word-wrap: normal;
+            line-height: 1;
+            vertical-align: top;
+            border-bottom: none;
+        }
+    </style>
     {% endblock %}
 
 </head>
@@ -27,302 +27,294 @@
 <header class="page__header">
     <!--Header content is imported from the parent template.-->
     {% block header %}
-        {{ super() }}
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    {{ super() }}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     {% endblock %}
 </header>
 
-<section id="content">
-    {% block content %}
+    <section id="content">
+        {% block content %}
         <!--Manage run page content-->
-        <section>
 
-            <div class="container">
-                <div class="top_50_extra_space">
-                    <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_5') }}/{{ current_run['RUN_ID'] }}">Previous</a></p>
-                    <h2>Manage Run</h2>
-                    <br>
-{#                    <p><a id="previous-link">Previous</a></p>#}
 
-                    <dl class="metadata metadata__list grid grid--gutterless u-cf u-mb-l">
-                        <dt class="metadata__term grid__col col-2@m"><strong>Run Name:</strong></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_NAME'] }} </dd>
+        <div class="container">
+            <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_5') }}/{{ current_run['RUN_ID'] }}">Previous</a></p>
+            <h2>Manage Run</h2>
+            <br>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Run ID:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_ID'] }}</dd>
+            <dl class="metadata metadata__list grid grid--gutterless u-cf u-mb-l">
+                <dt class="metadata__term grid__col col-2@m"><strong>Run Name:</strong></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_NAME'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Description:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_DESC'] }}</dd>
+                <dt class="metadata__term grid__col col-2@m"><em>Run ID:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_ID'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Fieldwork Period:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['PERIOD'] }} {{ current_run['YEAR'] }}</dd>
+                <dt class="metadata__term grid__col col-2@m"><em>Description:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['RUN_DESC'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>User:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['USER_ID'] }}</dd>
+                <dt class="metadata__term grid__col col-2@m"><em>Fieldwork Period:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['PERIOD'] }} {{ current_run['YEAR'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Execution Date:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">{{ current_run['LAST_MODIFIED'] }}</dd>
+                <dt class="metadata__term grid__col col-2@m"><em>User:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['USER_ID'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Progress:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m"></dd>
+                <dt class="metadata__term grid__col col-2@m"><em>Execution Date:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">{{ current_run['LAST_MODIFIED'] }}</dd>
 
-                        <dt class="metadata__term grid__col col-2@m"><em>Run Status:</em></dt>
-                        <dd class="metadata__value grid__col col-10@m">
-                            {% if current_run['RUN_STATUS'] == 'Ready' %}
-                                <span id="current_run_status"
-                                      class="status status--success">{{ current_run['RUN_STATUS'] }}</span>
-                            {% elif current_run['RUN_STATUS'] == 'Not Started' %}
-                                <span id="current_run_status"
-                                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                            {% elif current_run['RUN_STATUS'] == 'Running' %}
-                                <span id="current_run_status"
-                                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                            {% elif current_run['RUN_STATUS'] == 'Completed' %}
-                                <span id="current_run_status"
-                                      class="">{{ current_run['RUN_STATUS'] }}</span>
+                <dt class="metadata__term grid__col col-2@m"><em>Progress:</em></dt>
+                <dd class="metadata__value grid__col col-10@m" id="progress"></dd>
 
-                            {% elif current_run['RUN_STATUS'] == 'Cancelled' %}
-                                <span id="current_run_status"
-                                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                            {% elif current_run['RUN_STATUS'] == 'Invalid Run' %}
-                                <span id="current_run_status"
-                                      class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
-                            {% elif current_run['RUN_STATUS'] == 'Failed' %}
-                                <span id="current_run_status"
-                                      class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                <dt class="metadata__term grid__col col-2@m"><em>Run Status:</em></dt>
+                <dd class="metadata__value grid__col col-10@m">
+                    {% if current_run['RUN_STATUS'] == 'Ready' %}
+                    <span id="current_run_status"
+                          class="status status--success">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Not Started' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Running' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Completed' %}
+                    <span id="current_run_status"
+                          class="">{{ current_run['RUN_STATUS'] }}</span>
+
+                    {% elif current_run['RUN_STATUS'] == 'Cancelled' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Invalid Run' %}
+                    <span id="current_run_status"
+                          class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Failed' %}
+                    <span id="current_run_status"
+                          class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                    {% endif %}
+                </dd>
+
+            </dl>
+
+            <p><a href="{{ url_for('new_run_steps.new_run_1') }}/{{ current_run['RUN_ID'] }}">Edit Run</a></p>
+
+            <form id="tabs" class="form" method="POST">
+
+                {{ form.csrf_token }}
+
+                <div class="top_30_extra_space">
+                    <table class="table " id="run_table">
+<!--                        <caption class="table__caption">A basic table with a caption</caption>-->
+
+                        <thead class="table__head">
+                        <tr>
+                            <th style="width: 75%" class="table__header">Steps
+                            </th>
+                            <th style="width: 20%" class="table__header">Status</th>
+                            <td class="table__header"></td>
+                        </tr>
+                        </thead>
+
+                        <tbody class="table__body">
+                        {% for step in run_status %}
+                        {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                        <tr data-toggle="modal" data-target="#myModal{{ step['STEP_NUMBER'] }}"
+                            style="cursor: pointer" class="table__row">
+                            {% else %}
+                        <tr class="table__row">
                             {% endif %}
-                        </dd>
 
-                    </dl>
-                </div>
-            </div>
-        </section>
+                            <td style="width: 80%; height:50px" class="table__cell">{{ step['STEP_NAME'] }}</td>
 
-        <section>
-            <div class="container">
-                <br>
-                <p><a id="previous-link" href= "{{ url_for('new_run_steps.new_run_1') }}/{{ current_run['RUN_ID'] }}" >Edit Run</a></p>
+                            <td style="width: 20%" class="table__cell status_column"
+                                step_num="{{ step['STEP_NUMBER'] }}">
 
-                <form id="tabs" class="form" method="POST">
+                                <!--If the step has an associated report render the status with a button-->
+                                {% if step['STEP_STATUS'] == 'Ready' %}
+                                <em class="status status--info status--small">Ready</em>
+                                {% elif step['STEP_STATUS'] == 'Not Started' %}
+                                <em class="status status--success status--small">Not Started</em>
+                                {% elif step['STEP_STATUS'] == 'Running' %}
+                                <em class="status status--info status--small">Running</em>
+                                {% elif step['STEP_STATUS'] == 'Completed' %}
+                                <em class="status status--success status--small">Completed</em>
+                                {% elif step['STEP_STATUS'] == 'Cancelled' %}
+                                <em class="status status--dead status--small">Cancelled</em>
+                                {% elif step['STEP_STATUS'] == 'Invalid Run' %}
+                                <em class="status status--dead status--small">Invalid Run</em>
+                                {% elif step['STEP_STATUS'] == 'Failed' %}
+                                <em class="status status--error status--small">Failed</em>
+                                {% endif %}
+                            </td>
+                            <td class="table__cell">
+                                {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                                <a class="info_img">Information</a>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
 
                     {{ form.csrf_token }}
 
-                    <div class="top_40_extra_space">
-                        <table class="table " id="run_table">
-{#                                <caption class="table__caption">A basic table with a caption</caption>#}
+                    {% if current_run['RUN_STATUS'] == 'Running' %}
+                    <button style="width: 100px;" name="run_button" id="run_button"
+                            class="btn btn--loader is-loading"
+                            autofocus
+                            disabled
+                            type=button onclick="start_run()">
+                        <span class="btn__inner" style="width: 100px; ">Run</span>
+                    </button>
+                    <button style="width: 100px; margin-left: 20px;" name="run_button"
+                            id="cancel_button"
+                            class="btn btn--secondary"
+                            type=button onclick="cancel_run()">
+                        <span class="btn__inner" style="width: 100px; ">Cancel</span>
+                    </button>
+                    {% else %}
+                    <button name="run_button" id="run_button"
+                            class="btn btn--primary"
+                            autofocus
+                            type=button onclick="start_run()">
+                        <span class="btn__inner" style="width: 100px; ">Run</span>
+                    </button>
+                    <button style="width: 100px; margin-left: 20px; display: none;" name="run_button"
+                            id="cancel_button"
+                            class="btn btn--secondary"
+                            type=button onclick="cancel_run()">
+                        <span class="btn__inner" style="width: 100px; ">Cancel</span>
+                    </button>
+                    {% endif %}
+                    {% if current_run['RUN_STATUS'] != 'Running' and current_run['RUN_STATUS'] != 'Ready' %}
+                    <button style="width: 100px; margin-left: 20px;" name="run_button"
+                            id="export_button"
+                            class="btn btn--secondary"
+                            type=button onclick="export_data()">
+                        <span class="btn__inner" style="width: 100px; ">Export</span>
+                    </button>
+                    {% else %}
+                    <button style="width: 100px; margin-left: 20px" name="run_button"
+                            id="export_button"
+                            class="btn btn--secondary"
+                            type=button onclick="export_data()">
+                        <span class="btn__inner" style="width: 100px; ">Export</span>
+                    </button>
+                    {% endif %}
 
-                            <thead class="table__head">
-                            <tr>
-                                <th style="width: 75%" class="table__header">Steps
-                                </th>
-                                <th style="width: 20%" class="table__header">Status</th>
-                            </tr>
-                            </thead>
+                </div>
+            </form>
+        </div>
 
-                            <tbody class="table__body">
-                                {% for step in run_status %}
-                                    {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                                        <tr data-toggle="modal" data-target="#myModal{{ step['STEP_NUMBER'] }}"
-                                            style="cursor: pointer" class="table__row">
-                                            {% else %}
-                                        <tr class="table__row">
-                                    {% endif %}
-
-                                    <td style="width: 80%; height:50px" class="table__cell">{{ step['STEP_NAME'] }}</td>
-
-                                    <td style="width: 20%" class="table__cell status_column"
-                                        step_num="{{ step['STEP_NUMBER'] }}">
-
-                                        <!--If the step has an associated report render the status with a button-->
-                                        {% if step['STEP_STATUS'] == 'Ready' %}
-                                            <em class="status status--info status--small">Ready</em>
-                                        {% elif step['STEP_STATUS'] == 'Not Started' %}
-                                            <em class="status status--success status--small">Not Started</em>
-                                        {% elif step['STEP_STATUS'] == 'Running' %}
-                                            <em class="status status--info status--small">Running</em>
-                                        {% elif step['STEP_STATUS'] == 'Completed' %}
-                                            <em class="status status--success status--small">Completed</em>
-                                        {% elif step['STEP_STATUS'] == 'Cancelled' %}
-                                            <em class="status status--dead status--small">Cancelled</em>
-                                        {% elif step['STEP_STATUS'] == 'Invalid Run' %}
-                                            <em class="status status--dead status--small">Invalid Run</em>
-                                        {% elif step['STEP_STATUS'] == 'Failed' %}
-                                            <em class="status status--error status--small">Failed</em>
-                                        {% endif %}
-                                        {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                                            <img class="info_img"
-                                                 src={{ url_for('static', filename='img/icons--info.svg') }}>
-                                        {% endif %}
-                                    </td>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="top_20_extra_space">
-
-                        {{ form.csrf_token }}
-
-                        {% if current_run['RUN_STATUS'] == 'Running' %}
-                            <button style="width: 100px;" name="run_button" id="run_button"
-                                class="btn btn--loader is-loading"
-                                autofocus
-                                disabled
-                                type=button onclick="start_run()">
-                                <span class="btn__inner" style="width: 100px; ">Run</span>
-                            </button>
-                            <button style="width: 100px; margin-left: 20px;" name="run_button"
-                                    id="cancel_button"
-                                    class="btn btn--secondary"
-                                    type=button onclick="cancel_run()">
-                                    <span class="btn__inner" style="width: 100px; ">Cancel</span>
-                            </button>
-                        {% else %}
-                            <button name="run_button" id="run_button"
-                                    class="btn btn--primary"
-                                    autofocus
-                                    type=button onclick="start_run()">
-                                    <span class="btn__inner" style="width: 100px; ">Run</span>
-                            </button>
-                            <button style="width: 100px; margin-left: 20px; display: none;" name="run_button"
-                                    id="cancel_button"
-                                    class="btn btn--secondary"
-                                    type=button onclick="cancel_run()">
-                                    <span class="btn__inner" style="width: 100px; ">Cancel</span>
-                            </button>
-                        {% endif %}
-                        {% if current_run['RUN_STATUS'] != 'Running' and current_run['RUN_STATUS'] != 'Ready' %}
-                            <button style="width: 100px; margin-left: 20px;" name="run_button"
-                                    id="export_button"
-                                    class="btn btn--secondary"
-                                    type=button onclick="export_data()">
-                                <span class="btn__inner" style="width: 100px; ">Export</span>
-                            </button>
-                        {% else %}
-                             <button style="width: 100px; margin-left: 20px" name="run_button"
-                                    id="export_button"
-                                    class="btn btn--secondary"
-                                    type=button onclick="export_data()">
-                                    <span class="btn__inner" style="width: 100px; ">Export</span>
-                            </button>
-                        {% endif %}
-                    <div class="buttom_40_extra_space"></div>
-                    </div>
-                </form>
-            </div>
-        </section>
 
         {% for step in run_status %}
-            <!-- The Modal Object defined by the step number-->
-            <div id="myModal{{ step['STEP_NUMBER'] }}" class="modal">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close" data-dismiss="modal">&times;</span>
+        <!-- The Modal Object defined by the step number-->
+        <div id="myModal{{ step['STEP_NUMBER'] }}" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close" data-dismiss="modal">&times;</span>
 
-                    <u><label>Run Status Report</label></u>
-                    <br><br>
-                    <label>Step:</label>
-                    <input type="text" class="modal-input" id="id_input" VALUE="{{ step['STEP_NAME'] }}"
-                           readonly="readonly">
-                    <br>
-                    <label>Run Status:</label>
-                    <input type="text" class="modal-input" id="reason_input" value="{{ step['STEP_STATUS'] }}"
-                           readonly="readonly">
-                    <br>
-                    <label>Report History:</label>
-                    <br>
-                    <br>
-                    <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px; height: 200px; overflow: auto">
-                        <table class="reports" style="font-size: 12px">
-                            {% if "Responses" in step %}
-                                {% for rec in step['Responses'] %}
-                                    <tr style="line-height: 0px">
-                                        <td class="report_td">
-                                            {% if rec['RESPONSE_CODE']|int == 1 %}
-                                                SUCCESS:
-                                            {% elif rec['RESPONSE_CODE']|int == 2 %}
-                                                WARNING:
-                                            {% elif rec['RESPONSE_CODE']|int == 3 %}
-                                                ERROR:
-                                            {% endif %}
-                                        </td>
-                                        <td class="report_td">{{ rec['MESSAGE'] }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        </table>
-                    </div>
-
-                    <br><br>
-                    <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close
-                    </button>
+                <u><label>Run Status Report</label></u>
+                <br><br>
+                <label>Step:</label>
+                <input type="text" class="modal-input" id="id_input" VALUE="{{ step['STEP_NAME'] }}"
+                       readonly="readonly">
+                <br>
+                <label>Run Status:</label>
+                <input type="text" class="modal-input" id="reason_input" value="{{ step['STEP_STATUS'] }}"
+                       readonly="readonly">
+                <br>
+                <label>Report History:</label>
+                <br>
+                <br>
+                <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px; height: 200px; overflow: auto">
+                    <table class="reports" style="font-size: 12px">
+                        {% if "Responses" in step %}
+                        {% for rec in step['Responses'] %}
+                        <tr style="line-height: 0px">
+                            <td class="report_td">
+                                {% if rec['RESPONSE_CODE']|int == 1 %}
+                                SUCCESS:
+                                {% elif rec['RESPONSE_CODE']|int == 2 %}
+                                WARNING:
+                                {% elif rec['RESPONSE_CODE']|int == 3 %}
+                                ERROR:
+                                {% endif %}
+                            </td>
+                            <td class="report_td">{{ rec['MESSAGE'] }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </table>
                 </div>
 
+                <br><br>
+                <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">Close
+                </button>
             </div>
+
+        </div>
         {% endfor %}
 
-    {% endblock %}
-</section>
+        {% endblock %}
+    </section>
 
-<footer class="page__footer">
+<footer>
     {% block footer %}
-        {{ super() }}
+    {{ super() }}
 
-        <script>
+    <script>
 
-            function start_run() {
-                let run_id = '{{ current_run['RUN_ID'] }}';
+        function start_run() {
+            let run_id = '{{ current_run['RUN_ID'] }}';
 
-                console.log("submitting to: " + '/manage_run/start/' + run_id);
+            console.log("submitting to: " + '/manage_run/start/' + run_id);
 
-                $.ajax({
-                    type: "POST",
-                    url: '/manage_run/start/' + run_id,
-                    data: $("#tabs").serialize(),
-                    async: true,
-                    success: function (data) {
-                        console.log('got return, now do something with: ' + data);
-                        $("#current_run_status").text('Running').attr('class', 'status status--success');
-                        //$("#current_run_status").attr('class', 'status status--success');
+            $.ajax({
+                type: "POST",
+                url: '/manage_run/start/' + run_id,
+                data: $("#tabs").serialize(),
+                async: true,
+                success: function (data) {
+                    console.log('got return, now do something with: ' + data);
+                    $("#current_run_status").text('Running').attr('class', 'status status--success');
+                    //$("#current_run_status").attr('class', 'status status--success');
 
-                        // Do something here. For example, the server can return JSON here and you use Js to create the template client-side, or you server can return an HTML fragment and here you append it to a dom node
-                    },
+                    // Do something here. For example, the server can return JSON here and you use Js to create the template client-side, or you server can return an HTML fragment and here you append it to a dom node
+                },
 
-                    error: function (error) {
-                        console.log('got error: ' + error);
-                    }
-                });
+                error: function (error) {
+                    console.log('got error: ' + error);
+                }
+            });
 
-                $("#cancel_button").show();
-                $("#run_button").attr("disabled", true);
-                $("#edit_button").hide();
-                $("#run_button").attr("class", 'btn btn--loader is-loading');
+            $("#cancel_button").show();
+            $("#run_button").attr("disabled", true);
+            $("#edit_button").hide();
+            $("#run_button").attr("class", 'btn btn--loader is-loading');
 
-            }
+        }
 
-            function cancel_run() {
-                let run_id = '{{ current_run['RUN_ID'] }}';
-                $("#cancel_button").hide();
-                console.log("submitting to: " + '/manage_run/stop/' + run_id);
+        function cancel_run() {
+            let run_id = '{{ current_run['RUN_ID'] }}';
+            $("#cancel_button").hide();
+            console.log("submitting to: " + '/manage_run/stop/' + run_id);
 
-                $.ajax({
-                    type: "GET",
-                    url: '/manage_run/stop/' + run_id,
-                    async: true,
-                    success: function (data) {
-                    },
+            $.ajax({
+                type: "GET",
+                url: '/manage_run/stop/' + run_id,
+                async: true,
+                success: function (data) {
+                },
 
-                    error: function (error) {
-                        console.log('got error: ' + error);
-                    }
-                });
-            }
+                error: function (error) {
+                    console.log('got error: ' + error);
+                }
+            });
+        }
 
-            function export_data() {
-                window.location.href = "/export_data/{{ current_run['RUN_ID'] }}";
-            }
+        function export_data() {
+            window.location.href = "/export_data/{{ current_run['RUN_ID'] }}";
+        }
 
-        </script>
+    </script>
     {% endblock %}
 
 </footer>
