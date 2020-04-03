@@ -24,21 +24,19 @@
         <!--New run 2 page content-->
         <section>
             <div class="container">
-                <div class="top_40_extra_space">
-                    {% if run_id %}
-                        <p><a id="previous-link" href="{{ url_for('.new_run_1') }}/{{ run_id }}">Previous</a></p>
-                    {%  else %}
-                        <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
-                    {% endif %}
-                    <h1>Fieldwork Details</h1>
-                    {% if run_id %}
-                        <form id="run" action="{{ url_for('.new_run_2_q', run_id=run_id) }}" class="form" method="post">
-                    {% else %}
-                        <form id="run" action="{{ url_for('.new_run_2_q') }}" class="form" method="post">
-                    {% endif %}
+                {% if run_id %}
+                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}/{{ run_id }}">Previous</a></p>
+                {%  else %}
+                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
+                {% endif %}
+                <h1>Fieldwork Details</h1>
+                {% if run_id %}
+                    <form id="run" action="{{ url_for('.new_run_2_q', run_id=run_id) }}" class="form" method="post">
+                {% else %}
+                    <form id="run" action="{{ url_for('.new_run_2_q') }}" class="form" method="post">
+                {% endif %}
 
                     <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
-
                         <div class="field field--input field--month">
 
                             {{ form.csrf_token }}
@@ -66,25 +64,16 @@
                                     {% endfor %}
                                 </ul>
                             {% endif %}
-
-
                         </div>
-
                     </fieldset>
-
-
                     <div class="top_60_extra_space">
                         <div class="btn-group">
                             <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run" id="save_and_continue"><span class="btn__inner">Save and continue</span></button>
                             <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
                         </div>
                     </div>
-
-                    </form>
-
-                </div>
+                </form>
             </div>
-
         </section>
 
         <section>

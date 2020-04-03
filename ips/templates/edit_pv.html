@@ -23,60 +23,52 @@
     {% block content %}
         <!--New run 5 page content-->
         <section>
-
             <div class="container">
-                <div class="group top_40_extra_space">
-                    <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">Previous</a></p>
-                    <div>
+                <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">Previous</a></p>
+                <div>
 
-                        {% if request.args.get('import') == 'success' %}
-                        <!-- Successful import Panel -->
-                        <div id="pv-validation-panel-success" class="panel panel--simple panel--success">
-                            <div class="panel__body">
-                                <div>PV import successful
-                                </div>
+                    {% if request.args.get('import') == 'success' %}
+                    <!-- Successful import Panel -->
+                    <div id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                        <div class="panel__body">
+                            <div>PV import successful
                             </div>
                         </div>
-                        {% endif %}
-
-                        {% if request.args.get('import') == 'failed' %}
-                        <!-- Failed import Panel -->
-                        <div id="pv-validation-panel-error" class="panel panel--simple panel--error">
-                            <div class="panel__body">
-                                <p>PV import failed</p>
-                            </div>
-                        </div>
-                        {% endif %}
                     </div>
-                    <br>
-                    <h1>Edit a Process Variable</h1>
-                    <p class="field">
-                        <label class="label" for="text">Name</label>
-                        <input type="text" id="text" class="input input--text input-type__input "
-                               style="background-color: lightgray;" value="{{ pv_name }}" readonly>
-                    </p>
-                    <br>
-                    <p>
-                        <a href="/import_pv/{{ run_id }}/{{ pv_name }}">Import Code</a>
-                        &nbsp&nbsp&nbsp&nbsp
-                        <a onclick="exportButton()">Export Code</a>
-                    </p>
-                    <p class="field">
-                        <textarea id="textarea" class="input input--textarea  " name="feedback"
-                                  style="background-color: lightgray;" rows="20" readonly>{{ pv }}</textarea>
-                    </p>
-                    <br>
-                    <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">
-                        <span class="btn__inner">Cancel</span>
-                    </a>
+                    {% endif %}
 
+                    {% if request.args.get('import') == 'failed' %}
+                    <!-- Failed import Panel -->
+                    <div id="pv-validation-panel-error" class="panel panel--simple panel--error">
+                        <div class="panel__body">
+                            <p>PV import failed</p>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
+                <br>
+                <h1>Edit a Process Variable</h1>
+                <p class="field">
+                    <label class="label" for="text">Name</label>
+                    <input type="text" id="text" class="input input--text input-type__input "
+                           style="background-color: lightgray;" value="{{ pv_name }}" readonly>
+                </p>
+                <br>
+                <p>
+                    <a href="/import_pv/{{ run_id }}/{{ pv_name }}">Import Code</a>
+                    &nbsp&nbsp&nbsp&nbsp
+                    <a onclick="exportButton()">Export Code</a>
+                </p>
+                <p class="field">
+                    <textarea id="textarea" class="input input--textarea  " name="feedback"
+                              style="background-color: lightgray;" rows="20" readonly>{{ pv }}</textarea>
+                </p>
+                <br>
+                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">
+                    <span class="btn__inner">Cancel</span>
+                </a>
             </div>
-
         </section>
-
-
-
     {% endblock %}
 </section>
 

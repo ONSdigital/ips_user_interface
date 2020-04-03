@@ -25,30 +25,27 @@
     {% block content %}
         <!--New run 5 page content-->
         <section>
-
             <div class="container">
-                <div class="group top_40_extra_space">
-                    <p><a id="previous-link" href="/edit_pv/{{ run_id }}/{{ pv_name }}">Previous</a></p>
+                <p><a id="previous-link" href="/edit_pv/{{ run_id }}/{{ pv_name }}">Previous</a></p>
+                <br>
+                <h1>Import PV</h1>
+                <br>
+                <p class="field">
+                    <label class="label" for="text">Name</label>
+                    <input type="text" id="text" class="input input--text input-type__input "
+                           style="background-color: lightgray;" value="{{ pv_name }}" readonly>
+                </p>
+                <br>
+                <form id="import_pv_form" onsubmit="event.preventDefault()" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    {{ form.pv_file(class="input input--text input-type__input  input--upload", id="pv_file") }}
                     <br>
-                    <h1>Import PV</h1>
-                    <br>
-                    <p class="field">
-                        <label class="label" for="text">Name</label>
-                        <input type="text" id="text" class="input input--text input-type__input "
-                               style="background-color: lightgray;" value="{{ pv_name }}" readonly>
+                    <p class="field"><br>
+                        <button type="submit" class="btn">
+                            <span class="btn__inner">Submit</span>
+                        </button>
                     </p>
-                        <br>
-                        <form id="import_pv_form" onsubmit="event.preventDefault()" enctype="multipart/form-data">
-                            {{ form.csrf_token }}
-                            {{ form.pv_file(class="input input--text input-type__input  input--upload", id="pv_file") }}
-                            <br>
-                            <p class="field"><br>
-                                <button type="submit" class="btn">
-                                    <span class="btn__inner">Submit</span>
-                                </button>
-                            </p>
-                        </form>
-                </div>
+                </form>
             </div>
 
         </section>

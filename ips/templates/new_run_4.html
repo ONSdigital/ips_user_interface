@@ -29,109 +29,106 @@
     {% block content %}
         <!--New run 5 page content-->
         <section>
-
             <div class="container">
-                <div class="group top_40_extra_space">
-                    <p><a id="previous-link" href="{{ url_for('.new_run_3') }}/{{ run_id }}">Previous</a></p>
-                    <div>
-                        <!-- Validation Loading Panel -->
-                        <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">
-                            <div class="panel__body">
-                                <div>PV Validation In Progress...
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Successful Validation Panel -->
-                        <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
-                            <div class="panel__body">
-                                <div>PV Validation Successful
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Failed Validation Panel -->
-                        <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">
-                            <div class="panel__body">
-                                <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>
+                <p><a id="previous-link" href="{{ url_for('.new_run_3') }}/{{ run_id }}">Previous</a></p>
+                <div>
+                    <!-- Validation Loading Panel -->
+                    <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">
+                        <div class="panel__body">
+                            <div>PV Validation In Progress...
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <h1>PV Set</h1>
 
-                    <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
+                    <!-- Successful Validation Panel -->
+                    <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                        <div class="panel__body">
+                            <div>PV Validation Successful
+                            </div>
+                        </div>
+                    </div>
 
-                        <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
-                        <label id="rid" style="display:none;">{{ run_id }}</label>
+                    <!-- Failed Validation Panel -->
+                    <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">
+                        <div class="panel__body">
+                            <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <h1>PV Set</h1>
 
-                        <div class=" top_40_extra_space">
-                            {% if table %}
-                                <table id="form_table" class="table table__dense">
-                                <thead class="table__head">
-                                <tr>
-                                    <th class="table__header">PV Name</th>
-                                    <th class="table__header">PV Reason</th>
-                                    <th class="table__header">&nbsp;</th>
+                <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
+
+                    <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
+                    <label id="rid" style="display:none;">{{ run_id }}</label>
+
+                    <div class=" top_40_extra_space">
+                        {% if table %}
+                            <table id="form_table" class="table table__dense">
+                            <thead class="table__head">
+                            <tr>
+                                <th class="table__header">PV Name</th>
+                                <th class="table__header">PV Reason</th>
+                                <th class="table__header">&nbsp;</th>
 {#                                    <th class="table__header">&nbsp;</th>#}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!-- for each record, render each data value-->
-                                {% for record in table %}
-                                    <tr class="table__row" index="{{ record['PROCESS_VARIABLE_ID'] }}" id="pv_{{ record['PROCESS_VARIABLE_ID'] | replace(".0","") }}">
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- for each record, render each data value-->
+                            {% for record in table %}
+                                <tr class="table__row" index="{{ record['PROCESS_VARIABLE_ID'] }}" id="pv_{{ record['PROCESS_VARIABLE_ID'] | replace(".0","") }}">
 
-                                        <td style="vertical-align: middle;"
-                                            class="table__cell">{{ record['PV_NAME'] }}</td>
-                                        <td style="vertical-align: middle;"
-                                            class="table__cell">{{ record['PV_DESC'] }} </td>
-                                        <td style="display:none;"
-                                            class="table__cell pv_def">{{ record['PV_DEF'] }}
-                                        </td>
-                                        <!--<td name="{{record['PV_CONTENT']}}" value="{{record['PV_CONTENT']}}" class="table&#45;&#45;cell">{{record['PV_CONTENT']}}</td>-->
+                                    <td style="vertical-align: middle;"
+                                        class="table__cell">{{ record['PV_NAME'] }}</td>
+                                    <td style="vertical-align: middle;"
+                                        class="table__cell">{{ record['PV_DESC'] }} </td>
+                                    <td style="display:none;"
+                                        class="table__cell pv_def">{{ record['PV_DEF'] }}
+                                    </td>
+                                    <!--<td name="{{record['PV_CONTENT']}}" value="{{record['PV_CONTENT']}}" class="table&#45;&#45;cell">{{record['PV_CONTENT']}}</td>-->
 
-                                        <!--Give the button a class so that we can call it via javascript, attach ID attribute-->
-                                        <td class="table__cell" style="text-align: right">
-                                            <a id={{ record['PV_NAME'] }} href="/edit_pv/{{ run_id }}/{{ record['PV_NAME'] }}" pvid={{ record['PROCESS_VARIABLE_ID'] }}>Change</a>
-                                        </td>
+                                    <!--Give the button a class so that we can call it via javascript, attach ID attribute-->
+                                    <td class="table__cell" style="text-align: right">
+                                        <a id={{ record['PV_NAME'] }} href="/edit_pv/{{ run_id }}/{{ record['PV_NAME'] }}" pvid={{ record['PROCESS_VARIABLE_ID'] }}>Change</a>
+                                    </td>
 {#                                        <td class="table__cell" style="text-align: right">#}
 {#                                            <button class="btn btn--small pv-edit-button"#}
 {#                                                    id={{ record['PV_NAME'] }} pvid={{ record['PROCESS_VARIABLE_ID'] }}>#}
 {#                                                Edit#}
 {#                                            </button>#}
 {#                                        </td>#}
-                                    </tr>
-                                {% endfor %}
+                                </tr>
+                            {% endfor %}
 
-                                </tbody>
-                            {% else %}
-                                <div class="top_50_extra_space">
-                                    <div class="panel panel--simple panel--info">
-                                        <div class="panel__body">
-                                            <p class="mars">No Records to show...</p>
-                                            <p></p>
-                                        </div>
+                            </tbody>
+                        {% else %}
+                            <div class="top_50_extra_space">
+                                <div class="panel panel--simple panel--info">
+                                    <div class="panel__body">
+                                        <p class="mars">No Records to show...</p>
+                                        <p></p>
                                     </div>
                                 </div>
-                            {% endif %}
-                            </table>
-                        </div>
-
-
-                        <div class="top_50_extra_space">
-                            <div class="btn-group" id="form-button-group">
-                                <button hidden class="btn btn-group__btn" id="btn-continue"
-                                        style="margin-right: 1rem">
-                                    <span class="btn__inner">Continue</span>
-                                </button>
-                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; "
-                                   href="{{ url_for('dashboard.dashboard_view') }}">
-                                    <span class="btn__inner">Cancel</span>
-                                </a>
                             </div>
+                        {% endif %}
+                        </table>
+                    </div>
+
+
+                    <div class="top_50_extra_space">
+                        <div class="btn-group" id="form-button-group">
+                            <button hidden class="btn btn-group__btn" id="btn-continue"
+                                    style="margin-right: 1rem">
+                                <span class="btn__inner">Continue</span>
+                            </button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; "
+                               href="{{ url_for('dashboard.dashboard_view') }}">
+                                <span class="btn__inner">Cancel</span>
+                            </a>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
 
         </section>

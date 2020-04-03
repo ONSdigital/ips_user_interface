@@ -27,88 +27,86 @@
     {% block content %}
         <!--New run 3 page content-->
         <section>
-
             <div class="container">
-                <div class="top_40_extra_space">
-                    <p><a id="previous-link" href="{{ url_for('.new_run_4') }}/{{ run_id }}">Previous</a></p>
-                    <h2>Data Import</h2>
-                    <br>
-                    {% if error %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">{{ error_message }}</p>
-                                </div>
+                <p><a id="previous-link" href="{{ url_for('.new_run_4') }}/{{ run_id }}">Previous</a></p>
+                <h2>Data Import</h2>
+                <br>
+                {% if error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
                             </div>
-                            <!-- End: @panel--error -->
-                        </div>
-                    {% endif %}
-
-                    {% if serial_error %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">Survey Data - Serial column is invalid.</p>
-                                </div>
+                            <div class="panel__body">
+                                <p class="mars">{{ error_message }}</p>
                             </div>
-                            <!-- End: @panel--error -->
                         </div>
-                    {% endif %}
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
 
-                    {% if column_error %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">Survey Data - Incorrect number of columns (should be 212).</p>
-                                </div>
+                {% if serial_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
                             </div>
-                            <!-- End: @panel--error -->
-                        </div>
-                    {% endif %}
-
-                    {% if date_error %}
-                        <div class="collator-item">
-                            <h2 class="collator-title"></h2>
-                            <!-- Start: @panel--error -->
-                            <div class="panel panel--error">
-                                <div class="panel__header">
-                                    <div class="venus">Error</div>
-                                </div>
-                                <div class="panel__body">
-                                    <p class="mars">Survey Data - Input start date does not match start dates in
-                                        uploaded file.</p>
-                                </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Serial column is invalid.</p>
                             </div>
-                            <!-- End: @panel--error -->
                         </div>
-                    {% endif %}
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
 
-                    {% if run_id %}
-                        <form id="run_5_form" action="{{ url_for('.new_run_5', run_id=run_id) }}" class="form"
-                              method="post"
-                              enctype="multipart/form-data">
-                    {% else %}
-                        <form id="run_5_form" action="{{ url_for('.new_run_5') }}" class="form" method="post"
-                              enctype="multipart/form-data">
-                    {% endif %}
+                {% if column_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Incorrect number of columns (should be 212).</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
 
-                    {#                    <form id="run" action="{{  url_for('.new_run_5') }}" class="form" method="post"#}
-                    {#                          enctype="multipart/form-data">#}
+                {% if date_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Input start date does not match start dates in
+                                    uploaded file.</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
+
+                {% if run_id %}
+                    <form id="run_5_form" action="{{ url_for('.new_run_5', run_id=run_id) }}" class="form"
+                          method="post"
+                          enctype="multipart/form-data">
+                {% else %}
+                    <form id="run_5_form" action="{{ url_for('.new_run_5') }}" class="form" method="post"
+                          enctype="multipart/form-data">
+                {% endif %}
+
+                {#                    <form id="run" action="{{  url_for('.new_run_5') }}" class="form" method="post"#}
+                {#                          enctype="multipart/form-data">#}
 
                     <label id="rid" style="display:none;">{{ run_id }}</label>
 
@@ -236,12 +234,8 @@
                             <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('manage_run.manage_run', run_id=run_id) }}"><span class="btn__inner">Skip</span></a>
                         </div>
                     </div>
-
                     </form>
-
-                </div>
             </div>
-
         </section>
 
         <section>
