@@ -35,7 +35,6 @@ class SearchActivityForm(FlaskForm):
         ('6', 'Failed')
     ]
     run_type_filter = SelectField(label='RunType', choices=run_type_list)
-    run_type_filter1 = MultiCheckboxField(label='Run Type', choices=run_type_list)
 
 
 class CreateRunForm(FlaskForm):
