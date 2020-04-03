@@ -36,11 +36,6 @@ app.register_blueprint(edit_pv.bp)
 log.debug("IPS UI Started")
 
 
-@app.errorhandler(Exception)
-def internal_server_error(e):
-    return render_template("servererror.html"), 500
-
-
 @app.after_request
 def add_header(r):
     """
@@ -58,3 +53,13 @@ def add_header(r):
 def index():
     session.clear()
     return redirect(url_for('dashboard.dashboard_view'))
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("pagenotfound.html")
+
+
+@app.errorhandler(Exception)
+def internal_server_error(e):
+    return render_template("servererror.html"), 500
