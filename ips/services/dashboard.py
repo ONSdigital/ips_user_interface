@@ -90,8 +90,7 @@ def dashboard_view():
         record['RUN_STATUS'] = run_statuses[str(int(record['RUN_STATUS']))]
         record['RUN_TYPE_ID'] = run_types[str(int(record['RUN_TYPE_ID']))]
         record['PERIOD'] = periods[record['PERIOD']]
-        record['LAST_MODIFIED'] = datetime.utcfromtimestamp(record['LAST_MODIFIED'] / 1000).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        record['LAST_MODIFIED'] = datetime.utcfromtimestamp(record['LAST_MODIFIED'] / 1000).strftime('%d/%m/%Y %H:%M:%S')
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
