@@ -37,12 +37,9 @@ def import_pv(run_id, pv_id=None):
                    'PV_NAME': pv_id,
                    'PV_DEF': pv}
 
-        app_methods.edit_single_process_variable(run_id, pv_id, pv_json)
+        response = app_methods.edit_single_process_variable(run_id, pv_id, pv_json)
 
-        # should go to edit run but being passed over
-        # return success to js
-        # return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-        resp = jsonify(success=True)
+        resp = jsonify(response.ok)
         return resp
 
     return render_template('import_pv.html', run_id=run_id, form=form, pv_name=pv_id)

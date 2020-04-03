@@ -107,7 +107,7 @@ class DataSelectionForm(FlaskForm):
 
 
 class ImportPVForm(FlaskForm):
-    pv_file = FileField(validators=[FileRequired()])
+    pv_file = FileField(validators=[FileRequired(), FileAllowed(['py'], 'Python files only')], render_kw={"accept": ".py"})
 
 
 class LoadDataForm(FlaskForm):

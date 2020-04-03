@@ -7,7 +7,6 @@
     <!--Styles are imported from the parent template.-->
     {% block styles %}
         {{ super() }}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/import-pv.js')+"?v1.0.0" }}"></script>
 
 
     {% endblock %}
@@ -39,7 +38,7 @@
                                style="background-color: lightgray;" value="{{ pv_name }}" readonly>
                     </p>
                         <br>
-                        <form id="import_pv_form" method="get" action="/import_pv/{{ run_id }}/{{ pv_name }}" enctype="multipart/form-data">
+                        <form id="import_pv_form" onsubmit="event.preventDefault()" enctype="multipart/form-data">
                             {{ form.csrf_token }}
                             {{ form.pv_file(class="input input--text input-type__input  input--upload", id="pv_file") }}
                             <br>
@@ -49,9 +48,6 @@
                                 </button>
                             </p>
                         </form>
-
-                        </p>
-                    </form>
                 </div>
             </div>
 
@@ -91,19 +87,16 @@
                             pv = e.target.result;
 
                             const form = $(this);
-                            const url = form.attr('action');
+                            const url = '/import_pv/{{ run_id }}/{{ pv_name }}';
                             $.ajax({
                                 type: "POST",
                                 url: url,
                                 data: {'pv': pv},
                                 success: function () {
-                                    {#this is the bid that doesnt work atm#}
-                                    console.log("yessss");
                                     document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}";
-
                                 },
                                 error: function() {
-                                    console.log("rahhhhhh.");
+
                                 }
                             });
                         }
