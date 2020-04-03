@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, redirect, url_for, session
+from flask import Flask, redirect, url_for, session, render_template
 from flask_bootstrap import Bootstrap
 from ips.util.ui_logging import log
 
@@ -33,8 +33,12 @@ app.register_blueprint(manage_run.bp)
 app.register_blueprint(export.bp)
 app.register_blueprint(edit_pv.bp)
 
-
 log.debug("IPS UI Started")
+
+
+@app.errorhandler(Exception)
+def internal_server_error(e):
+    return render_template("servererror.html"), 500
 
 
 @app.after_request
