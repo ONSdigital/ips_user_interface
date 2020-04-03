@@ -97,6 +97,7 @@ $(document).ready(function (e) {
                         '  </div>\n' +
                         '  <div class="panel__body">\n' +
                         '    <em>Error Validating PV:  <a href="#' + response.PV + '">' + response.PV + '</a></em>\n' +
+                        '    <p>' + response.errorMessage + '</p>\n' +
                         '  </div>\n' +
                         '</div>');
                     window.scrollTo(0,0);
