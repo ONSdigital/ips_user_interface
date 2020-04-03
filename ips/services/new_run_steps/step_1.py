@@ -56,19 +56,18 @@ def run_step_1(run_id):
         log.debug("run_step_1 [GET] request")
         if run_id:
             run = app_methods.get_run(run_id)
-            print(run)
+
             form.run_name.default = run['RUN_NAME']
             form.run_description.default = run['RUN_DESC']
             form.run_year.default = run['YEAR']
-            print(run['PERIOD'][0])
             if run['PERIOD'][0] == 'Q':
                 form.run_period_type.default = 'Quarter'
             else:
                 form.run_period_type.default = 'Month'
+            form.process()
             new_run = False
 
     if form.run_name.errors or form.run_description.errors:
         log.warning("run_step_1 [GET] Missing valid run_id or description.")
 
-    print("renderrrr")
     return render_template('new_run_1.html', form=form, run_id=run_id, new_run=new_run)

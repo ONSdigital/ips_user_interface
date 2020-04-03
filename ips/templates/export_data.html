@@ -25,22 +25,21 @@
         <!--Export data page content-->
         <section>
             <div class="container">
-                    <div class="group top_40_extra_space">
-                        <div>
-                            {% if data == "0" %}
-                                <div class="collator-item">
-                                    <div class="panel panel--error">
-                                        <div class="panel__header">
-                                            <div class="venus">Error</div>
-                                        </div>
-                                        <div class="panel__body">
-                                            <p class="mars">There is no data to export. Please select a different
-                                                export.</p>
-                                        </div>
+                <div class="group top_40_extra_space">
+                    <div>
+                        {% if data == "0" %}
+                            <div class="collator-item">
+                                <div class="panel panel--error">
+                                    <div class="panel__header">
+                                        <div class="venus">Error</div>
+                                    </div>
+                                    <div class="panel__body">
+                                        <p class="mars">There is no data to export. Please select a different
+                                            export.</p>
                                     </div>
                                 </div>
-                            {% endif %}
-
+                            </div>
+                        {% endif %}
                         </div>
                     </div>
                     <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
