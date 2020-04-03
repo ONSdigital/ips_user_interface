@@ -81,7 +81,7 @@
                 <nav class="header-nav js-header-nav" id="main-nav" aria-label="Main menu" data-analytics="header-navigation">
                     <ul class="header-nav__list" aria-label="" role="menubar">
                         {% if current_user.is_authenticated %}
-                          <li {% if 'dashboard' in request.path %} class='header-nav__item header-nav__item--active' {% endif %}class="header-nav__item " role="menuitem" aria-current="page">
+                          <li class='header-nav__item header-nav__item--active' role="menuitem" aria-current="page">
                               <a href="{{ url_for('dashboard.dashboard_view') }}" class="header-nav__link">Dashboard</a>
                           </li>
                         {% endif %}
