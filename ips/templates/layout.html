@@ -37,8 +37,9 @@
 </head>
 
 <body>
-<header class="header header--internal">
-    {% block header %}
+<div class="page-container">
+    <header class="header header--internal">
+        {% block header %}
         <section>
             <div class="header__top" role="banner">
                 <div class="container">
@@ -66,11 +67,11 @@
                                 aria-expanded="false" aria-controls="main-nav" aria-label="Toggle main navigation"
                                 aria-haspopup="true"><span class="btn--mobile__label"></span></button>
                         {% if current_user.is_authenticated %}
-                            <div class="grid__col col-auto u-flex-no-shrink" style="float: right;">
-                                <button id="sign_out" class="btn btn--ghost" >
-                                    <span class="btn__inner">Sign out</span>
-                                </button>
-                            </div>
+                        <div class="grid__col col-auto u-flex-no-shrink" style="float: right;">
+                            <a class="btn btn--ghost u-d-no@xs@m" href="/logout">
+                                <span class="btn__inner">Sign Out</span>
+                            </a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -90,37 +91,36 @@
             </div>
             <br>
         </section>
-    {% endblock %}
-</header>
+        {% endblock %}
+    </header>
 
-<section id="content">
-    {% block content %}{% endblock %}
-</section>
+    <section id="main-content">
+        <div id="content-wrap">
+            {% block content %}{% endblock %}
+        </div>
 
-<section style="bottom:0; width:100%">
+        <footer class="u-mt-xl footer  main-footer " data-analytics="footer">
+            <div class="footer__body">
+                <div class="container ">
+                    <div class="grid">
+                        <div class="grid__col col-4@m">
+                            <img src="/static/img/ons-logo-black-en.svg" alt="Office for National Statistics" class="footer__poweredby-img ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
+<section>
     <!--Footer content-->
     {% block footer %}
 
-    <footer class="footer " data-analytics="footer">
-      <div class="footer__body">
-        <div class="container ">
-          <div class="grid">
-            <div class="grid__col col-4@m">
-              <img src="/img/ons-logo-black-en.svg" alt="Office for National Statistics" class="footer__poweredby-img ">
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-        <script>
+    <script>
             jQuery(document).ready(function ($) {
                 $(".clickable-row").click(function () {
                     window.location = $(this).data("href");
                 });
-            });
-            $("#sign_out").click(function () {
-                window.location.href = '/logout';
             });
         </script>
 
