@@ -23,44 +23,31 @@
 <section id="content">
     {% block content %}
         <!--Export data page content-->
-        <section>
-            <div class="container">
-                <div class="group top_40_extra_space">
-                    <div>
-                        {% if data == "0" %}
-                            <div class="collator-item">
-                                <div class="panel panel--error">
-                                    <div class="panel__header">
-                                        <div class="venus">Error</div>
-                                    </div>
-                                    <div class="panel__body">
-                                        <p class="mars">There is no data to export. Please select a different
-                                            export.</p>
-                                    </div>
+        <div class="page__content container">
+            <div class="group top_40_extra_space">
+                <div>
+                    {% if data == "0" %}
+                        <div class="collator-item">
+                            <div class="panel panel--error">
+                                <div class="panel__header">
+                                    <div class="venus">Error</div>
+                                </div>
+                                <div class="panel__body">
+                                    <p class="mars">There is no data to export. Please select a different
+                                        export.</p>
                                 </div>
                             </div>
-                        {% endif %}
                         </div>
+                    {% endif %}
                     </div>
-                    <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
-
-                    <div>
-                        <h2 class="saturn">Export Data for <i>'{{ current_run['RUN_NAME'] }}'</i></h2>
-                    </div>
-                    <br>
-
                 </div>
-            </div>
+                <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
 
-
-        </section>
-
-        <section>
-
-            <div class="container">
-
+                <div>
+                    <h2 class="saturn">Export Data for <i>'{{ current_run['RUN_NAME'] }}'</i></h2>
+                </div>
+                <br>
                 <form id="run" action="/export_data/{{ current_run['RUN_ID'] }}" class="form" method="post">
-
                     <div class="field">
                         {{ form.csrf_token }}
                         {% for export in form.data_selection %}
@@ -82,37 +69,28 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
-
                     </div>
-
 
                     <div class="top_50_extra_space">
                         {{ form.csrf_token }}
-{#                            {{ form.display_data(class="btn btn--primary", type="submit") }}#}
                         <button type="submit" class="btn">
                             <span class="btn__inner">Export</span>
                         </button>
-{#                            {{ form.cancel_button(class="btn btn--secondary", type="submit") }}#}
                         <button type="submit" class="btn btn--secondary">
                             <span class="btn__inner">Cancel</span>
                         </button>
                     </div>
-
                 </form>
-
             </div>
 
-        </section>
-
-        <section>
             <div class="buttom_40_extra_space buttom_40_extra_space">
                 <table></table>
             </div>
             <div class="buttom_40_extra_space buttom_40_extra_space">
                 <table></table>
             </div>
-        </section>
-
+        </div>
+    </div>
     {% endblock %}
 </section>
 

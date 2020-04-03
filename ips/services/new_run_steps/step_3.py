@@ -50,4 +50,4 @@ def run_step_3(run_id):
 
     log.debug("run_step_3 [GET]  Retrieved process variable sets, rendering new_run_3.")
 
-    return render_template('new_run_3.html', table=records, header=header, run_id=run_id)
+    return render_template('new_run_3.html', table=records, header=header, run_id=run_id, pv_set_id=pv_set_id)
