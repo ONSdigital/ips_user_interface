@@ -62,7 +62,7 @@
                     <p>
                         <a href="/import_pv/{{ run_id }}/{{ pv_name }}">Import Code</a>
                         &nbsp&nbsp&nbsp&nbsp
-                        <a>Export Code</a>
+                        <a href="#" id="export_pv">Export Code</a>
                     </p>
                     <p class="field">
                         <textarea id="textarea" class="input input--textarea  " name="feedback"
@@ -87,8 +87,31 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+        <script>
+            $(document).ready(function () {
+                function download(filename, text) {
+                    let pom = document.createElement('a');
+                    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                    pom.setAttribute('download', filename);
+
+                    if (document.createEvent) {
+                        let event = document.createEvent('MouseEvents');
+                        event.initEvent('click', true, true);
+                        pom.dispatchEvent(event);
+                    }
+                    else {
+                        pom.click();
+                    }
+                }
+
+                $("#export_pv").click(function () {
+                    console.log('here')
+                    download("{{ pv_name }}.txt", {{ pv }})
+                });
+            });
+        </script>
     {% endblock %}
-{#</footer>#}
+</footer>
 
 </body>
 </html>

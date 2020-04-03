@@ -378,3 +378,13 @@ a {
   float: left;
   width: 35%;
 }
+
+.push-lil-bit {
+    position: relative;
+    left: 2.8%;
+}
+
+.column-run{
+    width: 60%;
+    max-width: 64%;
+}

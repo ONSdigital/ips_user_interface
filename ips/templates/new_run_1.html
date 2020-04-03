@@ -134,7 +134,7 @@
                                 {{ form.run_period_type.label(class="label venus ", for="period-input") }}
                                 <span class="label__description">Please choose quarter or month</span>
 
-                                {% if form.run_name.default %}
+                                {% if form.run_period_type.default %}
                                     {% for period in form.run_period_type %}
                                          <div>
                                             <p class="radios__item">
@@ -194,11 +194,9 @@
                                 </p>
 
                             {% endif %}
-                            {% if form.run_name.errors %}
+                            {% if form.run_year.errors %}
                                 <ul>
-                                    {% for error_message in form.run_name.errors %}
-                                        <li style="color:red;">{{ error_message }}</li>
-                                    {% endfor %}
+                                    <li style="color:red;">{{ form.run_year.errors[-1] }}</li>
                                 </ul>
                             {% endif %}
 
