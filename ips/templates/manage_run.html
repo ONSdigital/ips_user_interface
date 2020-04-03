@@ -141,7 +141,7 @@
                                 <em class="status status--error status--small">Failed</em>
                                 {% endif %}
                             </td>
-                            <td class="table__cell">
+                            <td class="table__cell info_column" step_num="{{ step['STEP_NUMBER'] }}">
                                 {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
                                 <a class="info_img">Information</a>
                                 {% endif %}
