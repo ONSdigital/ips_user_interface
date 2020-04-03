@@ -92,8 +92,12 @@
                                 type: "POST",
                                 url: url,
                                 data: {'pv': pv},
-                                success: function () {
-                                    document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}";
+                                success: function (r) {
+                                    if (r) {
+                                        document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}?import=success";
+                                    } else {
+                                        document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}?import=failed";
+                                    }
                                 },
                                 error: function() {
 
