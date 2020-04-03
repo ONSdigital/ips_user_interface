@@ -93,11 +93,16 @@
                             <p>
                                 <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
                             </p>
-                            <em>{{ record['RUN_STATUS'] }}</em>
+                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
                         {% elif record['RUN_STATUS'] == 'Completed' %}
                             <p>
-                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
-                                <a href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
+                                <ul class="list list--bare list--inline">
+                                    <li class="list__item ">
+                                        <a class="list__link" href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                    <li class="list__item ">
+                                        <a class="list__link" href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
+                                    </li>
+                                </ul>
                             </p>
                             <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
                         {% elif record['RUN_STATUS'] == 'Cancelled' %}
