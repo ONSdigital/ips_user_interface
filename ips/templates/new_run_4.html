@@ -30,47 +30,26 @@
         <!--New run 5 page content-->
         <section>
             <div class="container">
-                <p><a id="previous-link" href="{{ url_for('.new_run_3') }}/{{ run_id }}">Previous</a></p>
-                <div>
-                    <!-- Validation Loading Panel -->
-                    <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">
-                        <div class="panel__body">
-                            <div>PV Validation In Progress...
-                            </div>
-                        </div>
-                    </div>
+                    <p><a id="previous-link" href="{{ url_for('.new_run_3') }}/{{ run_id }}">Previous</a></p>
 
-                    <!-- Successful Validation Panel -->
-                    <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
-                        <div class="panel__body">
-                            <div>PV Validation Successful
-                            </div>
-                        </div>
-                    </div>
+                    <br>
+                    <h1>PV Set</h1>
 
-                    <!-- Failed Validation Panel -->
-                    <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">
-                        <div class="panel__body">
-                            <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <h1>PV Set</h1>
+                    <div id="error-panel-placeholder"></div>
 
-                <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
+                    <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
 
-                    <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
-                    <label id="rid" style="display:none;">{{ run_id }}</label>
+                        <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
+                        <label id="rid" style="display:none;">{{ run_id }}</label>
 
-                    <div class=" top_40_extra_space">
-                        {% if table %}
-                            <table id="form_table" class="table table__dense">
-                            <thead class="table__head">
-                            <tr>
-                                <th class="table__header">PV Name</th>
-                                <th class="table__header">PV Reason</th>
-                                <th class="table__header">&nbsp;</th>
+                        <div class=" top_40_extra_space">
+                            {% if table %}
+                                <table id="form_table" class="table table__dense">
+                                <thead class="table__head">
+                                <tr>
+                                    <th class="table__header">PV Name</th>
+                                    <th class="table__header">PV Reason</th>
+                                    <th class="table__header">&nbsp;</th>
 {#                                    <th class="table__header">&nbsp;</th>#}
                             </tr>
                             </thead>
@@ -113,6 +92,31 @@
                             </div>
                         {% endif %}
                         </table>
+                    </div>
+
+                    <div>
+                        <!-- Validation Loading Panel -->
+                        <div id="pv-validation-panel-loading" class="panel panel--simple panel--info">
+                            <div class="panel__body">
+                                <div>PV Validation In Progress...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Successful Validation Panel -->
+                        <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                            <div class="panel__body">
+                                <div>PV Validation Successful
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Failed Validation Panel -->
+                        <div hidden id="pv-validation-panel-error" class="panel panel--simple panel--error">
+                            <div class="panel__body">
+                                <p>PV Validation Failed <a href="#error-panel-placeholder">View Error</a></p>
+                            </div>
+                        </div>
                     </div>
 
 

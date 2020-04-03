@@ -91,16 +91,13 @@ $(document).ready(function (e) {
                     // Clear Panel Error and Displays new error
                     error_panel_placeholder.empty();
                     error_panel_placeholder.append('' +
-                        '<div id="error-panel">\n' +
-                        '    <div class="panel panel--error">\n' +
-                        '        <div class="panel__header">\n' +
-                        '            <div class="u-fs-r--b">Error</div>\n' +
-                        '        </div>\n' +
-                        '        <div class="panel__body">\n' +
-                        '            <h2>Error Validating PV:  <a href="#' + response.PV + '">' + response.PV + '</a></h2>\n' +
-                        '            <p class="u-fs-r">' + response.errorMessage + '</p>\n' +
-                        '        </h2>\n' +
-                        '    </div>' +
+                        '<div class="panel panel--error">\n' +
+                        '  <div class="panel__header">\n' +
+                        '    <h1 class="panel__title u-fs-r--b">Error</h1>\n' +
+                        '  </div>\n' +
+                        '  <div class="panel__body">\n' +
+                        '    <em>Error Validating PV:  <a href="#' + response.PV + '">' + response.PV + '</a></em>\n' +
+                        '  </div>\n' +
                         '</div>');
                     window.scrollTo(0,0);
                     $("tr:contains(" + response.PV + ")").addClass("panel--error")
