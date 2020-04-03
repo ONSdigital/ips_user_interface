@@ -58,6 +58,7 @@ class MonthSelectionForm(FlaskForm):
     ]
 
     s_month = RadioField(label='Month', choices=months, validators=[InputRequired()])
+    submit_button = SubmitField(label="search")
 
 
 class QuarterSelectionForm(FlaskForm):
@@ -111,7 +112,7 @@ class DataSelectionForm(FlaskForm):
 
 
 class ImportPVForm(FlaskForm):
-    pv_file = FileField(validators=[FileRequired(), FileAllowed(['py'], 'Python files only')], render_kw={"accept": ".py"})
+    pv_file = FileField(label="Upload File", validators=[FileRequired(), FileAllowed(['py'], 'Python files only')], render_kw={"accept": ".py"})
 
 
 class LoadDataForm(FlaskForm):

@@ -38,11 +38,12 @@
                 <br>
                 <form id="import_pv_form" onsubmit="event.preventDefault()" enctype="multipart/form-data">
                     {{ form.csrf_token }}
+                    {{ form.pv_file.label(class="label") }}
                     {{ form.pv_file(class="input input--text input-type__input  input--upload", id="pv_file") }}
                     <br>
                     <p class="field"><br>
                         <button type="submit" class="btn">
-                            <span class="btn__inner">Submit</span>
+                            <span class="btn__inner">Upload</span>
                         </button>
                     </p>
                 </form>

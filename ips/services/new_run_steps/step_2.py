@@ -15,9 +15,10 @@ def run_step_2_m(run_id):
     # if request is a post
     if request.method == 'POST':
         log.debug("run_step_2 [POST] request")
-        session['period'] = request.form['s_month']
 
         if form.validate():
+            session['period'] = request.form['s_month']
+
             if request.form['submit'] == 'create_run':
                 global period
 
@@ -75,9 +76,10 @@ def run_step_2_q(run_id):
     # if request is a post
     if request.method == 'POST':
         log.debug("run_step_2 [POST] request")
-        session['period'] = request.form['s_quarter']
 
         if form.validate():
+            session['period'] = request.form['s_quarter']
+
             if request.form['submit'] == 'create_run':
                 global period
 

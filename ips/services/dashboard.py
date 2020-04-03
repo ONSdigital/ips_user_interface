@@ -1,5 +1,5 @@
 from flask_login import login_required
-from flask import request, render_template, Blueprint, redirect
+from flask import request, render_template, Blueprint, redirect, session
 from datetime import datetime
 
 from ips.util.ui_logging import log
@@ -122,6 +122,11 @@ def dashboard_view():
                 records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
     log.debug('dashboard: Rendering dashboard now...')
+
+    session['run_name'] = ""
+    session['run_description'] = ""
+    session['year'] = ""
+    session['run_period_type'] = ""
 
     return render_template('dashboard.html',
                            header=header,
