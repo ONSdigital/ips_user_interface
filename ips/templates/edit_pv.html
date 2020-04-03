@@ -62,7 +62,7 @@
                     <p>
                         <a href="/import_pv/{{ run_id }}/{{ pv_name }}">Import Code</a>
                         &nbsp&nbsp&nbsp&nbsp
-                        <a href="#" id="export_pv">Export Code</a>
+                        <a onclick="exportButton()">Export Code</a>
                     </p>
                     <p class="field">
                         <textarea id="textarea" class="input input--textarea  " name="feedback"
@@ -87,29 +87,28 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
-        <script>
-            $(document).ready(function () {
-                function download(filename, text) {
-                    let pom = document.createElement('a');
-                    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-                    pom.setAttribute('download', filename);
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.blockUI.js') }}"></script>
+    <script>
+        function exportButton() {
+            let input = document.createElement('input');
+            input.type = 'file';
 
-                    if (document.createEvent) {
-                        let event = document.createEvent('MouseEvents');
-                        event.initEvent('click', true, true);
-                        pom.dispatchEvent(event);
-                    }
-                    else {
-                        pom.click();
-                    }
-                }
+            let pv_name = $("#text").val();
+            let pv = $("#textarea").val();
 
-                $("#export_pv").click(function () {
-                    console.log('here')
-                    download("{{ pv_name }}.txt", {{ pv }})
-                });
-            });
-        </script>
+
+            let textFileAsBlob = new Blob([pv], {type: 'text/x-python-script'});
+
+            let downloadLink = document.createElement('a');
+            downloadLink.download = pv_name + '.py';
+            downloadLink.innerHTML = 'Download File';
+
+            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+
+            downloadLink.click();
+        }
+
+    </script>
     {% endblock %}
 </footer>
 
