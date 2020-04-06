@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "_paginationTemplate.html" import render_pagination %}
 
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
@@ -121,6 +122,8 @@
                         {% endif %}
                     {% endfor %}
                     </div>
+                    <br>
+                    {{ render_pagination(current_page, page_list, prev_url, next_url) }}
                 </div>
             </div>
         </div>

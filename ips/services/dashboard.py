@@ -1,5 +1,7 @@
+import math
+
 from flask_login import login_required
-from flask import request, render_template, Blueprint, redirect, session
+from flask import request, render_template, Blueprint, redirect, session, url_for
 from datetime import datetime
 
 from ips.util.ui_logging import log
@@ -9,10 +11,13 @@ from ips.services import app_methods
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 
+pagination_size = 10
+
 
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def dashboard_view():
+    current_page = request.args.get('page', 1, type=int)
     form = SearchActivityForm()
 
     # Log that dashboard view has been accessed
@@ -121,6 +126,29 @@ def dashboard_view():
             if request.form['run_type_filter'] != '-1':
                 records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
+    pagination_offset = 0
+    if current_page >= 2:
+        pagination_offset = (current_page - 1) * pagination_size
+
+    no_of_pages = math.ceil(len(records) / pagination_size)
+
+    records = records[pagination_offset:(pagination_offset + pagination_size)]
+
+    if (current_page + 1) <= no_of_pages:
+        next_url = url_for('dashboard.dashboard_view', page=current_page + 1)
+    else:
+        next_url = None
+    if (current_page - 1) >= 1:
+        prev_url = url_for('dashboard.dashboard_view', page=current_page - 1)
+    else:
+        prev_url = None
+
+    page_list = []
+    i = 0
+    while i < no_of_pages:
+        page_list.append((url_for('dashboard.dashboard_view', page=i + 1), i + 1))
+        i = i + 1
+
     log.debug('dashboard: Rendering dashboard now...')
 
     session['run_name'] = ""
@@ -131,7 +159,11 @@ def dashboard_view():
     return render_template('dashboard.html',
                            header=header,
                            records=records,
-                           form=form)
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page_list=page_list,
+                           current_page=current_page)
 
 
 def fil(search_activity, x):
