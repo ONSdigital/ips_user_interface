@@ -11,7 +11,7 @@ from ips.services import app_methods
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 
-pagination_size = 10
+pagination_size = 6
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -88,7 +88,6 @@ def dashboard_view():
         "Q3": "Quarter 3",
         "Q4": "Quarter 4"
     }
-    print("here")
 
     # Reformat values to be displayed on the UI
     for record in records:
@@ -100,12 +99,8 @@ def dashboard_view():
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
         log.debug("dashboard [POST] request")
-        print("1")
-        print(request.form)
         # If the search button is selected filter the results on the run status and the searched word.
         if 'search_button' in request.form:
-            print("here")
-            print(request)
             search_activity = request.form['search_activity']
             filter_value = request.form['run_type_filter']
             log.debug(f"dashboard search request, search term {search_activity}, filter: {filter_value}")
