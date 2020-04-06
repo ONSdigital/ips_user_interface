@@ -120,7 +120,7 @@
                                             class="input-type__type"
                                             aria-hidden="true"
                                             title="Years"
-                                            >Years</abbr>
+                                            >Year</abbr>
                                     </span>
                               </span>
                             </p>
@@ -140,7 +140,7 @@
                     <div class="answer__fields js-fields">
                         <p class=""field>
                             {{ form.run_description.label(class="label venus ", for="teztarea-char-limit") }}
-                            <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>
+{#                            <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>#}
 
                             {% if run_id %}
                                 {% set f = form.run_description.process_data(form.run_description.default) %}

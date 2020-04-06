@@ -65,27 +65,27 @@
             <dt class="metadata__term grid__col col-2@m"><em>Run Status:</em></dt>
             <dd class="metadata__value grid__col col-10@m">
                 {% if current_run['RUN_STATUS'] == 'Ready' %}
-                <span id="current_run_status"
-                      class="status status--success">{{ current_run['RUN_STATUS'] }}</span>
-                {% elif current_run['RUN_STATUS'] == 'Not Started' %}
-                <span id="current_run_status"
-                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                {% elif current_run['RUN_STATUS'] == 'Running' %}
-                <span id="current_run_status"
-                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                {% elif current_run['RUN_STATUS'] == 'Completed' %}
-                <span id="current_run_status"
-                      class="">{{ current_run['RUN_STATUS'] }}</span>
+                    <span id="current_run_status"
+                          class="status status--success">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Not Started' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Running' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Completed' %}
+                    <span id="current_run_status"
+                          class="">{{ current_run['RUN_STATUS'] }}</span>
 
-                {% elif current_run['RUN_STATUS'] == 'Cancelled' %}
-                <span id="current_run_status"
-                      class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
-                {% elif current_run['RUN_STATUS'] == 'Invalid Run' %}
-                <span id="current_run_status"
-                      class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
-                {% elif current_run['RUN_STATUS'] == 'Failed' %}
-                <span id="current_run_status"
-                      class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Cancelled' %}
+                    <span id="current_run_status"
+                          class="status status--info">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Invalid Run' %}
+                    <span id="current_run_status"
+                          class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
+                    {% elif current_run['RUN_STATUS'] == 'Failed' %}
+                    <span id="current_run_status"
+                          class="status status--error">{{ current_run['RUN_STATUS'] }}</span>
                 {% endif %}
             </dd>
 
@@ -101,54 +101,54 @@
                 <table class="table " id="run_table">
 <!--                        <caption class="table__caption">A basic table with a caption</caption>-->
 
-                    <thead class="table__head">
-                    <tr>
-                        <th style="width: 75%" class="table__header">Steps
-                        </th>
-                        <th style="width: 20%" class="table__header">Status</th>
-                        <td class="table__header"></td>
-                    </tr>
-                    </thead>
+                        <thead class="table__head">
+                        <tr>
+                            <th style="width: 75%" class="table__header">Steps
+                            </th>
+                            <th style="width: 20%" class="table__header">Status</th>
+                            <td class="table__header"></td>
+                        </tr>
+                        </thead>
 
-                    <tbody class="table__body">
-                    {% for step in run_status %}
-                    {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                    <tr data-toggle="modal" data-target="#myModal{{ step['STEP_NUMBER'] }}"
-                        style="cursor: pointer" class="table__row">
-                        {% else %}
-                    <tr class="table__row">
-                        {% endif %}
-
-                        <td style="width: 80%; height:50px" class="table__cell vertical-align">{{ step['STEP_NAME'] }}</td>
-
-                        <td style="width: 20%" class="table__cell status_column vertical-align"
-                            step_num="{{ step['STEP_NUMBER'] }}">
-
-                            <!--If the step has an associated report render the status with a button-->
-                            {% if step['STEP_STATUS'] == 'Ready' %}
-                            <span class="status status--info">Ready</span>
-                            {% elif step['STEP_STATUS'] == 'Not Started' %}
-                            <span class="status status--success">Not Started</span>
-                            {% elif step['STEP_STATUS'] == 'Running' %}
-                            <span class="status status--info">Running</span>
-                            {% elif step['STEP_STATUS'] == 'Completed' %}
-                            <span class="status status--success">Completed</span>
-                            {% elif step['STEP_STATUS'] == 'Cancelled' %}
-                            <span class="status status--dead">Cancelled</span>
-                            {% elif step['STEP_STATUS'] == 'Invalid Run' %}
-                            <span class="status status--dead">Invalid Run</span>
-                            {% elif step['STEP_STATUS'] == 'Failed' %}
-                            <span class="status status--error">Failed</span>
+                        <tbody class="table__body">
+                        {% for step in run_status %}
+                        {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                        <tr data-toggle="modal" data-target="#myModal{{ step['STEP_NUMBER'] }}"
+                            style="cursor: pointer" class="table__row">
+                            {% else %}
+                        <tr class="table__row">
                             {% endif %}
-                        </td>
-                        <td class="table__cell info_column" step_num="{{ step['STEP_NUMBER'] }}">
-                            {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                            <a>Report</a>
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                    </tbody>
-                </table>
+
+                            <td style="width: 80%; height:50px" class="table__cell">{{ step['STEP_NAME'] }}</td>
+
+                            <td style="width: 20%" class="table__cell status_column"
+                                step_num="{{ step['STEP_NUMBER'] }}">
+
+                                <!--If the step has an associated report render the status with a button-->
+                                {% if step['STEP_STATUS'] == 'Ready' %}
+                                <em class="status status--info status--small">Ready</em>
+                                {% elif step['STEP_STATUS'] == 'Not Started' %}
+                                <em class="status status--success status--small">Not Started</em>
+                                {% elif step['STEP_STATUS'] == 'Running' %}
+                                <em class="status status--info status--small">Running</em>
+                                {% elif step['STEP_STATUS'] == 'Completed' %}
+                                <em class="status status--success status--small">Completed</em>
+                                {% elif step['STEP_STATUS'] == 'Cancelled' %}
+                                <em class="status status--dead status--small">Cancelled</em>
+                                {% elif step['STEP_STATUS'] == 'Invalid Run' %}
+                                <em class="status status--dead status--small">Invalid Run</em>
+                                {% elif step['STEP_STATUS'] == 'Failed' %}
+                                <em class="status status--error status--small">Failed</em>
+                                {% endif %}
+                            </td>
+                            <td class="table__cell">
+                                {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
+                                <a class="info_img">Report</a>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 <br>
 
                 {{ form.csrf_token }}

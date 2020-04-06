@@ -42,7 +42,7 @@ class CreateRunForm(FlaskForm):
 
     run_name = StringField(label='Enter Name',
                            validators=[InputRequired()])
-    run_description = TextAreaField(label='Enter Description', render_kw={"rows": 7, "cols": 11},
+    run_description = TextAreaField(label='Enter Run Description', render_kw={"rows": 7, "cols": 11},
                                     validators=[InputRequired()])
     run_year = IntegerField(label='Enter Year', validators=[InputRequired(),
                             NumberRange(min=2000, max=now.year, message='Please enter a valid year.')])

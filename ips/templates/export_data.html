@@ -38,8 +38,8 @@
                         </div>
                     </div>
                 {% endif %}
-                </div>
             </div>
+
             <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
 
             <div>
@@ -76,20 +76,19 @@
                     <button type="submit" class="btn">
                         <span class="btn__inner">Export</span>
                     </button>
-                    <button type="submit" class="btn btn--secondary">
+                    <a class="btn btn--secondary" href="{{ url_for('manage_run.manage_run', run_id=current_run['RUN_ID']) }}">
                         <span class="btn__inner">Cancel</span>
-                    </button>
+                    </a>
                 </div>
             </form>
-        </div>
 
-        <div class="buttom_40_extra_space buttom_40_extra_space">
-            <table></table>
+            <div class="buttom_40_extra_space buttom_40_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_40_extra_space buttom_40_extra_space">
+                <table></table>
+            </div>
         </div>
-        <div class="buttom_40_extra_space buttom_40_extra_space">
-            <table></table>
-        </div>
-    </div>
     {% endblock %}
 </section>
 
