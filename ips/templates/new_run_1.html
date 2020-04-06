@@ -148,6 +148,8 @@
                             {% else %}
                                 {{ form.run_description(class="input input--textarea  js-charlimit-input input--w-30",cols="80",rows="2",id="textarea-char-limit",maxlength="100") }}
                             {% endif %}
+                            <b id="char-count" style="font-size: 15px"></b>
+
                             {% if form.run_description.errors %}
                                 <ul>
                                     {% for error_message in form.run_description.errors %}
@@ -155,17 +157,9 @@
                                     {% endfor %}
                                 </ul>
                             {% endif %}
-                            <span
-                                id="textarea-char-limit-lim-remaining"
-                                class="input__limit u-mt-xs u-fs-s--b u-d-no"
-                                data-charcount-singular="You have {x} character remaining"
-                                data-charcount-plural="You have {x} characters remaining">
-                            </span>
+
                         </p>
 
-                        <div class="input__limit u-mt-xs mercury" data-qa="textarea-with-limit"
-                             id="textarea-answer-remaining" aria-live="polite">You have <span>100</span>.
-                        </div>
                     </div>
 
                     <div class="top_50_extra_space buttom_70_extra_space buttom_70_extra_space">
@@ -197,6 +191,25 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+        <script>
+            $(document).ready(function () {
+                let char_count = "You have 100 characters remaining.";
+                document.getElementById('char-count').innerHTML = char_count;
+
+                $('textarea').on("input", function () {
+                    let maxlength = $(this).attr("maxlength");
+                    const currentLength = $(this).val().length;
+                    const remainingLength = maxlength - currentLength
+
+                    if (currentLength == maxlength - 1) {
+                        char_count = ("You have " + remainingLength + " character remaining");
+                    } else {
+                        char_count = ("You have " + remainingLength + " characters remaining");
+                    }
+                    document.getElementById('char-count').innerHTML = char_count;
+                });
+            });
+        </script>
     {% endblock %}
 </footer>
 
