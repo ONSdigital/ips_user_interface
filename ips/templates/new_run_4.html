@@ -35,6 +35,14 @@
 
                 <div id="error-panel-placeholder"></div>
 
+                <!-- Successful Validation Panel -->
+                <div hidden id="pv-validation-panel-success-1" class="panel panel--simple panel--success">
+                    <div class="panel__body">
+                        <div>Process Variable Validation Successful
+                        </div>
+                    </div>
+                </div>
+
                 <form id="run" name="pv_form" action="{{ url_for('.new_run_4') }}" class="form" method="post">
 
                     <input name="pv_data" class="hidden-edit-input-content" type="hidden" value="">
@@ -101,7 +109,7 @@
                     </div>
 
                     <!-- Successful Validation Panel -->
-                    <div hidden id="pv-validation-panel-success" class="panel panel--simple panel--success">
+                    <div hidden id="pv-validation-panel-success-2" class="panel panel--simple panel--success">
                         <div class="panel__body">
                             <div>Process Variable Validation Successful
                             </div>
