@@ -18,11 +18,6 @@
 /*@import "components/style.css";*/
 @import "components/edit-pv.css";
 
-.panel--simple {
-    padding: 27px 27px 9px 27px;
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-}
-
 .pag_index {
     margin-right: 5px;
 }

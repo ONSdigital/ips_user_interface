@@ -41,12 +41,14 @@ $(document).ready(function (e) {
 
     function storeAllAndVerifyPVs() {
         // Get UI elements
-        let pv_validation_panel_success = $('#pv-validation-panel-success');
+        let pv_validation_panel_success_1 = $('#pv-validation-panel-success-1');
+        let pv_validation_panel_success_2 = $('#pv-validation-panel-success-2');
         let pv_validation_panel_error = $('#pv-validation-panel-error');
         let pv_validation_panel_loading = $('#pv-validation-panel-loading');
         let error_panel_placeholder = $('#error-panel-placeholder');
         pv_validation_panel_loading.show();
-        pv_validation_panel_success.hide();
+        pv_validation_panel_success_1.hide();
+        pv_validation_panel_success_2.hide();
         pv_validation_panel_error.hide();
 
         let json = {};
@@ -71,7 +73,8 @@ $(document).ready(function (e) {
                     // Shows success panel
                     $('#btn-continue').show();
                     error_panel_placeholder.empty();
-                    pv_validation_panel_success.show();
+                    pv_validation_panel_success_1.show();
+                    pv_validation_panel_success_2.show();
                     pv_validation_panel_error.hide();
                     pv_validation_panel_loading.hide();
                     // Clear any Errors from Table List
@@ -81,7 +84,8 @@ $(document).ready(function (e) {
                     $("tr").removeClass("panel--error");
                     // Hides Continue button and
                     $('#btn-continue').hide();
-                    pv_validation_panel_success.hide();
+                    pv_validation_panel_success_1.hide();
+                    pv_validation_panel_success_2.hide();
                     pv_validation_panel_error.show();
                     pv_validation_panel_loading.hide();
                     // Clear Panel Error and Displays new error
