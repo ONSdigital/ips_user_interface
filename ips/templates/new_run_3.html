@@ -39,11 +39,11 @@
             <div class="container">
                 <p><a id="previous-link" href="{{ url_for('.new_run_1') }}/{{ run_id }}">Previous</a></p>
 
-                <h1>PV Set</h1>
+                <h1>Process Variable Set</h1>
                 <form id="run" action="{{ url_for('.new_run_3', run_id=run_id) }}" class="form" method="post">
                     <table class="table">
                         {% if table %}
-                            <caption class="table__caption">Choose a PV set from the table below</caption>
+                            <caption class="table__caption">Choose a Process Variable set from the table below</caption>
                             <thead class="table__head">
                             {% for column in header %}
                                 <th class="table__header"> {{ column | replace('_', ' ') | title }} </th>
