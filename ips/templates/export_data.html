@@ -70,7 +70,6 @@
                         </ul>
                     {% endif %}
                 </div>
-
                 <div class="top_50_extra_space">
                     {{ form.csrf_token }}
                     <button type="submit" class="btn">
@@ -96,6 +95,28 @@
 <footer class="page__footer">
     {% block footer %}
         {{ super() }}
+            <script>
+                function start_export() {
+                    $("#loading-button").show();
+                    $("#export-button").hide();
+                }
+
+                $("#run").submit(function() {
+                    const form = $(this);
+                    const url = form.attr('action');
+                    $.ajax({
+                           type: "POST",
+                           url: url,
+                           data: form.serialize(), // serializes the form's elements.
+                           timeout: 147000987,
+                           success: function()
+                           {
+                               $("#export-button").show();
+                               $("#loading-button").hide();
+                           }
+                    });
+                });
+            </script>
     {% endblock %}
 </footer>
 
