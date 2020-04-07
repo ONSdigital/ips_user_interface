@@ -11,7 +11,7 @@ from ips.services import app_methods
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 
-pagination_size = 10
+pagination_size = 6
 
 
 @bp.route('/', methods=['GET', 'POST'])
