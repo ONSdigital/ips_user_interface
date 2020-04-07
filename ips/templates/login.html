@@ -58,7 +58,7 @@
                             {% if field.type != "SubmitField" %}
                                 {% if field.type != "CSRFTokenField" %}
                                     <div class="field u-mb-m">
-                                        {{ field.label(class_="label u-fs-r") }}
+                                        {{ field.label(class_="label") }}
                                         {% if field.errors %}
                                             {{ field(class_="form-control is-invalid") }}
                                             {% for error in field.errors %}
