@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "_paginationTemplate.html" import render_pagination %}
+
 
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
@@ -123,6 +123,110 @@
                     {% endfor %}
                     </div>
                     <br>
+                    {% macro render_pagination(current_page, page_list, prev_url, next_url) %}
+                        {% if page_list | count > 1 %}
+                            <nav class="pagination u-mb-l" arial-label="Pagination (Page {{ current_page }} of {{ page_list | count }})">
+                                <div class="pagination__position">Page {{ current_page }} of {{ page_list | count }}</div>
+                                <ul class="pagination__items">
+                                    {% if prev_url %}
+                                        <li class="pagination__item pagination__item--previous">
+                                            <a href="{{ prev_url }}" class="pagination__link" rel="prev" aria-label="Go to the previous page (Page {{ current_page - 1 }})">Previous</a></li>
+                                    {% endif %}
+
+                                    {% if page_list | count > 7 %}
+                                        {% if current_page > 3 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[0].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[0].1 }}">{{ page_list[0].1 }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% set current_page_index = current_page - 1 %}
+
+                                        {% if current_page > 1 %}
+                                            {% if current_page > 4 %}
+                                                <li class="pagination__item pageination__item--gap">&hellip;</li>
+                                            {% endif %}
+                                            {% if current_page == page_list | count %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 4].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 4].1 }}">
+                                                        {{ page_list[current_page_index - 4].1 }}</a>
+                                                </li>
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 3].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 3].1 }}">
+                                                        {{ page_list[current_page_index - 3].1 }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                            {% if current_page > 2 %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 2].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 2].1 }}">
+                                                        {{ page_list[current_page_index - 2].1 }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index - 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 1].1 }}">
+                                                    {{ page_list[current_page_index - 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {# Current Page Item #}
+                                        <li class="pagination__item pagination__item--active pagination__item--current">
+                                            <a href="{{ page_list[current_page_index].0 }}" class="pagination__link" aria-label="Current page" aria-current="true">{{ page_list[current_page_index].1 }}</a>
+                                        </li>
+
+                                        {% if current_page < page_list | count - 1 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 1].1 }}">
+                                                    {{ page_list[current_page_index + 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count - 2 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 2].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 2].1 }}">
+                                                    {{ page_list[current_page_index + 2].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < 2 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 3].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 3].1 }}">
+                                                    {{ page_list[current_page_index + 3].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count - 3 %}
+                                            <li class="pagination__item pageination__item--gap">&hellip;</li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[page_list | count - 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[page_list | count - 1].1 }}">
+                                                    {{ page_list[page_list | count - 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                    {% else %}
+                                        {% for page in page_list %}
+                                            {% if current_page == page.1 %}
+                                                <li class="pagination__item pagination__item--active pagination__item--current">
+                                                    <a href="{{ page.0 }}" class="pagination__link" aria-label="Current page" aria-current="true">{{ page.1 }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page.0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page.1 }}">{{ page.1 }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    {% if next_url %}
+                                        <li class="pagination__item pagination__item--next">
+                                            <a href="{{ next_url }}" class="pagination__link" aria-label="Go to the next page (Page {{ current_page + 1 }})" rel="next">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    {% endmacro %}
+
                     {{ render_pagination(current_page, page_list, prev_url, next_url) }}
                 </div>
             </div>
