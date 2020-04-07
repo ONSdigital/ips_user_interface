@@ -85,7 +85,6 @@ def run_step_5(run_id):
             log.debug("step_5: No run_id given...")
             res = {'redirect': '/new_run_steps/new_run_5'}
             return jsonify(res)
-    #            return redirect('/new_run_steps/new_run_5', code=302)
 
     # TODO this isn't there
     elif request.method == 'GET':

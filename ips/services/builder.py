@@ -2,7 +2,7 @@ import json
 
 import requests
 import ast
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, session
 import sys
 
 from ips.services import API_TARGET
@@ -16,8 +16,12 @@ def create(run_id):
     log.debug("builder: create_run")
     headers = {'Content-type': 'application/x-www-form-urlencoded'}
     data = {"json": request.form['json'].strip()}
+
     # Send PVs
-    response = requests.post(API_TARGET + r'/builder/' + run_id, headers=headers, data=data)
+    if session['send'] == 0:
+        # this needs to only happen once per session
+        session['send'] = 1
+        requests.post(API_TARGET + r'/builder/' + run_id, headers=headers, data=data)
 
     # Validate PVs
     log.debug(f"builder: validate_process_variables: {run_id}")

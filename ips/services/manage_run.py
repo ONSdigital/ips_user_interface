@@ -119,7 +119,7 @@ def manage_run(run_id):
     current_run['RUN_TYPE_ID'] = run_types[str(int(current_run['RUN_TYPE_ID']))]
     current_run['PERIOD'] = periods[run['PERIOD']]
     current_run['LAST_MODIFIED'] = \
-        datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime('%Y-%m-%d %H:%M:%S')
+        datetime.utcfromtimestamp(current_run['LAST_MODIFIED'] / 1000).strftime('%d/%m/%Y %H:%M:%S')
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():

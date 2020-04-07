@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+    <title></title>
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<body>
+
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 2 page content-->
+        <section>
+            <div class="container">
+                {% if run_id %}
+                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}/{{ run_id }}">Previous</a></p>
+                {%  else %}
+                    <p><a id="previous-link" href="{{ url_for('.new_run_1') }}">Previous</a></p>
+                {% endif %}
+                <h1>Fieldwork Details</h1>
+                {% if run_id %}
+                    <form id="run" action="{{ url_for('.new_run_2_q', run_id=run_id) }}" class="form" method="post">
+                {% else %}
+                    <form id="run" action="{{ url_for('.new_run_2_q') }}" class="form" method="post">
+                {% endif %}
+
+                    <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
+                        <div class="field field--input field--month">
+
+                            {{ form.csrf_token }}
+
+                            {{ form.s_quarter.label(class="label mercury", for="input-date-range-from-year") }}
+                            <span class="label__description">Choose a quarter</span>
+                            <br>
+                            {% for quarter in form.s_quarter %}
+                                <div>
+                                    <p class="radios__item">
+                                        <span class="radio">
+                                            <tr>
+                                                <td>{{ quarter(class="radio__input js-radio ") }}</td>
+                                                <td>{{ quarter.label(class="radio__label") }}</td>
+                                            </tr>
+                                        </span>
+                                    </p>
+                                    <br>
+                                </div>
+                            {% endfor %}
+                            {% if form.s_quarter.errors %}
+                                <ul>
+                                    {% for error_message in form.s_quarter.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    <div class="top_40_extra_space">
+                        <div class="btn-group">
+                            <button class="btn btn--primary" style="margin-right: 1rem" type="submit" name="submit" value="create_run" id="save_and_continue"><span class="btn__inner">Save and continue</span></button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+        </section>
+
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+    {% endblock %}
+</footer>
+
+</body>
+</html>

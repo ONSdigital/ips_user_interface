@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
+
 <!doctype html>
 <html lang="en-gb" dir="ltr" class="no-js">
 <head>
@@ -20,189 +21,223 @@
 <header class="page__header">
     {% block header %}
         {{ super() }}
-
-        <div class="header__nav">
-            <div class="container">
-                <nav class="nav nav--horizontal nav--light nav--main nav--h-m js-main-nav" aria-label="Main menu"
-                     id="main-nav">
-                    <ul class="nav__list" aria-label="Navigation menu" role="menubar">
-                        <li class="nav__item nav__item--active" role="menuitem" aria-current="page">
-                            <a href="{{ url_for('dashboard.dashboard_view') }}" class="nav__link">Dashboard</a>
-                        </li>
-                        <li class="nav__item " role="menuitem">
-                            <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">New Runs</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
     {% endblock %}
 </header>
 
+<!--Dashboard page content-->
 <section id="content">
     {% block content %}
-        <!--Dashboard page content-->
-
-        <!--Search bar and filter-->
-        <section class="wrapper">
-            <div class="col-12 top_50_extra_space">
-                <div class="panel panel--search u-mb-l">
-                    <div class="group panel__body">
-                        <form id="form-search" action="/dashboard/" class="form" method="post">
-
-                            {{ form.csrf_token }}
-
-                            <div class="col-12">
-                                <div class="col-5">
-                                    {{ form.search_activity(class="input input--textarea js-charlimit-input",
-                                    cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
-                                </div>
-                                <div class="col-5">
-                                    {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:100%;", type="submit") }}
-                                </div>
-                                <div class="col-2">
-                                    {{ form.search_button(class="btn ", id="search_button", style="width:100%; padding:10px;", type="submit") }}
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!--Run table-->
-        <section>
-            <div>
-                <div class="wrapper">
-                    <div class="group top_50_extra_space">
-                        <div class="col-8">
-                            <h2 class="saturn sml-margin buttom_10_extra_space">IPS Runs</h2>
+                <!--Search bar and filter-->
+    <div class="page__content container">
+        <div class="grid">
+            <div class="grid__col col-4@m">
+                <form id="form-search" action="/dashboard/" class="form" method="post">
+                    <label class="label">Results Filter</label>
+                    <br>
+                    {{ form.csrf_token }}
+                    <p class="field">
+                        <label for="text-input" class="">Keywords</label>
+                        <div class="grid--flex">
+                            {{ form.search_activity(class="input input--text input-type__input  u-mr-xs u-mb-xs  input--placeholder input--w-10",
+                                        cols="1", rows="1", id="text-input", autofocus=true, maxlength="400", placeholder="Search...") }}
+                            <button class="btn btn--small u-flex-align-bottom u-mb-xs">
+                                {{ form.search_button(class="btn__inner", id="search_button", style="padding:10px 10px 8px 10px; pointer-events:auto;", type="submit") }}
+                            </button>
                         </div>
-                    </div>
-                </div>
+                    </p>
+                    <p class="field">
+                        <label for="filter_dropdown">Status</label>
+                        <div>
+                            {{ form.run_type_filter(class="input input--select", id="filter_dropdown", style="width:90%;", type="submit") }}
+                        </div>
+                </form>
             </div>
+            <!--Run table-->
+            <div class="grid__col column-run  push-lil-bit">
+                <div class="group-table">
+                    <p>
+                        <a id="new_run_link" href="{{ url_for('new_run_steps.new_run_1') }}" class="nav__link">Add New Run</a>
+                    </p>
+                    <div>
+                    <!-- for each record, render each data value -->
+                    {% for record in records|reverse %}
+                        <hr/>
+                        <br>
+                        <h3>{{ record['RUN_NAME'] }}</h3>
+                        <p class="u-fs-s"> {{ record['RUN_DESC'] }}
+                            <br>
+                            {{ record['PERIOD'] }}
+                            <br>
+                            {{ record['YEAR'] }}
+                            <br>
+                            {{ record['LAST_MODIFIED'] }}
+                            <br>
+                            {{ record['USER_ID'] }}
+                        </p>
+                        {% if record['RUN_STATUS'] == 'Ready' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <p>
+                                <em class="status status--info"><span class="u-fs-r">{{ record['RUN_STATUS'] }}</span></em>
+                            </p>
+                        {% elif record['RUN_STATUS'] == 'Not Started' %}
+                            <meta http-equiv="refresh" content="10">
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Running' %}
+                            <meta http-equiv="refresh" content="10">
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Completed' %}
+                            <p>
+                                <ul class="list list--bare list--inline">
+                                    <li class="list__item ">
+                                        <a class="list__link" href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                                    <li class="list__item ">
+                                        <a class="list__link" href="/export_data/{{ record['RUN_ID'] }}">Export Data</a>
+                                    </li>
+                                </ul>
+                            </p>
+                            <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Cancelled' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Invalid Run' %}
+                            <p>
+                                <a href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                        {% elif record['RUN_STATUS'] == 'Failed' %}
+                            <p>
+                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">Manage Run</a>
+                            </p>
+                            <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                    <br>
+                    {% macro render_pagination(current_page, page_list, prev_url, next_url) %}
+                        {% if page_list | count > 1 %}
+                            <nav class="pagination u-mb-l" arial-label="Pagination (Page {{ current_page }} of {{ page_list | count }})">
+                                <div class="pagination__position">Page {{ current_page }} of {{ page_list | count }}</div>
+                                <ul class="pagination__items">
+                                    {% if prev_url %}
+                                        <li class="pagination__item pagination__item--previous">
+                                            <a href="{{ prev_url }}" class="pagination__link" rel="prev" aria-label="Go to the previous page (Page {{ current_page - 1 }})">Previous</a></li>
+                                    {% endif %}
 
-            <div class="buttom_70_extra_space buttom_70_extra_space">
-                <div class="wrapper">
-                    <div class="group">
-                        <div class="col-12">
-                            <table class="table table__dense">
-                                <thead class="table--head">
-                                {% for column in header %}
-                                    <th class="table--header--cell"> {{ column | replace('_', ' ') | title }} </th>
-                                {% endfor %}
-                                </thead>
-                                <tbody>
-                                <!-- for each record, render each data value -->
-                                {% for record in records|reverse %}
-                                    <tr class="table--row">
-                                        <td style="width: 10%" class="table--cell">{{ record['RUN_NAME'] }} </td>
-                                        <td style="width: 18%" class="table--cell">{{ record['RUN_DESC'] }} </td>
-                                        <td style="width: 7%" class="table--cell">{{ record['PERIOD'] }}</td>
-                                        <td style="width: 5%" class="table--cell">{{ record['YEAR'] }}</td>
-                                        <td style="width: 15%" class="table--cell">{{ record['LAST_MODIFIED'] }}</td>
-                                        <td style="width: 5%" class="table--cell">{{ record['USER_ID'] }}</td>
-
-                                        {% if record['RUN_STATUS'] == 'Ready' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Not Started' %}
-                                            <meta http-equiv="refresh" content="10">
-                                            <em class="status status--info">{{ record['RUN_STATUS'] }}</em>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Running' %}
-                                            <meta http-equiv="refresh" content="10">
-                                            <td class="table--cell">
-                                                <em>
-                                                    <img style="height:20px;" src="/static/img/loader.gif"
-                                                         alt="Running">
-                                                    {{ record['RUN_STATUS'] }}
-                                                </em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                    <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Completed' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                <em class="status status--success">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                        <span class="tooltiptext">Manage Run</span></a>
-                                                    <a class='tooltip' href="/export_data/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/share.svg" alt="Completed">
-                                                    <span class="tooltiptext">Export Data</span></a>
-                                                </div>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Cancelled' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--dead">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Invalid Run' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
-                                        {% elif record['RUN_STATUS'] == 'Failed' %}
-                                            <td style="width: 10%" class="table--cell">
-                                                 <em class="status status--error">{{ record['RUN_STATUS'] }}</em>
-                                            </td>
-                                            <td style="width: 10%" class="table--cell">
-                                                <div>
-                                                    <a class='tooltip' href="/manage_run/{{ record['RUN_ID'] }}">
-                                                        <img style="height:20px;" src="/static/img/edit.svg" alt="Completed">
-                                                    <span class="tooltiptext">Manage Run</span></a>
-                                                </div>
-                                            </td>
+                                    {% if page_list | count > 7 %}
+                                        {% if current_page > 3 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[0].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[0].1 }}">{{ page_list[0].1 }}</a>
+                                            </li>
                                         {% endif %}
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
+                                        {% set current_page_index = current_page - 1 %}
+
+                                        {% if current_page > 1 %}
+                                            {% if current_page > 4 %}
+                                                <li class="pagination__item pageination__item--gap">&hellip;</li>
+                                            {% endif %}
+                                            {% if current_page == page_list | count %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 4].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 4].1 }}">
+                                                        {{ page_list[current_page_index - 4].1 }}</a>
+                                                </li>
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 3].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 3].1 }}">
+                                                        {{ page_list[current_page_index - 3].1 }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                            {% if current_page > 2 %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page_list[current_page_index - 2].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 2].1 }}">
+                                                        {{ page_list[current_page_index - 2].1 }}</a>
+                                                </li>
+                                            {% endif %}
+
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index - 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index - 1].1 }}">
+                                                    {{ page_list[current_page_index - 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {# Current Page Item #}
+                                        <li class="pagination__item pagination__item--active pagination__item--current">
+                                            <a href="{{ page_list[current_page_index].0 }}" class="pagination__link" aria-label="Current page" aria-current="true">{{ page_list[current_page_index].1 }}</a>
+                                        </li>
+
+                                        {% if current_page < page_list | count - 1 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 1].1 }}">
+                                                    {{ page_list[current_page_index + 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count - 2 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 2].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 2].1 }}">
+                                                    {{ page_list[current_page_index + 2].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < 2 %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[current_page_index + 3].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[current_page_index + 3].1 }}">
+                                                    {{ page_list[current_page_index + 3].1 }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count - 3 %}
+                                            <li class="pagination__item pageination__item--gap">&hellip;</li>
+                                        {% endif %}
+                                        {% if current_page < page_list | count %}
+                                            <li class="pagination__item">
+                                                <a href="{{ page_list[page_list | count - 1].0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page_list[page_list | count - 1].1 }}">
+                                                    {{ page_list[page_list | count - 1].1 }}</a>
+                                            </li>
+                                        {% endif %}
+
+                                    {% else %}
+                                        {% for page in page_list %}
+                                            {% if current_page == page.1 %}
+                                                <li class="pagination__item pagination__item--active pagination__item--current">
+                                                    <a href="{{ page.0 }}" class="pagination__link" aria-label="Current page" aria-current="true">{{ page.1 }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="pagination__item">
+                                                    <a href="{{ page.0 }}" class="pagination__link" rel="next" aria-label="Go to page {{ page.1 }}">{{ page.1 }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    {% if next_url %}
+                                        <li class="pagination__item pagination__item--next">
+                                            <a href="{{ next_url }}" class="pagination__link" aria-label="Go to the next page (Page {{ current_page + 1 }})" rel="next">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        {% endif %}
+                    {% endmacro %}
+
+                    {{ render_pagination(current_page, page_list, prev_url, next_url) }}
                 </div>
             </div>
+        </div>
+    </div>
+{% endblock %}
 
-        </section>
-    {% endblock %}
 </section>
 
+
 <!--Generic footer is imported from the parent template.-->
-<footer class="page__footer">
     {% block footer %}
         {{ super() }}
 
@@ -215,6 +250,5 @@
         </script>
 
     {% endblock %}
-</footer>
 </body>
 </html>

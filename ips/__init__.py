@@ -1,10 +1,10 @@
 import logging
 
-from flask import Flask, redirect, url_for, session
+from flask import Flask, redirect, url_for, session, render_template
 from flask_bootstrap import Bootstrap
 from ips.util.ui_logging import log
 
-from ips.services import dashboard, export, manage_run, auth, builder, new_run
+from ips.services import dashboard, export, manage_run, auth, builder, new_run, edit_pv
 
 from ips.services.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
@@ -31,6 +31,7 @@ app.register_blueprint(dashboard.bp)
 app.register_blueprint(new_run.bp)
 app.register_blueprint(manage_run.bp)
 app.register_blueprint(export.bp)
+app.register_blueprint(edit_pv.bp)
 
 log.debug("IPS UI Started")
 
@@ -52,3 +53,13 @@ def add_header(r):
 def index():
     session.clear()
     return redirect(url_for('dashboard.dashboard_view'))
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("pagenotfound.html")
+
+
+@app.errorhandler(Exception)
+def internal_server_error(e):
+    return render_template("servererror.html"), 500

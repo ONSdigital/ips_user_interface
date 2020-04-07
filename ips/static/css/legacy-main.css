@@ -2,26 +2,10 @@
 
 /* Components that aren't from SDC */
 @import "components/registers-grid.css";
-@import "components/typography.css";
-@import "components/header.css";
-@import "components/badges.css";
-@import "components/footer.css";
 @import "components/login.css";
-@import "components/search.css";
-@import "components/table.css";
-@import "components/nav2.css";
 @import "components/dialog.css";
-@import "components/upload-file.css";
 @import "components/own.css";
-@import "components/multiple-select.css";
-@import "components/breadcrumb.css";
-@import "components/style.css";
 @import "components/edit-pv.css";
-
-.panel--simple {
-    padding: 27px 27px 9px 27px;
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-}
 
 .pag_index {
     margin-right: 5px;
@@ -96,7 +80,7 @@ a {
   background-color: black;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
+  boinformationrder-radius: 6px;
   padding: 5px 0;
 
   /* Position the tooltip */
@@ -353,3 +337,60 @@ a {
     padding: 0;
     margin: 0;
 }
+
+
+.column-l {
+    display: flex;
+    float: left;
+    width: 30%;
+}
+
+.column-r {
+    display: flex;
+    width: 65%;
+
+    float: left;
+    /*width: 779px;*/
+}
+
+.column-l1 {
+  float: left;
+  width: 60%;
+}
+
+.column-r1 {
+  float: left;
+  width: 35%;
+}
+
+.page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 10rem;    /* Footer height */
+}
+
+.main-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 7rem; /* Footer height */
+}
+
+.push-lil-bit {
+    position: relative;
+    left: 2.8%;
+}
+
+.column-run{
+    width: 64%;
+    max-width: 64%;
+}
+
+.table__cell{
+    vertical-align: middle;
+}
+
+

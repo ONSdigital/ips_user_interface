@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_login import login_required
 
 from ips.services.new_run_steps.step_1 import run_step_1
-from ips.services.new_run_steps.step_2 import run_step_2
+from ips.services.new_run_steps.step_2 import run_step_2_m, run_step_2_q
 from ips.services.new_run_steps.step_3 import run_step_3
 from ips.services.new_run_steps.step_4 import run_step_4
 from ips.services.new_run_steps.step_5 import run_step_5
@@ -19,12 +19,20 @@ def new_run_1(run_id=None):
     return run_step_1(run_id)
 
 
-@bp.route('/new_run_2', methods=['GET', 'POST'])
-@bp.route('/new_run_2/<run_id>', methods=['GET', 'POST'])
+@bp.route('/new_run_2_m', methods=['GET', 'POST'])
+@bp.route('/new_run_2_m/<run_id>', methods=['GET', 'POST'])
 @login_required
-def new_run_2(run_id=None):
+def new_run_2_m(run_id=None):
     log.debug(f"new_run_2 called - run_id: {run_id}")
-    return run_step_2(run_id)
+    return run_step_2_m(run_id)
+
+
+@bp.route('/new_run_2_q', methods=['GET', 'POST'])
+@bp.route('/new_run_2_q/<run_id>', methods=['GET', 'POST'])
+@login_required
+def new_run_2_q(run_id=None):
+    log.debug(f"new_run_2 called - run_id: {run_id}")
+    return run_step_2_q(run_id)
 
 
 @bp.route('/new_run_3', methods=['GET', 'POST'])
@@ -50,3 +58,4 @@ def new_run_4(run_id=None, template_id=None):
 def new_run_5(run_id=None):
     log.debug(f"new_run_5 called - run_id: {run_id}")
     return run_step_5(run_id)
+

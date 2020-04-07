@@ -1,5 +1,7 @@
+import math
+
 from flask_login import login_required
-from flask import request, render_template, Blueprint, redirect
+from flask import request, render_template, Blueprint, redirect, session, url_for
 from datetime import datetime
 
 from ips.util.ui_logging import log
@@ -9,10 +11,13 @@ from ips.services import app_methods
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard', static_folder='static')
 
+pagination_size = 6
+
 
 @bp.route('/', methods=['GET', 'POST'])
 @login_required
 def dashboard_view():
+    current_page = request.args.get('page', 1, type=int)
     form = SearchActivityForm()
 
     # Log that dashboard view has been accessed
@@ -89,15 +94,13 @@ def dashboard_view():
         record['RUN_STATUS'] = run_statuses[str(int(record['RUN_STATUS']))]
         record['RUN_TYPE_ID'] = run_types[str(int(record['RUN_TYPE_ID']))]
         record['PERIOD'] = periods[record['PERIOD']]
-        record['LAST_MODIFIED'] = datetime.utcfromtimestamp(record['LAST_MODIFIED'] / 1000).strftime(
-            '%Y-%m-%d %H:%M:%S')
+        record['LAST_MODIFIED'] = datetime.utcfromtimestamp(record['LAST_MODIFIED'] / 1000).strftime('%d/%m/%Y %H:%M:%S')
 
     # If this is a post then validate if needed
     if request.method == 'POST' and form.validate():
         log.debug("dashboard [POST] request")
         # If the search button is selected filter the results on the run status and the searched word.
         if 'search_button' in request.form:
-
             search_activity = request.form['search_activity']
             filter_value = request.form['run_type_filter']
             log.debug(f"dashboard search request, search term {search_activity}, filter: {filter_value}")
@@ -118,12 +121,44 @@ def dashboard_view():
             if request.form['run_type_filter'] != '-1':
                 records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
 
+    pagination_offset = 0
+    if current_page >= 2:
+        pagination_offset = (current_page - 1) * pagination_size
+
+    no_of_pages = math.ceil(len(records) / pagination_size)
+
+    records = records[pagination_offset:(pagination_offset + pagination_size)]
+
+    if (current_page + 1) <= no_of_pages:
+        next_url = url_for('dashboard.dashboard_view', page=current_page + 1)
+    else:
+        next_url = None
+    if (current_page - 1) >= 1:
+        prev_url = url_for('dashboard.dashboard_view', page=current_page - 1)
+    else:
+        prev_url = None
+
+    page_list = []
+    i = 0
+    while i < no_of_pages:
+        page_list.append((url_for('dashboard.dashboard_view', page=i + 1), i + 1))
+        i = i + 1
+
     log.debug('dashboard: Rendering dashboard now...')
+
+    session['run_name'] = ""
+    session['run_description'] = ""
+    session['year'] = ""
+    session['run_period_type'] = ""
 
     return render_template('dashboard.html',
                            header=header,
                            records=records,
-                           form=form)
+                           form=form,
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           page_list=page_list,
+                           current_page=current_page)
 
 
 def fil(search_activity, x):

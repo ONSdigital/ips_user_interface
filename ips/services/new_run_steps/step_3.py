@@ -2,6 +2,8 @@ from flask import request, render_template, session, redirect, current_app
 from ips.util.ui_logging import log
 from ips.services import app_methods
 
+import getpass
+
 
 def run_step_3(run_id):
     try:
@@ -14,7 +16,18 @@ def run_step_3(run_id):
         log.debug("run_step_3 [POST] request")
         session['template_id'] = request.form['selected']
 
-        log.debug("run_step_3 [POST] Redirecting to new_run_4 with template_id " + session['template_id'] + "...")
+        user = getpass.getuser()
+
+        run_id = session['id']
+        run_name = session['run_name']
+        period = session['period']
+        year = session['year']
+
+        log.debug("run_step_3 [POST] Session values: %s, %s, %s, %s, %s.", run_id, run_name, period, year, user)
+
+        app_methods.create_process_variables_set(run_id, run_name, user, period, year)
+
+        session['send'] = 0
 
         return redirect('/new_run_steps/new_run_4/'+run_id)
 
@@ -50,4 +63,4 @@ def run_step_3(run_id):
 
     log.debug("run_step_3 [GET]  Retrieved process variable sets, rendering new_run_3.")
 
-    return render_template('new_run_3.html', table=records, header=header, run_id=run_id)
+    return render_template('new_run_3.html', table=records, header=header, run_id=run_id, pv_set_id=pv_set_id)

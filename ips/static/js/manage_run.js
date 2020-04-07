@@ -40,20 +40,22 @@ function setUIStatus(status) {
         el.attr('class', 'status status--small ' + getStepStatusClass(status['steps'][step]['Status']));
         el.text(getStepText(status['steps'][step]['Status']));
 
+        const info_column = $('.info_column[step_num="' + step + '"]');
+
         if (status['steps'][step].hasOwnProperty('Responses')) {
             const reports = $('#myModal' + step).find(".reports");
             reports.empty();
-            setReports(tr, td, step, reports, status['steps'][step]['Responses']);
+            setReports(tr, info_column, step, reports, status['steps'][step]['Responses']);
         } else {
-            noReports(tr, td);
+            noReports(tr, info_column);
         }
     }
 }
 
 function setReports(tr, td, step_num, reports, response_data) {
     const responses = Object.keys(response_data);
-    if (!td.children('img').length) {
-        td.append("<img class='info_img' src='/static/img/icons--info.svg' width='20px' style='vertical-align: sub;'>");
+    if (!td.children('a').length) {
+        td.append("<a>Report</a>");
     }
     for (response of responses) {
         appendToReport(reports, response_data[response]);
@@ -64,7 +66,7 @@ function setReports(tr, td, step_num, reports, response_data) {
 }
 
 function noReports(tr, td) {
-    td.find('img').remove();
+    td.find('a').remove();
     tr.removeAttr("data-toggle");
     tr.removeAttr("data-target");
     tr.css('cursor', 'default');
@@ -150,12 +152,15 @@ function cancelButton(status, steps, stepsArr) {
         $("#run_button").attr("class", 'btn btn--loader');
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();
-        $("#edit_button").show();
+        $("#edit_run").show();
+        $("#edit_pv").show();
+
     } 
     if (status == "2") {
         $("#cancel_button").show();
         $("#run_button").attr("disabled", true);
-        $("#edit_button").hide();
+        $("#edit_run").hide();
+        $("#edit_pv").hide();
         $("#run_button").attr("class", 'btn btn--loader is-loading');
     }
 }

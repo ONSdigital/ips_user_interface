@@ -1,13 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SelectField, SubmitField, PasswordField, validators
-from wtforms.validators import InputRequired
+from wtforms import IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
+from wtforms.validators import InputRequired, NumberRange
+
+import datetime
 
 
 class LoginForm(FlaskForm):
     username = StringField(u'Username', render_kw={'autofocus': True}, validators=[validators.required()])
     password = PasswordField(u'Password', validators=[validators.required()])
-    submit = SubmitField('Login', id="login_submit_button")
 
     def validate(self):
         check_validate = super(LoginForm, self).validate()
@@ -21,7 +22,7 @@ class LoginForm(FlaskForm):
 
 class SearchActivityForm(FlaskForm):
     search_activity = StringField(label='Search runs')
-    search_button = SubmitField(label='Search')
+    search_button = SubmitField(label="search")
     advanced_search = SubmitField(label='Advanced search')
     run_type_list = [
         ('-1', 'All Runs'),
@@ -37,35 +38,35 @@ class SearchActivityForm(FlaskForm):
 
 
 class CreateRunForm(FlaskForm):
-    run_name = StringField(label='Name',
-                           validators=[InputRequired()])
-    run_description = StringField(label='Description',
-                                  validators=[InputRequired()])
-
-
-class DateSelectionForm(FlaskForm):
-    import datetime
     now = datetime.datetime.now()
 
+    run_name = StringField(label='Enter Name',
+                           validators=[InputRequired()])
+    run_description = TextAreaField(label='Enter Run Description', render_kw={"rows": 7, "cols": 11},
+                                    validators=[InputRequired()])
+    run_year = IntegerField(label='Enter Year', validators=[InputRequired(),
+                            NumberRange(min=2000, max=now.year, message='Please enter a valid year.')])
+    run_period_type = RadioField(label='Period', choices=[('Month', 'Month'), ('Quarter', 'Quarter')],
+                                 validators=[InputRequired()])
+
+
+class MonthSelectionForm(FlaskForm):
     months = [
-        ('', 'Select Period'), ('', '---------'),
-        ('Q1', 'Quarter 1'), ('Q2', 'Quarter 2'), ('Q3', 'Quarter 3'), ('Q4', 'Quarter 4'),
-        ('', '---------'),
         ('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
         ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'),
         ('09', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')
     ]
 
-    years = [
-        ('', 'Select Year'), ('', '---------'),
-        (str(now.year - 10), now.year - 10), (str(now.year - 9), now.year - 9), (str(now.year - 8), now.year - 8),
-        (str(now.year - 7), now.year - 7), (str(now.year - 6), now.year - 6), (str(now.year - 5), now.year - 5),
-        (str(now.year - 4), now.year - 4), (str(now.year - 3), now.year - 3), (str(now.year - 2), now.year - 2),
-        (str(now.year - 1), now.year - 1), (str(now.year), now.year),
-    ]
+    s_month = RadioField(label='Month', choices=months, validators=[InputRequired()])
+    submit_button = SubmitField(label="search")
 
-    s_month = SelectField(label='Month or Period', choices=months, validators=[InputRequired()])
-    s_year = SelectField(label='Year', choices=years, validators=[InputRequired()])
+
+class QuarterSelectionForm(FlaskForm):
+    quarters = [
+        ('Q1', 'Quarter 1'), ('Q2', 'Quarter 2'), ('Q3', 'Quarter 3'), ('Q4', 'Quarter 4'),
+
+    ]
+    s_quarter = RadioField(label='Quarter', choices=quarters, validators=[InputRequired()])
 
 
 class ExportSelectionForm(FlaskForm):
@@ -82,7 +83,7 @@ class ExportSelectionForm(FlaskForm):
         ("PS_IMBALANCE", "Imbalance Weight Summary")
     ]
 
-    data_selection = SelectField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
+    data_selection = RadioField(label='Select Item to Export:', choices=data_list, validators=[InputRequired()])
     display_data = SubmitField(label='Export')
     cancel_button = SubmitField(label='Cancel')
 
@@ -108,6 +109,10 @@ class DataSelectionForm(FlaskForm):
 
     display_data = SubmitField(label='Display data')
     data_selection = SelectField(label='Select Data', choices=data_list, validators=[InputRequired()])
+
+
+class ImportPVForm(FlaskForm):
+    pv_file = FileField(label="Upload File", validators=[FileRequired(), FileAllowed(['py'], 'Python files only')], render_kw={"accept": ".py"})
 
 
 class LoadDataForm(FlaskForm):
