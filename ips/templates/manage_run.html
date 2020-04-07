@@ -151,8 +151,6 @@
                     </table>
                 <br>
 
-                {{ form.csrf_token }}
-
                 {% if current_run['RUN_STATUS'] == 'Running' %}
                 <button style="width: 100px;" name="run_button" id="run_button"
                         class="btn btn--loader is-loading"
@@ -208,12 +206,12 @@
 
             <u><label>Run Status Report</label></u>
             <br><br>
-            <label>Step:</label>
-            <input type="text" class="modal-input" id="id_input" VALUE="{{ step['STEP_NAME'] }}"
+            <label for="id_input{{ step['STEP_NUMBER'] }}">Step:</label>
+            <input type="text" class="modal-input" id="id_input{{ step['STEP_NUMBER'] }}" VALUE="{{ step['STEP_NAME'] }}"
                    readonly="readonly">
             <br>
-            <label>Run Status:</label>
-            <input type="text" class="modal-input" id="reason_input" value="{{ step['STEP_STATUS'] }}"
+            <label for="reason_input{{ step['STEP_NUMBER'] }}">Run Status:</label>
+            <input type="text" class="modal-input" id="reason_input{{ step['STEP_NUMBER'] }}" value="{{ step['STEP_STATUS'] }}"
                    readonly="readonly">
             <br>
             <label>Report History:</label>
