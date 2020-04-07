@@ -91,7 +91,14 @@
 
         </dl>
 
-        <p><a href="{{ url_for('new_run_steps.new_run_1') }}/{{ current_run['RUN_ID'] }}" id="edit_run">Edit Run</a></p>
+        <ul class="list list--bare list--inline">
+            <li class="list__item ">
+                <a href="{{ url_for('new_run_steps.new_run_1') }}/{{ current_run['RUN_ID'] }}" id="edit_run">Edit Run Details</a>
+            </li>
+            <li class="list__item ">
+                <a href="{{ url_for('new_run_steps.new_run_4') }}/{{ current_run['RUN_ID'] }}" id="edit_pv">Edit Process Variables</a>
+            </li>
+        </ul>
 
         <form id="tabs" class="form" method="POST">
 
@@ -282,6 +289,7 @@
             $("#cancel_button").show();
             $("#run_button").attr("disabled", true);
             $("#edit_run").hide();
+            $("#edit_pv").hide();
             $("#run_button").attr("class", 'btn btn--loader is-loading');
 
         }

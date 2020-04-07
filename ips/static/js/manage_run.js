@@ -153,11 +153,14 @@ function cancelButton(status, steps, stepsArr) {
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();
         $("#edit_run").show();
+        $("#edit_pv").show();
+
     } 
     if (status == "2") {
         $("#cancel_button").show();
         $("#run_button").attr("disabled", true);
         $("#edit_run").hide();
+        $("#edit_pv").hide();
         $("#run_button").attr("class", 'btn btn--loader is-loading');
     }
 }
