@@ -85,13 +85,10 @@ def run_step_5(run_id):
             log.debug("step_5: No run_id given...")
             res = {'redirect': '/new_run_steps/new_run_5'}
             return jsonify(res)
-    #            return redirect('/new_run_steps/new_run_5', code=302)
-
 
     # TODO this isn't there
     elif request.method == 'GET':
         log.info("run_step_5 [GET] request")
-        print("render run 5 elif")
         return render_template('new_run_5.html',
                                form=form,
                                error=error,
@@ -101,5 +98,4 @@ def run_step_5(run_id):
         log.debug('run_step_5: User did not select files for all input fields')
         error_message = "Select .csv file types for all filename fields"
 
-    print("render new run 5")
     return render_template('new_run_5.html', form=form, error=error, error_message=error_message, run_id=run_id)
