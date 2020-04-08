@@ -72,7 +72,10 @@
                 </div>
                 <div class="top_50_extra_space">
                     {{ form.csrf_token }}
-                    <button type="submit" class="btn">
+                    <button id="export-button" type="submit" class="btn">
+                        <span class="btn__inner">Export</span>
+                    </button>
+                    <button id="loading-button" type="button" class="btn btn--loader is-loading" style="display: none; margin-left: 0px" disabled>
                         <span class="btn__inner">Export</span>
                     </button>
                     <a class="btn btn--secondary" href="{{ url_for('manage_run.manage_run', run_id=current_run['RUN_ID']) }}">
@@ -102,6 +105,7 @@
                 }
 
                 $("#run").submit(function() {
+                    start_export()
                     const form = $(this);
                     const url = form.attr('action');
                     $.ajax({
