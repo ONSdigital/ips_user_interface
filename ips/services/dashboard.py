@@ -115,11 +115,11 @@ def dashboard_view():
                         search_activity.lower() in str(x['YEAR'])
                 )
 
-            records = filter(fil, records)
+            records = list(filter(fil, records))
 
             # If the filer is -1 then no filter to apply otherwise filter using the run_status value
             if request.form['run_type_filter'] != '-1':
-                records = filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records)
+                records = list(filter(lambda x: x['RUN_STATUS'].lower() == run_statuses[filter_value].lower(), records))
 
     pagination_offset = 0
     if current_page >= 2:
