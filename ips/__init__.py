@@ -4,7 +4,7 @@ from flask import Flask, redirect, url_for, session, render_template
 from flask_bootstrap import Bootstrap
 from ips.util.ui_logging import log
 
-from ips.services import dashboard, export, manage_run, auth, builder, new_run, edit_pv
+from ips.services import dashboard, export, manage_run, auth, builder, new_run, edit_pv, view_step_report
 
 from ips.services.extensions import login_manager
 from ips.util.ui_configuration import UIConfiguration as Config
@@ -32,6 +32,7 @@ app.register_blueprint(new_run.bp)
 app.register_blueprint(manage_run.bp)
 app.register_blueprint(export.bp)
 app.register_blueprint(edit_pv.bp)
+app.register_blueprint(view_step_report.bp)
 
 log.debug("IPS UI Started")
 

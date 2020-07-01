@@ -150,7 +150,7 @@
                             </td>
                             <td class="table__cell info_column" step_num="{{ step['STEP_NUMBER'] }}">
                                 {% if 'Responses' in step and step['STEP_STATUS'] in ("Completed", "Failed") %}
-                                <a class="info_img">Report</a>
+                                <a class="info_img" href="/view_step_report/{{ current_run['RUN_ID'] }}/{{ step['STEP_NUMBER'] }}" >Report</a>
                                 {% endif %}
                             </td>
                             {% endfor %}
@@ -203,57 +203,6 @@
             </div>
         </form>
     </div>
-
-    {% for step in run_status %}
-    <!-- The Modal Object defined by the step number-->
-    <div id="myModal{{ step['STEP_NUMBER'] }}" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close" data-dismiss="modal">&times;</span>
-
-            <u><label>Run Status Report</label></u>
-            <br><br>
-            <label for="id_input{{ step['STEP_NUMBER'] }}">Step:</label>
-            <input type="text" class="modal-input" id="id_input{{ step['STEP_NUMBER'] }}" VALUE="{{ step['STEP_NAME'] }}"
-                   readonly="readonly">
-            <br>
-            <label for="reason_input{{ step['STEP_NUMBER'] }}">Run Status:</label>
-            <input type="text" class="modal-input" id="reason_input{{ step['STEP_NUMBER'] }}" value="{{ step['STEP_STATUS'] }}"
-                   readonly="readonly">
-            <br>
-            <label>Report History:</label>
-            <br>
-            <br>
-            <div style="border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 12px 20px; height: 200px; overflow: auto">
-                <table class="reports" style="font-size: 12px">
-                    {% if "Responses" in step %}
-                    {% for rec in step['Responses'] %}
-                    <tr style="line-height: 0px">
-                        <td class="report_td">
-                            {% if rec['RESPONSE_CODE']|int == 1 %}
-                            SUCCESS:
-                            {% elif rec['RESPONSE_CODE']|int == 2 %}
-                            WARNING:
-                            {% elif rec['RESPONSE_CODE']|int == 3 %}
-                            ERROR:
-                            {% endif %}
-                        </td>
-                        <td class="report_td">{{ rec['MESSAGE'] }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
-                </table>
-
-            </div>
-            <br>
-            <button type="button" class="btn btn--primary" id="modal_okay_button" data-dismiss="modal">
-                <span class="btn__inner">Close</span>
-            </button>
-        </div>
-
-    </div>
-    {% endfor %}
-
     {% endblock %}
 </section>
 
