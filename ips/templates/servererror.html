@@ -64,7 +64,7 @@
                 <h1>Sorry, there is a problem with the service</h1>
                 <p>Try again later.</p>
                 <p>You can try to <a href="javascript:history.back()">return to the previous page</a></p>
-                <p>Or go <a href="/">back to the homepage</a>.</p>
+                <p>Or go <a href="{{ url_for("dashboard.dashboard_view") }}">back to the homepage</a>.</p>
 <!--                <p><a href="#">Contact us</a> if you need to speak to someone about your issue.</p>-->
                 {{ error }}
             </main>

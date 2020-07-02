@@ -36,7 +36,8 @@
     {% block content %}
     <!--Manage run page content-->
     <div class="container">
-        <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_5') }}/{{ current_run['RUN_ID'] }}">Previous</a></p>
+        <p><a id="previous-link" href="javascript:history.back()">Previous</a></p>
+
         <h2>Manage Run</h2>
         <br>
 

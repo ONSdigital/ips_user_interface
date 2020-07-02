@@ -23,7 +23,7 @@
         {% block content %}
             <!--View step report page content-->
             <div class="page__content container">
-                <p><a id="previous-link" href="/manage_run/{{ current_run['RUN_ID'] }}">Previous</a></p>
+                <p><a id="previous-link" href="javascript:history.back()">Previous</a></p>
                 <h1 class="top_70_extra_space">Report for <mark>{{ step_status['STEP_NAME'] }}</mark></h1>
 
                 <dl class="metadata metadata__list grid grid--gutterless u-cf u-mb-l top_40_extra_space">
