@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<body>
+
+    <!--Header content is imported from the parent template.-->
+    <header class="page__header">
+        <!--Header content is imported from the parent template.-->
+        {% block header %}
+            {{ super() }}
+        {% endblock %}
+    </header>
+
+    <section id="content">
+        {% block content %}
+            <!--View step report page content-->
+            <div class="page__content container">
+                <p><a id="previous-link" href="javascript:history.back()">Previous</a></p>
+                <h1 class="top_70_extra_space">Report for <mark>{{ step_status['STEP_NAME'] }}</mark></h1>
+
+                <dl class="metadata metadata__list grid grid--gutterless u-cf u-mb-l top_40_extra_space">
+                    <dt class="metadata__term grid__col col-2@m"><strong>Step:</strong></dt>
+                    <dd id="run_name" class="metadata__value grid__col col-10@m">{{ step_status['STEP_NAME'] }} </dd>
+
+                    <dt class="metadata__term grid__col col-2@m top_15_extra_space"><em>Run Status:</em></dt>
+                    <dd id="run_id" class="metadata__value grid__col col-10@m top_15_extra_space">
+                                {% if step_status['STEP_STATUS'] == 0 %}
+                                <p class="status status--info status--small">Ready</p>
+                                {% elif step_status['STEP_STATUS'] == 1 %}
+                                <p class="status status--success status--small">Not Started</p>
+                                {% elif step_status['STEP_STATUS'] == 2 %}
+                                <p class="status status--info status--small">Running</p>
+                                {% elif step_status['STEP_STATUS'] == 3 %}
+                                <p class="status status--success status--small">Completed</p>
+                                {% elif step_status['STEP_STATUS'] == 4 %}
+                                <p class="status status--dead status--small">Cancelled</p>
+                                {% elif step_status['STEP_STATUS'] == 5 %}
+                                <p class="status status--dead status--small">Invalid Run</p>
+                                {% elif step_status['STEP_STATUS'] == 6 %}
+                                <p class="status status--error status--small">Failed</p>
+                                {% endif %}
+                    </dd>
+                </dl>
+
+                <h3>Report History</h3>
+
+                <table class="reports">
+                    {% if "Responses" in step_status %}
+                    {% for rec in step_status['Responses'] %}
+                    <tr>
+                        <td class="report_td">
+                            {% if rec['RESPONSE_CODE']|int == 1 %}
+                            SUCCESS:
+                            {% elif rec['RESPONSE_CODE']|int == 2 %}
+                            WARNING:
+                            {% elif rec['RESPONSE_CODE']|int == 3 %}
+                            ERROR:
+                            {% endif %}
+                        </td>
+                        <td class="report_td">{{ rec['MESSAGE'] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </table>
+                <br/>
+                <button type="submit"
+                        class="btn"
+                        id="return_manage_batch"
+                        onclick="return_manage_batch()">
+                    <span class="btn__inner">Return to manage run page</span>
+                </button>
+            </div>
+        {% endblock %}
+    </section>
+
+    <!--Generic footer is imported from the parent template.-->
+    <footer class="page__footer">
+        {% block footer %}
+            {{ super() }}
+
+            <script>
+                url = "/manage_run/{{ current_run['RUN_ID'] }}";
+                console.log(url);
+                function return_manage_batch() {
+                    console.log(url);
+                    window.location.href=url;
+                    console.log("hello");
+                }
+            </script>
+        {% endblock %}
+    </footer>
+
+</body>
+</html>
