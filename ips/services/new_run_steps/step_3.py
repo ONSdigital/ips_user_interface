@@ -66,7 +66,7 @@ def run_step_3(run_id):
 
     if run_id:
         for rec in records:
-            rec["PERIOD"] = periods[rec["PERIOD"]]
+            rec["PERIOD"] = periods.get(rec.get("PERIOD"), "-")
             if rec["RUN_ID"] in run_id:
                 pv_set_id = rec["RUN_ID"]
 
