@@ -25,12 +25,12 @@ function getStatus() {
 function setUIStatus(status) {
     const run_id = $('#run_id').text();
     let steps = [];
-    if(status['steps'] !== undefined) {
+    if (status['steps'] !== undefined) {
         steps = Object.keys(status['steps']);
     }
     const main = $('#current_run_status');
     setMainStatus(status, main, run_id);
-    $('#progress').text((status['percentage_done'] === undefined ? "0" : status['percentage_done'])+"%");
+    $('#progress').text((status['percentage_done'] === undefined ? "0" : status['percentage_done']) + "%");
     cancelButton(status['status'], steps, status['steps']);
     exportButton(status['status']);
     for (step of steps) {
@@ -45,17 +45,17 @@ function setUIStatus(status) {
         if (status['steps'][step].hasOwnProperty('Responses')) {
             const reports = $('#myModal' + step).find(".reports");
             reports.empty();
-            setReports(tr, info_column, step, reports, status['steps'][step]['Responses']);
+            setReports(tr, info_column, run_id, step, reports, status['steps'][step]['Responses']);
         } else {
             noReports(tr, info_column);
         }
     }
 }
 
-function setReports(tr, td, step_num, reports, response_data) {
+function setReports(tr, td, run_id, step_num, reports, response_data) {
     const responses = Object.keys(response_data);
     if (!td.children('a').length) {
-        td.append("<a>Report</a>");
+        td.append(`<a class="info_img" href="/view_step_report/${run_id}/${step_num}">Report</a>`);
     }
     for (response of responses) {
         appendToReport(reports, response_data[response]);
@@ -132,7 +132,7 @@ function getReportStatus(status) {
     }
 }
 
-function setMainStatus(status, main, run_id){
+function setMainStatus(status, main, run_id) {
     statusNum = status['status'];
     main.attr('class', (getStepStatusClass(status['status']) === undefined ? "status status--info" : 'status ' + getStepStatusClass(status['status'])));
     main.text(getStepText(status['status']));
@@ -141,21 +141,21 @@ function setMainStatus(status, main, run_id){
 function cancelButton(status, steps, stepsArr) {
     var ready = true;
     for (step of steps) {
-        if(stepsArr[step]['Status'] == 2){
+        if (stepsArr[step]['Status'] == 2) {
             ready = false;
         }
     }
     if (status == "2") {
         ready = false;
     }
-    if(ready){
+    if (ready) {
         $("#run_button").attr("class", 'btn btn--loader');
         $("#run_button").attr("disabled", false);
         $("#cancel_button").hide();
         $("#edit_run").show();
         $("#edit_pv").show();
 
-    } 
+    }
     if (status == "2") {
         $("#cancel_button").show();
         $("#run_button").attr("disabled", true);
@@ -165,10 +165,10 @@ function cancelButton(status, steps, stepsArr) {
     }
 }
 
-function exportButton(status){
-    if(status in [0,1,2]){
+function exportButton(status) {
+    if (status in [0, 1, 2]) {
         $("#export_button").hide();
-    }else{
+    } else {
         $("#export_button").show();
     }
 }
