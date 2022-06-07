@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+<html lang="en-gb" dir="ltr" class="no-js">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+
+
+    {% endblock %}
+</head>
+
+<body>
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 5 page content-->
+        <section>
+            <div class="container">
+                <p><a id="previous-link" href="/edit_pv/{{ run_id }}/{{ pv_name }}">Previous</a></p>
+                <br>
+                <h1>Import Process Variable</h1>
+                <br>
+                <p class="field">
+                    <label class="label" for="text">Name</label>
+                    <input type="text" id="text" class="input input--text input-type__input "
+                           style="background-color: lightgray;" value="{{ pv_name }}" readonly>
+                </p>
+                <br>
+                <form id="import_pv_form" onsubmit="event.preventDefault()" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    {{ form.pv_file.label(class="label") }}
+                    {{ form.pv_file(class="input input--text input-type__input  input--upload", id="pv_file") }}
+                    <br>
+                    <p class="field"><br>
+                        <button type="submit" class="btn">
+                            <span class="btn__inner">Upload</span>
+                        </button>
+                    </p>
+                </form>
+            </div>
+
+        </section>
+
+
+
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                function wait(ms){
+                    var start = new Date().getTime();
+                    var end = start;
+                    while(end < start + ms) {
+                        end = new Date().getTime();
+                    }
+                }
+
+                $("#import_pv_form").submit(function () {
+
+                    let pv;
+                    let file = document.getElementById('pv_file').files[0];
+
+                    if (file) {
+                        // create reader
+                        let reader = new FileReader();
+                        reader.readAsText(file);
+                        reader.onload = function (e) {
+                            // browser completed reading file - display it
+                            pv = e.target.result;
+
+                            const form = $(this);
+                            const url = '/import_pv/{{ run_id }}/{{ pv_name }}';
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: {'pv': pv},
+                                success: function (r) {
+                                    if (r) {
+                                        document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}?import=success";
+                                    } else {
+                                        document.location.href="/edit_pv/{{ run_id }}/{{ pv_name }}?import=failed";
+                                    }
+                                },
+                                error: function() {
+
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+
+        </script>
+
+    {% endblock %}
+</footer>
+
+</body>
+</html>

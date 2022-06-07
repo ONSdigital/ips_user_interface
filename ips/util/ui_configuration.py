@@ -1,6 +1,6 @@
 import os
 
-from ips_common.config.configuration import Configuration
+from ips.util.Configuration import Configuration
 
 
 class UIConfiguration(Configuration):
@@ -23,13 +23,16 @@ class UIConfiguration(Configuration):
 
     def get_api_uri(self):
         protocol = self.cfg['app']['api-server']['protocol'] or "http"
-        host = self.cfg['app']['api-server']['host'] or "localhost"
+        host = self.cfg['app']['api-server']['host'] or "127.0.0.1"
         port = self.cfg['app']['api-server']['port']
+        portSetting = ""
 
         if port is not None:
-            portSetting = ":" + port
+            port_setting = ":" + port
+        else:
+            port_setting = ""
 
-        return protocol + "://" + host + portSetting
+        return protocol + "://" + host + port_setting
 
     def get_hostname(self):
         return self.cfg['app']['hostname'] or "0.0.0.0"

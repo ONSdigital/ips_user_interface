@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+
+<head>
+    <title></title>
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<header class="page__header">
+    {% block header %}
+        {{ super() }}
+
+        <div class="header__nav">
+            <div class="container">
+            </div>
+        </div>
+
+    {% endblock %}
+</header>
+
+<body>
+<section id="content">
+    {% block content %}
+        {{ super() }}
+
+        <div class="page__content container">
+            {% if error %}
+                <div>
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Please send the following message to IPS support:</p>
+                                <p class="mars">{{ error_message }}</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                </div>
+            {% endif %}
+
+            <br>
+            <div>
+                <form action="" method="post" class="form" role="form">
+                    {{ form.csrf_token }}
+                    <p class="field">
+                        <div>
+                        {% for field in form %}
+                            {% if field.type != "SubmitField" %}
+                                {% if field.type != "CSRFTokenField" %}
+                                    <div class="field u-mb-m">
+                                        {{ field.label(class_="label") }}
+                                        {% if field.errors %}
+                                            {{ field(class_="form-control is-invalid") }}
+                                            {% for error in field.errors %}
+                                                <div class="invalid-feedback">{{ error }}</div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ field(class_="input input--text") }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            <button type="submit" class="btn">
+                              <span class="btn__inner">Submit</span>
+                            </button>
+                        </div>
+                    </p>
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+</section>
+
+</body>
+</html>

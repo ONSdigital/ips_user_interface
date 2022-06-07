@@ -1,15 +1,8 @@
-database:
-  server: ${DB_SERVER}
-  user: ${DB_USER_NAME}
-  password: ${DB_PASSWORD}
-  database: ${DB_NAME}
-  uri: "mysql+pymysql"
-
 app:
   api-server:
     host: ${API_HOST}
     port: ${API_PORT}
     protocol: ${API_PROTOCOL}
 
-  hostname: = '0.0.0.0'
+  hostname: '0.0.0.0'
   port: 5001

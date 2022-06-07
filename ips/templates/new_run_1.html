@@ -1,0 +1,217 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<body>
+
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 1 page content-->
+        <section>
+            <div class="container">
+                {% if run_id %}
+                     <p><a id="dashboard-link" href="/manage_run/{{ run_id }}">Previous</a></p>
+                {% else %}
+                     <p><a id="dashboard-link" href="{{ url_for('dashboard.dashboard_view') }}">Previous</a></p>
+                {% endif %}
+
+                <h2>Add new run details</h2>
+
+                {% if run_id %}
+                    <form id="run" action="{{ url_for('.new_run_1', run_id=run_id) }}" class="form" method="post">
+                {% else %}
+                    <form id="run" action="{{ url_for('.new_run_1') }}" class="form" method="post">
+                {% endif %}
+
+                    {{ form.csrf_token }}
+
+                    <div class="field">
+                        {{ form.run_name.label(class="label venus ", for="text-input") }}
+                        {% if form.run_name.default %}
+                            {{ form.run_name(class="input input--text", autofocus=true, type="text", id="text-input", placeholder="", maxlength="30", value=form.run_name.default) }}
+                        {% else %}
+                            {{ form.run_name(class="input input--text",  autofocus=true, type="text", id="text-input", placeholder="", maxlength="30") }}
+                        {% endif %}
+                        {% if form.run_name.errors %}
+                            <ul>
+                                {% for error_message in form.run_name.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <br>
+                    <fieldset class="fieldgroup fieldgroup--date" data-qa="widget-date">
+
+                        <div class="field field--select field--month">
+                            {{ form.run_period_type.label(class="label venus ", for="period-input") }}
+                            <span class="label__description">Please choose quarter or month</span>
+
+                            {% if form.run_period_type.default %}
+                                {% for period in form.run_period_type %}
+                                     <div>
+                                        <p class="radios__item">
+                                            <span class="radio">
+                                                <tr>
+                                                    <td>{{ period(class="radio__input js-radio ") }}</td>
+                                                    <td>{{ period.label(class="radio__label") }}</td>
+                                                </tr>
+                                            </span>
+                                        </p>
+                                        <br>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {% for period in form.run_period_type %}
+                                    <div>
+                                        <p class="radios__item">
+                                            <span class="radio">
+                                                <tr>
+                                                    <td>{{ period(class="radio__input js-radio ") }}</td>
+                                                    <td>{{ period.label(class="radio__label") }}</td>
+                                                </tr>
+                                            </span>
+                                        </p>
+                                        <br>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% if form.run_name.errors %}
+                                <ul>
+                                    {% for error_message in form.run_name.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            </div>
+                     </fieldset>
+
+                    <br>
+
+                    <div class="field">
+                        {{ form.run_year.label(class="label venus ", for="year-input") }}
+                        <span class="label__description">For example 2020</span>
+
+                        {% if form.run_year.default %}
+                            {{ form.run_year(class="input input--text", autofocus=true, type="text", id="year-input", placeholder="", maxlength="4", value=form.run_year.default) }}
+                        {% else %}
+                            <p class="field">
+                              <span class="input-type">
+                                    <span class="input-type__inner">
+                                        {{ form.run_year(class="input input-type__input js-exclusive-group",  autofocus=true, type="text", id="year-input", placeholder="", maxlength="4") }}
+                                        <abbr
+                                            class="input-type__type"
+                                            aria-hidden="true"
+                                            title="Years"
+                                            >Year</abbr>
+                                    </span>
+                              </span>
+                            </p>
+
+                        {% endif %}
+                        {% if form.run_year.errors %}
+                            <ul>
+                                <li style="color:red;">{{ form.run_year.errors[-1] }}</li>
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+
+                    <br>
+
+                    <div class="answer__fields js-fields">
+                        <p class=""field>
+                            {{ form.run_description.label(class="label venus ", for="teztarea-char-limit") }}
+{#                            <span class="label__description">For example describe any difficulties you experienced in the use of this service</span>#}
+
+                            {% if run_id %}
+                                {% set f = form.run_description.process_data(form.run_description.default) %}
+                                {{ form.run_description(class="input input--textarea  js-charlimit-input input--w-30",cols="80",rows="2",id="textarea-char-limit",maxlength="100",value="this value") }}
+                            {% else %}
+                                {{ form.run_description(class="input input--textarea  js-charlimit-input input--w-30",cols="80",rows="2",id="textarea-char-limit",maxlength="100") }}
+                            {% endif %}
+                            <b id="char-count" style="font-size: 15px"></b>
+
+                            {% if form.run_description.errors %}
+                                <ul>
+                                    {% for error_message in form.run_description.errors %}
+                                        <li style="color:red;">{{ error_message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                    <div class="top_50_extra_space buttom_70_extra_space buttom_70_extra_space">
+                            <div class="btn-group">
+                                <button class="btn" style="margin-right: 1rem" type="submit" name="submit" value="create_run">
+                                    <span class="btn__inner">Save and continue</span>
+                                </button>
+                                <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('dashboard.dashboard_view') }}">
+                                    <span class="btn__inner">Cancel</span>
+                                </a>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+        </section>
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+        <script>
+            $(document).ready(function () {
+                let char_count = "You have 100 characters remaining.";
+                document.getElementById('char-count').innerHTML = char_count;
+
+                $('textarea').on("input", function () {
+                    let maxlength = $(this).attr("maxlength");
+                    const currentLength = $(this).val().length;
+                    const remainingLength = maxlength - currentLength
+
+                    if (currentLength == maxlength - 1) {
+                        char_count = ("You have " + remainingLength + " character remaining");
+                    } else {
+                        char_count = ("You have " + remainingLength + " characters remaining");
+                    }
+                    document.getElementById('char-count').innerHTML = char_count;
+                });
+            });
+        </script>
+    {% endblock %}
+</footer>
+
+</body>
+</html>

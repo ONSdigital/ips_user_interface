@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+<html lang="en-gb" dir="ltr" class="no-js">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+        {{ super() }}
+    {% endblock %}
+</head>
+
+<body>
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 5 page content-->
+        <section>
+            <div class="container">
+                <p><a id="previous-link" href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">Previous</a></p>
+                <div>
+
+                    {% if request.args.get('import') == 'success' %}
+                    <!-- Successful import Panel -->
+                    <div class="panel panel--success panel--simple" id="pv-validation-panel-success">
+                        <div class="panel__body">
+                            <p>Process Variable imported successfully. </p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if request.args.get('import') == 'failed' %}
+                    <!-- Failed import Panel -->
+                    <div id="pv-validation-panel-error" class="panel panel--error panel--simple">
+                        <div class="panel__body">
+                            <p>Process Variable import failed, changes not committed</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <br>
+                    <h1>Edit a Process Variable</h1>
+                    <p class="field">
+                        <label class="label" for="text">Name</label>
+                        <input type="text" id="text" class="input input--text input-type__input "
+                               style="background-color: lightgray;" value="{{ pv_name }}" readonly>
+                    </p>
+                    <br>
+                    <p>
+                        <a href="/import_pv/{{ run_id }}/{{ pv_name }}">Import Code</a>
+                        &nbsp&nbsp&nbsp&nbsp
+                        <a href="#" onclick="exportButton()">Export Code</a>
+                    </p>
+                    <p class="field">
+                        <textarea id="textarea" class="input input--textarea  " name="feedback"
+                                  style="background-color: lightgray;" rows="20" readonly>{{ pv }}</textarea>
+                    </p>
+                    <br>
+                    <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('new_run_steps.new_run_4') }}/{{ run_id }}">
+                        <span class="btn__inner">Return</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.blockUI.js') }}"></script>
+    <script>
+        function exportButton() {
+            let input = document.createElement('input');
+            input.type = 'file';
+
+            let pv_name = $("#text").val();
+            let pv = $("#textarea").val();
+
+
+            let textFileAsBlob = new Blob([pv], {type: 'text/x-python-script'});
+
+            let downloadLink = document.createElement('a');
+            downloadLink.download = pv_name + '.py';
+            downloadLink.innerHTML = 'Download File';
+
+            downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+
+            downloadLink.click();
+        }
+
+    </script>
+    {% endblock %}
+</footer>
+
+</body>
+</html>

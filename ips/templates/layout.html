@@ -6,102 +6,128 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <title>International Passenger Survey</title>
         <meta content="width=device-width, initial-scale=1" name="viewport">
-        <link rel="apple-touch-icon" sizes="180x180" href="../static/img/favicons/apple-touch-icon.png">
-        <link rel="icon" type="image/png" href="../static/img/favicons/favicon-32x32.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="../static/img/favicons/favicon-16x16.png" sizes="16x16">
-        <link rel="manifest" href="../static/img/favicons/manifest.json">
-        <link rel="mask-icon" href="../static/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <link rel="apple-touch-icon" sizes="180x180"
+              href="{{ url_for('static', filename='img/favicons/apple-touch-icon.png.png') }}">
+
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicons/favicon-32x32.png') }}"
+              sizes="32x32">
+
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicons/favicon-16x16.png') }}"
+              sizes="16x16">
+
+        <link rel="manifest" href="{{ url_for('static', filename='img/favicons/manifest.json') }}">
+
+        <link rel="mask-icon" href="{{ url_for('static', filename='img/favicons/safari-pinned-tab.svg') }}"
+              color="#5bbad5">
+
         <meta name="theme-color" content="#ffffff">
-        <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>
-        <link rel="stylesheet" href="../static/css/legacy-main.css" media="all">
-        <link rel="stylesheet" href="../static/builder/css/builder.css" media="all">
-        <script type="text/javascript" src="../static/js/jquery-3.3.1.min.js"></script>
-        <script type="text/javascript" src="../static/js/industry-range.js"></script>
-        <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/v2.0.0/css/responsive.css">
+<!--        <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.css'>-->
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css')+"?v1.0.0" }}" media="all">
+
+        <link rel="stylesheet" href="https://cdn.ons.gov.uk/sdc/design-system/17.0.0/css/main.css">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/legacy-main.css') }}"
+              media="all">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
     {% endblock %}
 </head>
 
 <body>
-<header class="header header--internal">
+<div class="page-container">
     {% block header %}
-        <section>
-            <div class="header__top" role="banner">
-                <div class="container">
-                    <div class="grid grid--gutterless">
-                        <div class="grid__col col-6@s">
-                            <div class="logo">
-                                <img src="https://cdn.ons.gov.uk/sdc/v1.5.0/img/ons-logo-black-en.svg"
-                                     alt="Office for National Statistics logo" class="logo__img header__logo--print">
-
-                                <a href="/dashboard">
-                                    <img src="https://cdn.ons.gov.uk/sdc/v1.5.0/img/ons-logo-white.svg"
-                                         alt="Office for National Statistics logo"
-                                         class="logo__img header__logo print__hidden">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="grid__col col-6@s">
-                            <nav class="nav nav--horizontal  u-d-no--@xs@s u-fr" aria-label="Site services menu">
-                                <ul class="nav__list" role="menubar" aria-label="Site services menu">
-                                    <li class="nav__item" role="menuitem"><a href="#1" class="nav__link">Help</a></li>
+    <header class="header header--internal header--thin">
+        <div class="header__top" role="banner">
+            <div class="container">
+                <div class="header__grid-top grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
+                    <div class="grid__col col-auto">
+                        <img class="header__logo" src="/static/img/ons-logo-white.svg" alt="Office for National Statistics logo">
+                    </div>
+                    <div class="header__links grid__col col-auto">
+                        <div class="grid__col col-auto u-d-no@xs@m">
+                            <nav class="header-service-nav header-service-nav--internal" aria-label="Site services menu">
+                                <ul class="header-service-nav__list" aria-label="Navigation menu">
+                                    <li class="header-service-nav__item">
+                                        <p class="header-service-nav__link"></p>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
-                        <!--Added a break until UX sort the spacing at the top of the header for me :) -->
-                        <br>
                     </div>
-                </div>
-            </div>
-            <div class="header__main header__main--border">
-                <div class="container">
-                    <div class="grid grid--gutterless grid--align-mid u-cf">
-                        <div class="grid__col col-10@xs col-6@s col-8@m">
-                            <h1 class="header__title header__title--nav-adj">International Passenger Survey</h1>
-                        </div>
-                        <button class="btn btn--mobile js-nav-btn u-fr u-d-no--@s" type="button" id="menu-btn"
-                                aria-expanded="false" aria-controls="main-nav" aria-label="Toggle main navigation"
-                                aria-haspopup="true"><span class="btn--mobile__label"></span></button>
-                        {% if current_user.is_authenticated %}
-                            <div class="u-fr u-d-no--@xs@s">
-                            <button id="sign_out" class="btn btn--ghost print__hidden">Sign out</button>
-                        {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-    {% endblock %}
-</header>
-
-<section id="content">
-    {% block content %}{% endblock %}
-</section>
-
-<footer class="page__footer">
-    <!--Footer content-->
-    {% block footer %}
-        <div class="wrapper">
-            <div class="group">
-                <div class="col-12">
-                    <span class="new">This release is in development. Your <a
-                            href="mailto:ramon.delgado@ext.ons.gov.uk?Subject=User%20feedback"> feedback</a> will help us improve it.</span>
                 </div>
             </div>
         </div>
+        <div class="header__main">
+            <div class="container">
+                <div class="grid grid--gutterless grid--flex grid--between grid--vertical-center grid--no-wrap">
+                    <div class="grid__col col-auto u-flex-shrink">
+                        <div class="header__title">International Passenger Survey</div>
+                    </div>
+                    <div class="grid__col col-auto u-flex-no-shrink u-d-no@xs@m">
+                        {% if current_user.is_authenticated %}
+                        <a class="btn btn--ghost u-d-no@xs@m" href="/logout">
+                            <span class="btn__inner">Sign Out</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header__bottom">
+            <div class="container container--gutterless@xs@m">
+                <nav class="header-nav js-header-nav" id="main-nav" aria-label="Main menu" data-analytics="header-navigation">
+                    <ul class="header-nav__list" aria-label="" role="menubar">
+                        {% if current_user.is_authenticated %}
+                          <li class='header-nav__item header-nav__item--active' role="menuitem" aria-current="page">
+                              <a href="{{ url_for('dashboard.dashboard_view') }}" class="header-nav__link">Dashboard</a>
+                          </li>
+                        {% endif %}
+                        {% if not current_user.is_authenticated %}
+                            {% if request.endpoint == 'auth.login' %}
+                                <li class="header-nav__item header-nav__item--active" role="menuitem">
+                                    <a class="header-nav__link" href="{{ url_for('auth.login') }}">Sign in</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.js'></script>
+    </header>
+    {% endblock %}
 
-        <script>
+    <section id="main-content">
+        <br>
+        <div id="content-wrap">
+            {% block content %}{% endblock %}
+        </div>
+
+        <footer class="u-mt-xl footer  main-footer " data-analytics="footer">
+            <div class="footer__body">
+                <div class="container ">
+                    <div class="grid">
+                        <div class="grid__col col-4@m">
+                            <img src="/static/img/ons-logo-black-en.svg" alt="Office for National Statistics" class="footer__poweredby-img ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>
+<section>
+    <!--Footer content-->
+    {% block footer %}
+
+    <script>
             jQuery(document).ready(function ($) {
                 $(".clickable-row").click(function () {
                     window.location = $(this).data("href");
                 });
-            });
-            $("#sign_out").click(function () {
-                window.location.href = '/logout';
             });
         </script>
 
@@ -132,14 +158,21 @@
             function setPaginateDiv(deliminator, rows, div) {
                 pages = Math.ceil(rows / deliminator);
                 div.empty();
-                div.append("<label class='pag_info'>1 to 20 of " + rows + "</label>");
+                if(rows < deliminator){
+                    div.append("<label class='pag_info'>1 to "+rows+" of " + rows + "</label>");
+                }else {
+                    div.append("<label class='pag_info'>1 to 20 of " + rows + "</label>");
+                }
                 for (i = 1; i <= rows; i++) {
-                    if (i == 1) {
+                    if (i === 1) {
                         div.append("<a current=true class='pag_index cur' index='" + i + "'>" + i + "</a>");
                     } else if (i <= 10) {
                         div.append("<a current=false class='pag_index' index='" + i + "' href='javascript:void(0)'>" + i + "</a>");
                     } else {
                         div.append("<a current=false class='pag_index' style='display:none' index='" + i + "' href='javascript:void(0)'>" + i + "</a>");
+                    }
+                    if(i == pages){
+                        break;
                     }
                 }
                 div.append("<a current=false class='pag_index' href='#'>Next</a>");
@@ -202,7 +235,7 @@
         </script>​
     {% endblock %}
 
-</footer>
+</section>
 
 </body>
 

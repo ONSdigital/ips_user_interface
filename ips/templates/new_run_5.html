@@ -1,0 +1,319 @@
+{% extends "layout.html" %}
+
+<!doctype html>
+<html lang="en-gb" dir="ltr" class="no-js">
+<head>
+
+    <!--Styles are imported from the parent template.-->
+    {% block styles %}
+
+        {{ super() }}
+
+    {% endblock %}
+
+    <title></title>
+</head>
+
+<body>
+<!--Header content is imported from the parent template.-->
+<header class="page__header">
+    <!--Header content is imported from the parent template.-->
+    {% block header %}
+        {{ super() }}
+    {% endblock %}
+</header>
+
+<section id="content">
+    {% block content %}
+        <!--New run 3 page content-->
+        <section>
+            <div class="container">
+                <p><a id="previous-link" href="{{ url_for('.new_run_4') }}/{{ run_id }}">Previous</a></p>
+                <h2>Data Import</h2>
+                <br>
+                {% if error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">{{ error_message }}</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
+
+                {% if serial_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Serial column is invalid.</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
+
+                {% if column_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Incorrect number of columns (should be 212).</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
+
+                {% if date_error %}
+                    <div class="collator-item">
+                        <h2 class="collator-title"></h2>
+                        <!-- Start: @panel--error -->
+                        <div class="panel panel--error">
+                            <div class="panel__header">
+                                <div class="venus">Error</div>
+                            </div>
+                            <div class="panel__body">
+                                <p class="mars">Survey Data - Input start date does not match start dates in
+                                    uploaded file.</p>
+                            </div>
+                        </div>
+                        <!-- End: @panel--error -->
+                    </div>
+                {% endif %}
+
+                {% if run_id %}
+                    <form id="run_5_form" action="{{ url_for('.new_run_5', run_id=run_id) }}" class="form"
+                          method="post"
+                          enctype="multipart/form-data">
+                {% else %}
+                    <form id="run_5_form" action="{{ url_for('.new_run_5') }}" class="form" method="post"
+                          enctype="multipart/form-data">
+                {% endif %}
+
+                {#                    <form id="run" action="{{  url_for('.new_run_5') }}" class="form" method="post"#}
+                {#                          enctype="multipart/form-data">#}
+
+                    <label id="rid" style="display:none;">{{ run_id }}</label>
+
+                    <p class="field">
+                        <label class="label venus" for="survey_file" id="upload">Survey</label>
+                        <input type="file" accept=".csv" id="survey_file" name="survey_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.survey_file.errors %}
+                            <ul>
+                                {% for error_message in form.survey_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </p>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="shift_file" id="upload">Shift</label>
+                        <input type="file" accept=".csv" id="shift_file" name="shift_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+
+                        {{ form.csrf_token }}
+
+                        {% if form.shift_file.errors %}
+                            <ul>
+                                {% for error_message in form.shift_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="nr_file" id="upload">Non-Response</label>
+                        <input type="file" accept=".csv" id="nr_file" name="non_response_file"
+                               class="input input--text input-type__input  input--upload" aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.non_response_file.errors %}
+                            <ul>
+                                {% for error_message in form.non_response_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="us_file" id="upload">Unsampled</label>
+                        <input type="file" accept=".csv" id="us_file" name="unsampled_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.unsampled_file.errors %}
+                            <ul>
+                                {% for error_message in form.unsampled_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="tunnel_file" id="upload">Tunnel</label>
+                        <input type="file" accept=".csv" id="tunnel_file" name="tunnel_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.tunnel_file.errors %}
+                            <ul>
+                                {% for error_message in form.tunnel_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="sea_file" id="upload">Sea</label>
+                        <input type="file" accept=".csv" id="sea_file" name="sea_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.sea_file.errors %}
+                            <ul>
+                                {% for error_message in form.sea_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+                        <label class="u-mt-m label venus" for="air_file" id="upload">Air</label>
+                        <input type="file" accept=".csv" id="air_file" name="air_file"
+                               class="input input--text input-type__input  input--upload"
+                               aria-describedby="upload">
+                        {{ form.csrf_token }}
+
+                        {% if form.air_file.errors %}
+                            <ul>
+                                {% for error_message in form.air_file.errors %}
+                                    <li style="color:red;">{{ error_message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="top_50_extra_space">
+                        <div class="btn-group">
+                            <button class="btn btn-group__btn" style="margin-right: 1rem" type="submit" id="savec"><span class="btn__inner">Save and continue</span></button>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; margin-right: 1rem;" href="{{ url_for('dashboard.dashboard_view') }}"><span class="btn__inner">Cancel</span></a>
+                            <a class="btn btn-group__btn btn--secondary" style="text-decoration: none; " href="{{ url_for('manage_run.manage_run', run_id=run_id) }}"><span class="btn__inner">Skip</span></a>
+                        </div>
+                    </div>
+                    </form>
+            </div>
+        </section>
+
+        <section>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+            <div class="buttom_70_extra_space buttom_70_extra_space">
+                <table></table>
+            </div>
+        </section>
+
+
+    {% endblock %}
+</section>
+
+<!--Generic footer is imported from the parent template.-->
+<footer class="page__footer">
+    {% block footer %}
+        {{ super() }}
+
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.blockUI.js') }}"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $("#run_5_form").submit(function (event) {
+
+                    let form = new FormData($("#run_5_form")[0]);
+                    let run_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+                    let url = "{{ url_for('.new_run_5') }}";
+
+                    if (run_id) {
+                        url = "{{ url_for('.new_run_5', run_id=run_id) }}";
+                    }
+
+                    let loc = "{{ url_for('static', filename='img/download.svg') }}";
+
+
+                    $.blockUI({
+                        message: "<div style='padding: 10px 0px 10px 0px;'><h1>Uploading Files ...</h1><img src='" + loc + "'/></div>",
+                        css: {backgroundColor: '#3B7A9E', color: '#fff', 'border-style': 'none;'}
+                    });
+
+                    console.log(" calling: " + url);
+                    $.ajax({
+                        url: url,
+                        method: "POST",
+                        data: form,
+                        processData: false,
+                        contentType: false,
+                        async: true,
+                        timeout: 900000
+
+                    }).done(function (data, textStatus, jqXHR) {
+                        $.unblockUI();
+                        if (data.redirect) {
+                            location.replace(data.redirect)
+                        } else {
+                            var newDoc = document.open("text/html", "replace");
+                            newDoc.write(data);
+                            newDoc.close();
+                        }
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        $.unblockUI();
+                        if(textStatus === 'timeout')
+                        {
+                            console.log('Timed out');
+                        }
+                    });
+                    event.preventDefault();
+                })
+            })
+
+        </script>
+
+    {% endblock %}
+</footer>
+
+</body>
+</html>
