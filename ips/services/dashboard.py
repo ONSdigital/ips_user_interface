@@ -47,8 +47,6 @@ def dashboard_view():
                                records=records,
                                form=form)
 
-    records.sort(key=lambda x: x['LAST_MODIFIED'])
-
     # Setup key value pairs for displaying run information
     run_types = {
         '0': 'Test',
