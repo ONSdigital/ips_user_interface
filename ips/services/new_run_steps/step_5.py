@@ -1,6 +1,7 @@
 from flask import request, render_template, session, jsonify
 from ips.util.ui_logging import log
 
+
 from ips.services import app_methods
 from ips.services.forms import LoadDataForm
 
