@@ -116,13 +116,41 @@ class ImportPVForm(FlaskForm):
 
 
 class LoadDataForm(FlaskForm):
-    survey_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    shift_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    non_response_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    unsampled_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    tunnel_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    sea_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    air_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
+    survey_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    shift_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    non_response_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    unsampled_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    tunnel_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        if not self.meta.survey_file:
+            self.survey_file.validators.append(FileRequired())
+        if not self.meta.shift_file:
+            self.shift_file.validators.append(FileRequired())
+        if not self.meta.non_response_file:
+            self.non_response_file.validators.append(FileRequired())
+        if not self.meta.unsampled_file:
+            self.unsampled_file.validators.append(FileRequired())
+        if not self.meta.tunnel_file:
+            self.tunnel_file.validators.append(FileRequired())
+        if not self.meta.sea_file:
+            self.sea_file.validators.append(FileRequired())
+        if not self.meta.air_file:
+            self.air_file.validators.append(FileRequired())
+
+
+class LoadEditDataForm(FlaskForm):
+    survey_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    shift_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    non_response_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    unsampled_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    tunnel_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+
 
 
 class ManageRunForm(FlaskForm):
