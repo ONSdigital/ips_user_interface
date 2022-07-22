@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
+from wtforms import Form, IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
 from wtforms.validators import InputRequired, NumberRange
+from wtforms.compat import iteritems
 
 import datetime
 
@@ -124,35 +125,20 @@ class LoadDataForm(FlaskForm):
     sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
     air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        if not self.meta.survey_file:
-            self.survey_file.validators.append(FileRequired())
-        if not self.meta.shift_file:
-            self.shift_file.validators.append(FileRequired())
-        if not self.meta.non_response_file:
-            self.non_response_file.validators.append(FileRequired())
-        if not self.meta.unsampled_file:
-            self.unsampled_file.validators.append(FileRequired())
-        if not self.meta.tunnel_file:
-            self.tunnel_file.validators.append(FileRequired())
-        if not self.meta.sea_file:
-            self.sea_file.validators.append(FileRequired())
-        if not self.meta.air_file:
-            self.air_file.validators.append(FileRequired())
+    def validate_on_submit(self, extra_validators=None):
+        """ Override validate_on_submit to allow us to pass extra_validators through """
+        return self.is_submitted() and self.validate(extra_validators=extra_validators)
 
-
-class LoadEditDataForm(FlaskForm):
-    survey_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    shift_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    non_response_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    unsampled_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    tunnel_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-    air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
-
-
-
+    def validate(self, extra_validators=None):
+        """ 
+        Override validate passing the extra validators through 
+        
+        Normally this mechanism is used to hook in extra validation methods
+        called `validate_fieldname` but as we're not using this pattern we can 
+        use it to pass extra validators through directly.
+        """
+        return super(Form, self).validate(extra_validators=extra_validators)
+        
 class ManageRunForm(FlaskForm):
     run_button = SubmitField(label='Run')
     edit_button = SubmitField(label='Edit')

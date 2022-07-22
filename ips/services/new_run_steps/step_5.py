@@ -1,24 +1,38 @@
 from flask import request, render_template, session, jsonify
 from ips.util.ui_logging import log
-
+from flask_wtf.file import FileRequired
 
 from ips.services import app_methods
-from ips.services.forms import LoadDataForm, LoadEditDataForm
-
+from ips.services.forms import LoadDataForm
 
 def run_step_5(run_id):
     from remote_pdb import RemotePdb
     error = False
     run_info = app_methods.get_run(run_id)
-    form = LoadDataForm(meta={'survey_file': run_info['SURVEY_FILE'],
+        
+    form = LoadDataForm()
+    #RemotePdb('0.0.0.0', 4445).set_trace() 
+    
+    # Build validator dictionary based on values in run_info
+    # 
+    meta={'survey_file': run_info['SURVEY_FILE'],
         'shift_file': run_info['SHIFT_FILE'],
         'non_response_file': run_info['NR_FILE'],
         'unsampled_file': run_info['UNSAMPLED_FILE'],
         'tunnel_file': run_info['TUNNEL_FILE'],
         'sea_file': run_info['SEA_FILE'],
-        'air_file': run_info['AIR_FILE']})
-    #RemotePdb('0.0.0.0', 4445).set_trace()
-    if form.validate_on_submit():
+        'air_file': run_info['AIR_FILE']}
+    #RemotePdb('0.0.0.0', 4445).set_trace() 
+    
+    filenames = [
+        'survey_file', 'shift_file', 'non_response_file' 'unsampled_file'
+        'tunnel_file' 'sea_file', 'air_file' ]
+    
+    validators = {}    
+    for filename in filenames:
+        if not run_info.get(filename.upper()):
+            validators[filename] = FileRequired()
+    if form.validate_on_submit(extra_validators=validators):
 
         log.info("run_step_5 Importing data...")
         # Import Survey Data
@@ -27,7 +41,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('survey', session['id'], survey_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp, "Survey")
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
         #elif not survey_data.filename and not :
 
 
@@ -39,7 +53,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('shift', session['id'], shift_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp, "Shift")
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
 
             log.info("run_step_5 Imported shift data...")
 
@@ -50,7 +64,7 @@ def run_step_5(run_id):
                                            session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp, "Non-Response")
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
 
             log.info("run_step_5 Imported non-response data...")
 
@@ -60,7 +74,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('unsampled', session['id'], unsampled_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp, "Unsampled")
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
 
             log.info("run_step_5 Imported un-sampled data...")
 
@@ -70,7 +84,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('tunnel', session['id'], tunnel_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp)
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
 
             log.info("run_step_5 Imported tunnel data...")
 
@@ -80,7 +94,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('sea', session['id'], sea_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp)
-                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
             
             log.info("run_step_5 Imported sea data...")
         # Import air data
@@ -89,7 +103,7 @@ def run_step_5(run_id):
             resp = app_methods.import_data('air', session['id'], air_data, session['period'], session['year'])
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp)
-                return render_template('new_run_5.html', form=form, error=error, error_message=error_message, run_info=run_info)
+                return render_template('new_run_5.html', form=form, error=error, error_message=error_message, run_info=run_info, run_id=run_id)
 
             log.info("run_step_5 Imported sair data...")
 

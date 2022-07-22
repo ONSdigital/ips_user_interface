@@ -1,3 +1,4 @@
+from itertools import permutations
 import time
 import uuid
 from ips.services.forms import LoadDataForm
@@ -24,7 +25,6 @@ from remote_pdb import RemotePdb
 start_time = time.time()
 run_id = str(uuid.uuid4())
 
-
 # noinspection PyUnusedLocal
 def setup_module(module):
 
@@ -38,22 +38,61 @@ def test_app(app):
 #def test_load_data_form_validation():
 #    form = LoadDataForm(meta={})
     #assert(SomeValidatorClass in form.some_field_name.validators)   
-
-def test_dynamic_form_validators(app, client):
+"""
+These parametrize sets the file name, with the list of string and their respective ids,
+applied to the test_dynamic_form_validators as parameters
+"""
+@pytest.mark.parametrize(
+    "survey_filename",
+    ["survey_data.csv", ""],
+    ids=["survey-filename", "no-survey-filename"]
+)
+@pytest.mark.parametrize(
+    "shift_filename",
+    ["shift_data.csv", ""],
+    ids=["shift-filename", "no-shift-filename"]
+)
+@pytest.mark.parametrize(
+    "nr_filename",
+    ["nr_data.csv", ""],
+    ids=["nr-filename", "no-nr-filename"]
+)
+@pytest.mark.parametrize(
+    "unsampled_filename",
+    ["unsampled_data.csv", ""],
+    ids=["unsampled-filename", "no-unsampled-filename"]
+)
+@pytest.mark.parametrize(
+    "tunnel_filename",
+    ["tunnel_data.csv", ""],
+    ids=["tunnel-filename", "no-tunnel-filename"]
+)
+@pytest.mark.parametrize(
+    "sea_filename",
+    ["sea_data.csv", ""],
+    ids=["sea-filename", "no-sea-filename"]
+)
+@pytest.mark.parametrize(
+    "air_filename",
+    ["air_data.csv", ""],
+    ids=["air-filename", "no-air-filename"]
+)
+def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, unsampled_filename, tunnel_filename, sea_filename, air_filename, app, client):
     """
     Tests if filename is supplied for a field then no FileRequired validator is applied
     """
     @app.route("/", methods=["POST"])
     def index():
+        
         loadform = LoadDataForm(
             meta={
-                'survey_file': 'surveydata.csv',
-                'shift_file': 'Poss shifts Dec 2017.csv',
-                'non_response_file': 'Dec17_NR.csv',
-                'unsampled_file': 'Unsampled Traffic Dec 2017 - Copy.csv',
-                'tunnel_file': 'Tunnel Traffic Dec 2017.csv',
-                'sea_file': 'Sea Traffic Dec 2017.csv',
-                'air_file': 'Air Sheet Dec 2017 VBA.csv'}
+                'survey_file': survey_filename,
+                'shift_file': shift_filename,
+                'non_response_file': nr_filename,
+                'unsampled_file': unsampled_filename,
+                'tunnel_file': tunnel_filename,
+                'sea_file': sea_filename,
+                'air_file': air_filename}
         )
 
         upload_file_types = [
@@ -62,23 +101,27 @@ def test_dynamic_form_validators(app, client):
         ]
         
         for file_type in upload_file_types:
-            if loadform.meta.getattr(file_type):
+            if getattr(loadform.meta, file_type):
                 assert any([
-                    isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
-                ]) is False 
+                   isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
+                ]) is False, f"FileRequired validator not expected when {file_type} filename supplied" 
             else:
                 assert any([
                     isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
-                ]) is True
+                ]) is True, f"FileRequired validator expected when no filename supplied for {file_type}"
     
+    client.post("/")
 
-def test_none_form_validators(app, client):
-    """
-    Tests if filename is supplied for a field then no FileRequired validator is applied
-    """
+def test_odd_empty_validation_error(app, client):
+    
+    """When we run the empty validation on a new run, we get the error as supposed.
+    But then after that, we edit a fully loaded run, left some or all empty, and click on save and continue, THAT SAME error occurs.
+    This test will attempt to create an empty run, which gives the error, then add a new filled in run to confirm."""
+
     @app.route("/", methods=["POST"])
     def index():
-        loadform = LoadDataForm(
+        RemotePdb('0.0.0.0', 4445).set_trace()
+        empty_form = LoadDataForm(
             meta={
                 'survey_file': '',
                 'shift_file': '',
@@ -86,43 +129,83 @@ def test_none_form_validators(app, client):
                 'unsampled_file': '',
                 'tunnel_file': '',
                 'sea_file': '',
-                'air_file': ''}
-        )
+                'air_file': ''
+        })
+
+        full_form = LoadDataForm(
+            meta={
+                'survey_file': 'survey_data.csv',
+                'shift_file': 'shift_data.csv',
+                'non_response_file': 'nr_data.csv',
+                'unsampled_file': 'unsampled_data.csv',
+                'tunnel_file': 'tunnel_data.csv',
+                'sea_file': 'sea_data.csv',
+                'air_file': 'air_data.csv'
+        })
 
         upload_file_types = [
             "survey_file", "non_response_file", "unsampled_file", "tunnel_file", "sea_file",
             "air_file", "shift_file"
         ]
-        
+        #RemotePdb('0.0.0.0', 4445).set_trace()    
         for file_type in upload_file_types:
-            if loadform.meta.getattr(file_type):
-                assert all([
-                    isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
-                ]) is False 
+            if getattr(full_form.meta, file_type):
+                assert any([
+                    isinstance(validator, FileRequired) for validator in full_form.survey_file.validators
+                ]) is False, f"FileRequired validator not expected when {file_type} filename supplied" 
             else:
-                assert all([
-                    isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
+                assert any([
+                    isinstance(validator, FileRequired) for validator in full_form.survey_file.validators
+                ]) is True, f"FileRequired validator expected when no filename supplied for {file_type}"
+
+
+    client.post("/")
+
+    
+
+def test_all_preloaded_success(app, client):
+    @app.route("/", methods=["POST"])
+    def index():
+        #breakpoint()
+        #RemotePdb('0.0.0.0', 4445).set_trace()
+        preload_form = LoadDataForm(
+            meta={
+                'survey_file': 'survey_data.csv',
+                'shift_file': 'shift_data.csv',
+                'non_response_file': 'nr_data.csv',
+                'unsampled_file': 'unsampled_data.csv',
+                'tunnel_file': 'tunnel_data.csv',
+                'sea_file': 'sea_data.csv',
+                'air_file': 'air_data.csv'
+        })
+
+        upload_file_types = [
+            "survey_file", "non_response_file", "unsampled_file", "tunnel_file", "sea_file",
+            "air_file", "shift_file"
+        ]
+        #RemotePdb('0.0.0.0', 4445).set_trace()    
+        for file_type in upload_file_types:
+            if getattr(preload_form.meta, file_type):
+                assert any([
+                    isinstance(validator, FileRequired) for validator in preload_form.survey_file.validators
+                ]) is False
+            else:
+                assert any([
+                    isinstance(validator, FileRequired) for validator in preload_form.survey_file.validators
                 ]) is True
 
-def test_fully_loaded_success():
-    pass
-    d = run_step_5(run_id)
-    assert d.form.meta.survey_file and d.form.meta.air_file and d.form.meta.nr_file and d.form.meta.tunnel_file and d.form.meta.shift_file and d.form.meta.sea_file and d.form.meta.unsampled_file
 
-
-def test_all_preloaded_success():
-    d = run_step_5(run_id)
-    assert d.form.meta.survey_file and d.form.meta.air_file and d.form.meta.nr_file and d.form.meta.tunnel_file and d.form.meta.shift_file and d.form.meta.sea_file and d.form.meta.unsampled_file
+    client.post("/")
     pass
 
-def test_all_preloaded_save_continue_success():
-    pass
+#def test_all_preloaded_save_continue_success():
+#    pass
 
-def test_change_preloaded_success():
-    pass
+#def test_change_preloaded_success():
+#    pass
 
-def test_change_preloaded_save_continue_success():
-    pass
+#def test_change_preloaded_save_continue_success():
+#    pass
 
 
 # noinspection PyUnusedLocal

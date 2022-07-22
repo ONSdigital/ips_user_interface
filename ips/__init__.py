@@ -1,4 +1,5 @@
 import logging
+from sys import exc_info
 
 from flask import Flask, redirect, url_for, session, render_template
 from flask_bootstrap import Bootstrap
@@ -63,4 +64,5 @@ def page_not_found(error):
 
 @app.errorhandler(Exception)
 def internal_server_error(e):
+    log.exception("unhandled exception", exc_info = e)
     return render_template("servererror.html"), 500
