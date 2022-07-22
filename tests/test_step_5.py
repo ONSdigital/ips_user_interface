@@ -112,6 +112,9 @@ def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, u
     
     client.post("/")
 
+def test_dynamic_meeting(app, client):
+    pass
+
 def test_odd_empty_validation_error(app, client):
     
     """When we run the empty validation on a new run, we get the error as supposed.
