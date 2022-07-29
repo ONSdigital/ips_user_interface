@@ -125,19 +125,31 @@ class LoadDataForm(FlaskForm):
     sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
     air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        fieldnames = [
+            'survey_file', 'shift_file', 'non_response_file', 'unsampled_file',
+            'tunnel_file', 'sea_file', 'air_file' 
+        ]
+    
+        validators = {}    
+        for field in fieldnames:
+            if not getattr(self.meta, field):
+                validators[field] = [FileRequired()]
+        self._extra_validators = validators
+
     def validate_on_submit(self, extra_validators=None):
         """ Override validate_on_submit to allow us to pass extra_validators through """
-        return self.is_submitted() and self.validate(extra_validators=extra_validators)
+        return self.is_submitted() and self.validate(_extra_validators=extra_validators)
 
-    def validate(self, extra_validators=None):
+    def validate(self):
         """ 
-        Override validate passing the extra validators through 
-        
-        Normally this mechanism is used to hook in extra validation methods
-        called `validate_fieldname` but as we're not using this pattern we can 
-        use it to pass extra validators through directly.
+        Override validate to use validators picked when class instantiated
         """
-        return super(Form, self).validate(extra_validators=extra_validators)
+        return super(Form, self).validate(
+            extra_validators=self._extra_validators
+        )
         
 class ManageRunForm(FlaskForm):
     run_button = SubmitField(label='Run')

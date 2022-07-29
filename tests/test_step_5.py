@@ -27,21 +27,8 @@ run_id = str(uuid.uuid4())
 
 # noinspection PyUnusedLocal
 def setup_module(module):
-
     log.info("Module level start time: {}".format(start_time))
 
-#@pytest.mark.options(debug=False)
-def test_app(app):
-    assert not app.debug, 'Ensure the app is not in debug mode'
-
-
-#def test_load_data_form_validation():
-#    form = LoadDataForm(meta={})
-    #assert(SomeValidatorClass in form.some_field_name.validators)   
-"""
-These parametrize sets the file name, with the list of string and their respective ids,
-applied to the test_dynamic_form_validators as parameters
-"""
 @pytest.mark.parametrize(
     "survey_filename",
     ["survey_data.csv", ""],
@@ -79,11 +66,11 @@ applied to the test_dynamic_form_validators as parameters
 )
 def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, unsampled_filename, tunnel_filename, sea_filename, air_filename, app, client):
     """
-    Tests if filename is supplied for a field then no FileRequired validator is applied
-    """
+    Tests if filename is supplied for a field then no FileRequired validator is applie
+  """
     @app.route("/", methods=["POST"])
     def index():
-        
+
         loadform = LoadDataForm(
             meta={
                 'survey_file': survey_filename,
@@ -94,22 +81,22 @@ def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, u
                 'sea_file': sea_filename,
                 'air_file': air_filename}
         )
+        loadform.validate()
 
-        upload_file_types = [
+        file_fields = [
             "survey_file", "non_response_file", "unsampled_file", "tunnel_file", "sea_file",
             "air_file", "shift_file"
         ]
-        
-        for file_type in upload_file_types:
-            if getattr(loadform.meta, file_type):
-                assert any([
-                   isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
-                ]) is False, f"FileRequired validator not expected when {file_type} filename supplied" 
+        for field in file_fields:
+            if getattr(loadform.meta, field):
+                assert field not in loadform._extra_validators, f"Extra validator not expected if {field} filename supplied"
+                assert field not in loadform.errors
             else:
+                assert field in loadform._extra_validators, f"Extra validator expected if {field} filename supplied"
                 assert any([
-                    isinstance(validator, FileRequired) for validator in loadform.survey_file.validators
-                ]) is True, f"FileRequired validator expected when no filename supplied for {file_type}"
-    
+                    isinstance(validator, FileRequired) for validator in loadform._extra_validators[field]
+                ]) is True, f"FileRequired validator expected as extra validator when no filename supplied for {field}"
+                assert loadform.errors['field'] == ['This field is required.'], f"Expected {field} field validation to fail as no filename givened"
     client.post("/")
 
 def test_dynamic_meeting(app, client):
@@ -123,7 +110,7 @@ def test_odd_empty_validation_error(app, client):
 
     @app.route("/", methods=["POST"])
     def index():
-        RemotePdb('0.0.0.0', 4445).set_trace()
+        #RemotePdb('0.0.0.0', 4445).set_trace()
         empty_form = LoadDataForm(
             meta={
                 'survey_file': '',
@@ -146,22 +133,18 @@ def test_odd_empty_validation_error(app, client):
                 'air_file': 'air_data.csv'
         })
 
-        upload_file_types = [
+        file_fields = [
             "survey_file", "non_response_file", "unsampled_file", "tunnel_file", "sea_file",
             "air_file", "shift_file"
         ]
-        #RemotePdb('0.0.0.0', 4445).set_trace()    
-        for file_type in upload_file_types:
-            if getattr(full_form.meta, file_type):
-                assert any([
-                    isinstance(validator, FileRequired) for validator in full_form.survey_file.validators
-                ]) is False, f"FileRequired validator not expected when {file_type} filename supplied" 
+        for field in file_fields:
+            if getattr(full_form.meta, field):
+                assert field not in full_form._extra_validators, f"Extra validator not expected if {field} filename supplied"
             else:
+                assert field in full_form._extra_validators, f"Extra validator expected if {field} filename supplied"
                 assert any([
-                    isinstance(validator, FileRequired) for validator in full_form.survey_file.validators
-                ]) is True, f"FileRequired validator expected when no filename supplied for {file_type}"
-
-
+                    isinstance(validator, FileRequired) for validator in full_form._extra_validators[field]
+                ]) is True, f"FileRequired validator expected as extra validator when no filename supplied for {field}"
     client.post("/")
 
     
@@ -169,8 +152,6 @@ def test_odd_empty_validation_error(app, client):
 def test_all_preloaded_success(app, client):
     @app.route("/", methods=["POST"])
     def index():
-        #breakpoint()
-        #RemotePdb('0.0.0.0', 4445).set_trace()
         preload_form = LoadDataForm(
             meta={
                 'survey_file': 'survey_data.csv',
@@ -186,7 +167,6 @@ def test_all_preloaded_success(app, client):
             "survey_file", "non_response_file", "unsampled_file", "tunnel_file", "sea_file",
             "air_file", "shift_file"
         ]
-        #RemotePdb('0.0.0.0', 4445).set_trace()    
         for file_type in upload_file_types:
             if getattr(preload_form.meta, file_type):
                 assert any([
@@ -200,16 +180,6 @@ def test_all_preloaded_success(app, client):
 
     client.post("/")
     pass
-
-#def test_all_preloaded_save_continue_success():
-#    pass
-
-#def test_change_preloaded_success():
-#    pass
-
-#def test_change_preloaded_save_continue_success():
-#    pass
-
 
 # noinspection PyUnusedLocal
 def teardown_module(module):

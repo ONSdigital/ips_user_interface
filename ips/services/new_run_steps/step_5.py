@@ -7,33 +7,26 @@ from ips.services.forms import LoadDataForm
 
 def run_step_5(run_id):
     from remote_pdb import RemotePdb
+    #RemotePdb('0.0.0.0', 4445).set_trace() 
     error = False
     run_info = app_methods.get_run(run_id)
         
-    form = LoadDataForm()
     #RemotePdb('0.0.0.0', 4445).set_trace() 
     
     # Build validator dictionary based on values in run_info
-    # 
-    meta={'survey_file': run_info['SURVEY_FILE'],
+    meta={
+        'survey_file': run_info['SURVEY_FILE'],
         'shift_file': run_info['SHIFT_FILE'],
         'non_response_file': run_info['NR_FILE'],
         'unsampled_file': run_info['UNSAMPLED_FILE'],
         'tunnel_file': run_info['TUNNEL_FILE'],
         'sea_file': run_info['SEA_FILE'],
-        'air_file': run_info['AIR_FILE']}
+        'air_file': run_info['AIR_FILE']
+    }
+    form = LoadDataForm(meta=meta)
     #RemotePdb('0.0.0.0', 4445).set_trace() 
-    
-    filenames = [
-        'survey_file', 'shift_file', 'non_response_file' 'unsampled_file'
-        'tunnel_file' 'sea_file', 'air_file' ]
-    
-    validators = {}    
-    for filename in filenames:
-        if not run_info.get(filename.upper()):
-            validators[filename] = FileRequired()
-    if form.validate_on_submit(extra_validators=validators):
 
+    if form.validate():
         log.info("run_step_5 Importing data...")
         # Import Survey Data
         survey_data = request.files['survey_file']
@@ -42,7 +35,7 @@ def run_step_5(run_id):
             if resp.status_code != 200:
                 error_message = app_methods.get_error_message(resp, "Survey")
                 return render_template('new_run_5.html', form=form, error=True, error_message=error_message, run_info=run_info, run_id=run_id)
-        #elif not survey_data.filename and not :
+       
 
 
             log.info("run_step_5 Imported survey data...")
