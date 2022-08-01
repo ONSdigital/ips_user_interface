@@ -96,7 +96,7 @@ def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, u
                 assert any([
                     isinstance(validator, FileRequired) for validator in loadform._extra_validators[field]
                 ]) is True, f"FileRequired validator expected as extra validator when no filename supplied for {field}"
-                assert loadform.errors['field'] == ['This field is required.'], f"Expected {field} field validation to fail as no filename givened"
+                assert loadform.errors[field] == ['This field is required.'], f"Expected {field} field validation to fail as no filename givened"
     client.post("/")
 
 def test_dynamic_meeting(app, client):
