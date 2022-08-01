@@ -20,7 +20,6 @@ from wtforms.validators import DataRequired
 from wtforms.widgets import HiddenInput
 from flask_wtf.file import FileField, FileRequired
 from flask_wtf import FlaskForm
-from remote_pdb import RemotePdb
 
 start_time = time.time()
 run_id = str(uuid.uuid4())
@@ -110,7 +109,7 @@ def test_odd_empty_validation_error(app, client):
 
     @app.route("/", methods=["POST"])
     def index():
-        #RemotePdb('0.0.0.0', 4445).set_trace()
+
         empty_form = LoadDataForm(
             meta={
                 'survey_file': '',

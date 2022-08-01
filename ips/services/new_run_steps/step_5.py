@@ -6,12 +6,9 @@ from ips.services import app_methods
 from ips.services.forms import LoadDataForm
 
 def run_step_5(run_id):
-    from remote_pdb import RemotePdb
-    #RemotePdb('0.0.0.0', 4445).set_trace() 
     error = False
     run_info = app_methods.get_run(run_id)
         
-    #RemotePdb('0.0.0.0', 4445).set_trace() 
     
     # Build validator dictionary based on values in run_info
     meta={
@@ -24,7 +21,6 @@ def run_step_5(run_id):
         'air_file': run_info['AIR_FILE']
     }
     form = LoadDataForm(meta=meta)
-    #RemotePdb('0.0.0.0', 4445).set_trace() 
 
     if form.validate():
         log.info("run_step_5 Importing data...")

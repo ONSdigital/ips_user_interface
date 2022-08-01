@@ -139,10 +139,6 @@ class LoadDataForm(FlaskForm):
                 validators[field] = [FileRequired()]
         self._extra_validators = validators
 
-    def validate_on_submit(self, extra_validators=None):
-        """ Override validate_on_submit to allow us to pass extra_validators through """
-        return self.is_submitted() and self.validate(_extra_validators=extra_validators)
-
     def validate(self):
         """ 
         Override validate to use validators picked when class instantiated
