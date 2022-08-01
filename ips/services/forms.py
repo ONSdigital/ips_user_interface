@@ -133,7 +133,12 @@ class LoadDataForm(FlaskForm):
             'tunnel_file', 'sea_file', 'air_file' 
         ]
     
-        validators = {}    
+        validators = {} 
+        
+        # The validators of each LoadDataForm variable would include FileRequired() when the respective
+        # files is empty, i.e EMPTY getattr(meta_data, fieldname_iteration).
+        # Afterwards, the extra_validators are included for each empty field file not uploaded yet.
+
         for field in fieldnames:
             if not getattr(self.meta, field):
                 validators[field] = [FileRequired()]
