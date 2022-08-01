@@ -63,4 +63,5 @@ def page_not_found(error):
 
 @app.errorhandler(Exception)
 def internal_server_error(e):
+    log.exception("unhandled exception", exc_info = e)
     return render_template("servererror.html"), 500

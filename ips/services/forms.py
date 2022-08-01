@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
+from wtforms import Form, IntegerField, StringField, SelectField, SubmitField, PasswordField, RadioField, TextAreaField, validators
 from wtforms.validators import InputRequired, NumberRange
+from wtforms.compat import iteritems
 
 import datetime
 
@@ -116,15 +117,41 @@ class ImportPVForm(FlaskForm):
 
 
 class LoadDataForm(FlaskForm):
-    survey_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    shift_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    non_response_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    unsampled_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    tunnel_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    sea_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
-    air_file = FileField(validators=[FileRequired(), FileAllowed(['csv'], 'File must be a .csv file.')])
+    survey_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    shift_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    non_response_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    unsampled_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    tunnel_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    sea_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
+    air_file = FileField(validators=[FileAllowed(['csv'], 'File must be a .csv file.')])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        fieldnames = [
+            'survey_file', 'shift_file', 'non_response_file', 'unsampled_file',
+            'tunnel_file', 'sea_file', 'air_file' 
+        ]
+    
+        validators = {} 
+        
+        # The validators of each LoadDataForm variable would include FileRequired() when the respective
+        # files is empty, i.e EMPTY getattr(meta_data, fieldname_iteration).
+        # Afterwards, the extra_validators are included for each empty field file not uploaded yet.
+
+        for field in fieldnames:
+            if not getattr(self.meta, field):
+                validators[field] = [FileRequired()]
+        self._extra_validators = validators
+
+    def validate(self):
+        """ 
+        Override validate to use validators picked when class instantiated
+        """
+        return super(Form, self).validate(
+            extra_validators=self._extra_validators
+        )
+        
 class ManageRunForm(FlaskForm):
     run_button = SubmitField(label='Run')
     edit_button = SubmitField(label='Edit')
