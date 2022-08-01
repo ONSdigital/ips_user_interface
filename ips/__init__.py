@@ -1,5 +1,4 @@
 import logging
-from sys import exc_info
 
 from flask import Flask, redirect, url_for, session, render_template
 from flask_bootstrap import Bootstrap
