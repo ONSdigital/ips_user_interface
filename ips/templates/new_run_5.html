@@ -112,6 +112,7 @@
 
                     <p class="field">
                         <label class="label venus" for="survey_file" id="upload">Survey</label>
+                        Current File: {{ run_info.SURVEY_FILE | default("-") }}
                         <input type="file" accept=".csv" id="survey_file" name="survey_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
@@ -128,10 +129,10 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="shift_file" id="upload">Shift</label>
+                        Current File: {{ run_info.SHIFT_FILE | default("-") }}
                         <input type="file" accept=".csv" id="shift_file" name="shift_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
-
                         {{ form.csrf_token }}
 
                         {% if form.shift_file.errors %}
@@ -145,6 +146,7 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="nr_file" id="upload">Non-Response</label>
+                        Current File: {{ run_info.NR_FILE | default("-") }}
                         <input type="file" accept=".csv" id="nr_file" name="non_response_file"
                                class="input input--text input-type__input  input--upload" aria-describedby="upload">
                         {{ form.csrf_token }}
@@ -161,6 +163,7 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="us_file" id="upload">Unsampled</label>
+                        Current File: {{ run_info.UNSAMPLED_FILE | default("-") }}
                         <input type="file" accept=".csv" id="us_file" name="unsampled_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
@@ -178,6 +181,7 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="tunnel_file" id="upload">Tunnel</label>
+                        Current File: {{ run_info.TUNNEL_FILE | default("-") }}
                         <input type="file" accept=".csv" id="tunnel_file" name="tunnel_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
@@ -195,6 +199,7 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="sea_file" id="upload">Sea</label>
+                        Current File: {{ run_info.SEA_FILE | default("-") }}
                         <input type="file" accept=".csv" id="sea_file" name="sea_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">
@@ -212,6 +217,7 @@
 
                     <div>
                         <label class="u-mt-m label venus" for="air_file" id="upload">Air</label>
+                        Current File: {{ run_info.AIR_FILE | default("-") }}
                         <input type="file" accept=".csv" id="air_file" name="air_file"
                                class="input input--text input-type__input  input--upload"
                                aria-describedby="upload">

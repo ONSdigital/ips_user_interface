@@ -1,6 +1,7 @@
 from flask import request, render_template, session, jsonify
 from ips.util.ui_logging import log
 
+
 from ips.services import app_methods
 from ips.services.forms import LoadDataForm
 
@@ -9,6 +10,7 @@ def run_step_5(run_id):
     form = LoadDataForm()
     error = False
 
+    run_info = app_methods.get_run(run_id)
     if form.validate_on_submit():
 
         log.info("run_step_5 Importing data...")
@@ -92,6 +94,7 @@ def run_step_5(run_id):
         return render_template('new_run_5.html',
                                form=form,
                                error=error,
+                               run_info=run_info,
                                run_id=run_id)
     else:
         error = True

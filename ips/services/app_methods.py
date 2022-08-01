@@ -342,7 +342,7 @@ def import_data(table_name, run_id, file, month=None, year=None):
     return requests.post(
         f"{API_TARGET}/import/{table_name}/{run_id}",
         files={"ips-file": file},
-        data={"month": month, "year": year},
+        data={"month": month, "year": year, "filename": file.filename}
     )
 
 
