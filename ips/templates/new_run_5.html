@@ -40,7 +40,9 @@
                                 <div class="venus">Error</div>
                             </div>
                             <div class="panel__body">
-                                <p class="mars">{{ error_message }}</p>
+                                {% for message in error_messages %}
+                                <p class="mars">{{ message }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                         <!-- End: @panel--error -->
