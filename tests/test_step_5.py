@@ -1,14 +1,17 @@
 from itertools import permutations
 import time
 import uuid
-from ips.services.forms import LoadDataForm
 import pytest_flask as pyflk
 from ips.services.new_run_steps.step_5 import run_step_5
+from ips.services.forms import LoadDataForm
 import ips.services.new_run as new_runner
-import pytest
 from ips.util.ui_logging import log
+import pytest
 
 from io import BytesIO
+
+from unittest import mock
+from flask import render_template
 
 from flask import json
 from flask import request, Flask, current_app
@@ -20,6 +23,9 @@ from wtforms.validators import DataRequired
 from wtforms.widgets import HiddenInput
 from flask_wtf.file import FileField, FileRequired
 from flask_wtf import FlaskForm
+from ips import app as ips_app
+from flask_login import login_user
+from ips.services.models import User
 
 start_time = time.time()
 run_id = str(uuid.uuid4())
@@ -98,8 +104,70 @@ def test_dynamic_form_validators(survey_filename, shift_filename, nr_filename, u
                 assert loadform.errors[field] == ['This field is required.'], f"Expected {field} field validation to fail as no filename givened"
     client.post("/")
 
-def test_dynamic_meeting(app, client):
-    pass
+@mock.patch('ips.services.new_run_steps.step_5.render_template')
+@mock.patch('ips.services.new_run_steps.step_5.app_methods')
+def test_file_upload_view_uploads_required_files(mock_app_methods, mock_render_template):
+    """
+    Tests that every file upload is attempted, even if there are any errors in other files.
+    """ 
+    ips_app.config['WTF_CSRF_ENABLED'] = False # ensure CSRF protection off when we post the form
+
+    client = ips_app.test_client()
+
+    # Login test client by calling login view
+    with mock.patch("ips.services.auth.requests") as mock_requests:
+        mock_requests.get.return_value.status_code = 200
+        resp = client.post(
+            "/login",
+            data={
+                "username": "dummy-username",
+                "password": "dummy-password"
+            },
+            follow_redirects=False
+        )
+
+    mock_app_methods.get_run.return_value = {
+        'SURVEY_FILE': '',
+        'SHIFT_FILE': '',
+        'NR_FILE': '',
+        'UNSAMPLED_FILE': '',
+        'TUNNEL_FILE': '',
+        'SEA_FILE': '',
+        'AIR_FILE': ''
+    }
+    mock_app_methods.import_data.return_value.status_code = 400
+    mock_app_methods.get_error_message.side_effect = lambda rsp, file_type: f"Invalid {file_type} data"
+    mock_render_template.return_value = "Dummy Response" 
+    
+    # Add session keys expected by calls to import_data within step_5 view function
+    with client.session_transaction() as sess:
+        sess['id'] = '12345'
+        sess['period'] = '05'
+        sess['year'] = '2017'
+
+    test_user = User('Mr Anonymous')
+    with ips_app.app_context():
+        with ips_app.test_request_context():
+            login_user(test_user)
+
+    file_data = BytesIO(b"abcdef")
+    resp = client.post(
+        "/new_run_steps/new_run_5/abc-123-def",
+        content_type="multipart/form-data",
+        buffered=True,
+        data={
+            'survey_file': (file_data, 'surveydata.csv'),
+            'shift_file': (file_data, 'shift_data.csv'),
+            'non_response_file': (file_data, 'nr_data.csv'),
+            'unsampled_file': (file_data, 'unsampled_data.csv'),
+            'tunnel_file': (file_data, 'tunnel_file.csv'),
+            'sea_file': (file_data, 'sea_data.csv'),
+            'air_file': (file_data, 'air_data.csv'),
+        },
+        follow_redirects=False
+    )
+
+    assert len(mock_app_methods.import_data.call_args_list) == 7, "Attempted to upload add file-types" 
 
 def test_odd_empty_validation_error(app, client):
     
